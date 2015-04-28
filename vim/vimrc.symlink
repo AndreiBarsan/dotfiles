@@ -93,7 +93,7 @@ set gdefault
 " Use leader-space to clear the last search
 nnoremap <leader><space> :noh<cr>
 
-" Use <tab> instead of `%' to jump between brackets
+" Use <tab> instead of `%' to jump between brackets.  What am I, a robit?
 nnoremap <tab> %
 vnoremap <tab> %
 
@@ -236,7 +236,7 @@ autocmd vimenter * NERDTree
 " Automatically quit if the only window left is NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
-let b:javascript_fold = 0
+let b:javascript_fold=0
 let g:tern_map_keys=1
 
 " YouCompleteMe parameters
@@ -262,15 +262,8 @@ let g:rainbow_active = 1
 
 " Show buffer list
 let g:airline#extensions#tabline#enabled = 1
-" Fix that ensures `vim-airline' is always shown
-set laststatus=2
-set timeoutlen=50
-let g:airline_powerline_fonts = 1
-"if !exists('g:airline_symbols')
-  "let g:airline_symbols = {}
-"endif
-"let g:airline_symbols.space = "\ua0"
+" Use fany symbols (needs patched font)
+let g:airline_powerline_fonts=1
 
-" CtrlP fuzzy search settings
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
