@@ -62,6 +62,7 @@ Plugin 'Valloric/YouCompleteMe'     " Awesome autocomplete
 Plugin 'vim-scripts/a.vim'          " *.c(c|pp)?-*h switcher
 Plugin 'rosenfeld/conque-term'      " Terminal emulation inside vim
 Plugin 'sheerun/vim-polyglot'       " Smart support for tons of languages
+Plugin 'tinymode.vim'               " Easy on-the-fly window resizing
 
 call vundle#end()             " required
 filetype plugin indent on     " required
