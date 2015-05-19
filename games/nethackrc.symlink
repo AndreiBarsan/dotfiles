@@ -1,2 +1,3 @@
-OPTIONS=!autodig,!autopickup
+OPTIONS=autodig,!autopickup
 OPTIONS=color,hilite_pet,lit_corridor,DECgraphics,boulder:8
+NAME=Andrei

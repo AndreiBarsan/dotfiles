@@ -13,8 +13,8 @@
 " Note: might contain a number of OSX-specific stuff.  YMMV.
 " Note: some plugins (e.g. Syntastic and YouCompleteMe) require additional
 " compiled components and programs to be installed.  Please read their
-" respective docs for more info (usually available on GitHub one Google (or,
-" better yet, StartPage) search away).
+" respective docs for more info (usually available one GitHub, Google or,
+" better yet, StartPage search away).
 
 " TODO(andrei): learn more about sparkup
 " TODO(andrei): learn more about tabular
@@ -74,6 +74,14 @@ set number
 set hidden                    " Allow buffers in the background
 set noswapfile                " Shoo, shoo, swap files!
 set textwidth=79              " Use gq in visual mode to enforce it!
+set cursorline                " Highlight the current line
+set colorcolumn=80
+set hlsearch
+set incsearch
+set showmatch
+set ignorecase                " Ignore case when searching...
+set smartcase                 " ...unless we type a capital
+set history=10000             " Huge vim command history
 
 colorscheme Chasing_Logic
 set background=dark
@@ -114,13 +122,6 @@ nnoremap ; :
 vnoremap ; :
 nnoremap : ;
 vnoremap : ;
-
-set colorcolumn=80
-set hlsearch
-set incsearch
-set showmatch
-set ignorecase      " Ignore case when searching...
-set smartcase       " ...unless we type a capital
 
 function! DoPrettyXML()
   " save the filetype so we can restore it later
@@ -194,6 +195,14 @@ nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-j> <C-w>j
 nnoremap <silent> <C-k> <C-w>k
 
+" Leader+z/x to navigate through buffers
+nnoremap <silent> <leader>z :bp<cr>
+nnoremap <silent> <leader>x :bn<cr>
+
+" Create window splits easier.
+nnoremap <silent> vv <C-w>v
+nnoremap <silent> ss <C-w>s
+
 " OSX terminal-like tab navigation
 nnoremap <silent> <D-S-Left> :tabp<cr>
 nnoremap <silent> <D-S-Right> :tabn<cr>
@@ -244,6 +253,46 @@ map Q gq
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
 
+" w!! to write a file as sudo
+" stolen from Steve Losh
+cmap w!! w !sudo tee % >/dev/null
+
+" Make 0 go to the first character rather than the beginning
+" of the line. When we're programming, we're almost always
+" interested in working with text rather than empty space. If
+" you want the traditional beginning of line, use ^
+nnoremap 0 ^
+nnoremap ^ 0
+
+" ," Surround a word with "quotes"
+map ," ysiw"
+vmap ," c"<C-R>""<ESC>
+
+" ,' Surround a word with 'single quotes'
+map ,' ysiw'
+vmap ,' c'<C-R>"'<ESC>
+
+" ,) or ,( Surround a word with (parens)
+" The difference is in whether a space is put in
+map ,( ysiw(
+map ,) ysiw)
+vmap ,( c( <C-R>" )<ESC>
+vmap ,) c(<C-R>")<ESC>
+
+" ,[ Surround a word with [brackets]
+map ,] ysiw]
+map ,[ ysiw[
+vmap ,[ c[ <C-R>" ]<ESC>
+vmap ,] c[<C-R>"]<ESC>
+
+" ,{ Surround a word with {braces}
+map ,} ysiw}
+map ,{ ysiw{
+vmap ,} c{ <C-R>" }<ESC>
+vmap ,{ c{<C-R>"}<ESC>
+
+map ,` ysiw`
+
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
 " Only define it when not defined already.
@@ -251,6 +300,22 @@ if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
 		  \ | wincmd p | diffthis
 endif
+
+" [OSX] Resize windows with arrow keys
+nnoremap <D-Up> <C-w>+
+nnoremap <D-Down> <C-w>-
+nnoremap <D-Left> <C-w><
+nnoremap <D-Right>  <C-w>>
+
+" Disable the scrollbars (NERDTree)
+set guioptions-=r
+set guioptions-=L
+
+" [OSX] Disable the macvim toolbar
+set guioptions-=T
+
+" [Twitter] Enable Python syntax for Pants BUILD files
+autocmd BufReadPre BUILD set filetype=python
 
 "
 " Plugin Configuration
@@ -261,6 +326,8 @@ let g:vim_markdown_folding_disabled=1
 autocmd vimenter * NERDTree
 " Automatically quit if the only window left is NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+" [OSX] Toggle NERDTree
+nmap <D-N> :NERDTreeToggle<CR>
 
 let b:javascript_fold=0
 let g:tern_map_keys=1
