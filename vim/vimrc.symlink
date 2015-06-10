@@ -21,6 +21,7 @@
 " TODO(andrei): learn more about nerdcommenter
 " TODO(andrei): learn about organizing projects in vim
 " TODO(andrei): preserve each tab's current dir
+" TODO(andrei): Stuff flagged [OSX] or [MacVim] belong in a separate file.
 
 set nocompatible              " be iMproved, required
 filetype off                  " required for setting up the plugins
@@ -58,7 +59,9 @@ Plugin 'scrooloose/nerdtree'        " File browser
 Plugin 'scrooloose/syntastic'       " Lint-o-Matic
 Plugin 'skwp/greplace.vim'          " Global replace tools
 Plugin 'tpope/vim-fugitive'         " git helper
-Plugin 'Valloric/YouCompleteMe'     " Awesome autocomplete
+if v:version > 703
+  Plugin 'Valloric/YouCompleteMe'     " Awesome autocomplete
+endif
 Plugin 'vim-scripts/a.vim'          " *.c(c|pp)?-*h switcher
 Plugin 'rosenfeld/conque-term'      " Terminal emulation inside vim
 Plugin 'sheerun/vim-polyglot'       " Smart support for tons of languages
@@ -69,7 +72,9 @@ filetype plugin indent on     " required
 
 set autoindent
 set smartindent
-set syntax=on
+syntax on                     " The correct way to enable syntax highlighting.
+                              " set syntax=foo is actually used to specify the
+                              " language (e.g. set syntax=perl).
 set number
 set hidden                    " Allow buffers in the background
 set noswapfile                " Shoo, shoo, swap files!
@@ -118,6 +123,8 @@ inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
 vnoremap <F1> <ESC>
 
+" In normal and visual mode, you type the colon much more often than the
+" semicolon.  Let's save some keystrokes!
 nnoremap ; :
 vnoremap ; :
 nnoremap : ;
@@ -178,7 +185,7 @@ nnoremap <F10> :ShowSpaces 1<CR>
 nnoremap <S-F10> m`:TrimSpaces<CR>``
 vnoremap <S-F10> :TrimSpaces<CR>
 
-" Use CMD-1 to CMD-9 to access tabs.
+" [OSX] [MacVim] Use CMD-1 to CMD-9 to access tabs.
 map <silent> <D-1> :tabn 1<cr>
 map <silent> <D-2> :tabn 2<cr>
 map <silent> <D-3> :tabn 3<cr>
@@ -203,7 +210,7 @@ nnoremap <silent> <leader>x :bn<cr>
 nnoremap <silent> vv <C-w>v
 nnoremap <silent> ss <C-w>s
 
-" OSX terminal-like tab navigation
+" [OSX] [MacVim] terminal-like tab navigation
 nnoremap <silent> <D-S-Left> :tabp<cr>
 nnoremap <silent> <D-S-Right> :tabn<cr>
 
@@ -216,23 +223,23 @@ endif
 " Display tabs and trailing spaces visually
 set list listchars=tab:\ \ ,trail:·
 
-set scrolloff=8         "Start scrolling when we're 8 lines away from margins
+set scrolloff=8         " Start scrolling when we're 8 lines away from margins
+set sidescroll=1        " Do the same thing for sideways scrolling
 set sidescrolloff=15
-set sidescroll=1
 
 " If you visually select something and hit paste that thing gets yanked into
 " your buffer. This generally is annoying when you're copying one item and
 " repeatedly pasting it. This changes the paste command in visual mode so that
 " it doesn't overwrite whatever is in your paste buffer.
-" vnoremap p "_dP
+vnoremap p "_dP
 
 " Quickly open `.vimrc'
 nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
 
-" Sane clipboard behavior in MacVim
+" [OSX] [MacVim] Sane clipboard behavior in MacVim.
 set clipboard=unnamed
 
-" Ctrl/Cmd-A to select all.
+" Ctrl/Cmd-A to select all (only Ctrl-A works inside regular Vim).
 nnoremap <C-a> ggVG
 nnoremap <D-a> ggVG
 
@@ -257,10 +264,9 @@ inoremap <C-U> <C-G>u<C-U>
 " stolen from Steve Losh
 cmap w!! w !sudo tee % >/dev/null
 
-" Make 0 go to the first character rather than the beginning
-" of the line. When we're programming, we're almost always
-" interested in working with text rather than empty space. If
-" you want the traditional beginning of line, use ^
+" Make 0 go to the first character rather than the beginning of the line. When
+" we're programming, we're almost always interested in working with text rather
+" than empty space. If you want the traditional beginning of line, use ^
 nnoremap 0 ^
 nnoremap ^ 0
 
@@ -307,7 +313,7 @@ nnoremap <D-Down> <C-w>-
 nnoremap <D-Left> <C-w><
 nnoremap <D-Right>  <C-w>>
 
-" Disable the scrollbars (NERDTree)
+" [gVim] Disable the scrollbars (NERDTree)
 set guioptions-=r
 set guioptions-=L
 
@@ -332,10 +338,12 @@ nmap <D-N> :NERDTreeToggle<CR>
 let b:javascript_fold=0
 let g:tern_map_keys=1
 
-" YouCompleteMe parameters
-nnoremap <C-[> YcmCompleter GoTo
-let g:ym_collect_identifiers_from_comments_and_strings=1
-let g:ycm_complete_in_comments=1
+" YouCompleteMe parameters (if applicable).
+if v:version > 703
+  nnoremap <C-[> YcmCompleter GoTo
+  let g:ym_collect_identifiers_from_comments_and_strings=1
+  let g:ycm_complete_in_comments=1
+endif
 
 " syntastic stuff
 " let g:syntastic_always_populate_loc_list = 1

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Helper for archiving old git branches.
+#
+# Whenever you type 'git branch' and your screen gets flooded by branch names,
+# God kills a kitten.  Please think of the kittens!
+if [[ "$#" -ne 1 ]]; then
+  echo "$0 <branch-name>"
+  return 1
+fi
+
+local branch="$1"
+echo "Archiving git branch: $branch."
+
+git tag "archive/$branch" "$branch" || return 1
+git branch -D "$branch" || return 1
