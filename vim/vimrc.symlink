@@ -15,6 +15,7 @@
 " compiled components and programs to be installed.  Please read their
 " respective docs for more info (usually available one GitHub, Google or,
 " better yet, StartPage search away).
+" Note: not a customization, but ZZ saves and closes the current tab.
 
 " TODO(andrei): learn more about sparkup
 " TODO(andrei): learn more about tabular
@@ -27,7 +28,7 @@ set nocompatible              " be iMproved, required
 filetype off                  " required for setting up the plugins
 set encoding=utf-8
 
-" The default OSX leader is `\', which is a bit annoying.
+" The default leader is `\', which is a bit annoying.
 let mapleader = ','
 " Don't time out waiting for leader commands.
 set notimeout
@@ -41,7 +42,7 @@ Plugin 'gmarik/Vundle.vim'
 
 " Hint: keep this in alphabetical order!  To sort it, select the whole list,
 " then use `!sort -f' to sort it (`-f' means case-insensitive).
-Plugin 'bling/vim-airline'          " Pretty status line
+" Plugin 'bling/vim-airline'          " Pretty status line
 Plugin 'flazz/vim-colorschemes'     " Moar color schemes
 Plugin 'godlygeek/tabular'          " Format stuff in columns
 Plugin 'gregsexton/MatchTag'        " HTML tag matching
@@ -87,6 +88,7 @@ set showmatch
 set ignorecase                " Ignore case when searching...
 set smartcase                 " ...unless we type a capital
 set history=10000             " Huge vim command history
+set spell
 
 colorscheme Chasing_Logic
 set background=dark
@@ -328,10 +330,16 @@ autocmd BufReadPre BUILD set filetype=python
 "
 let g:vim_markdown_folding_disabled=1
 
-" Automatically open NERDTree when launching vim
-autocmd vimenter * NERDTree
+" Automatically open NERDTree when launching vim, but focus on the new buffer
+function OpenTree()
+  NERDTree
+  execute "normal \<C-w>l"
+endfunction
+autocmd vimenter * call OpenTree()
 " Automatically quit if the only window left is NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+map <leader>r :NERDTreeFind<cr>
+
 " [OSX] Toggle NERDTree
 nmap <D-N> :NERDTreeToggle<CR>
 
@@ -340,7 +348,8 @@ let g:tern_map_keys=1
 
 " YouCompleteMe parameters (if applicable).
 if v:version > 703
-  nnoremap <C-[> YcmCompleter GoTo
+  " This produces garbage output in vim (not mvim).
+  "nnoremap <C-[> YcmCompleter GoTo
   let g:ym_collect_identifiers_from_comments_and_strings=1
   let g:ycm_complete_in_comments=1
 endif
@@ -363,7 +372,7 @@ let g:rainbow_active = 1
 
 " Show buffer list
 let g:airline#extensions#tabline#enabled = 1
-" Use fany symbols (needs patched font)
+" Use fancy symbols (needs patched font)
 let g:airline_powerline_fonts=1
 
 let g:ctrlp_map = '<c-p>'
