@@ -89,6 +89,7 @@ set ignorecase                " Ignore case when searching...
 set smartcase                 " ...unless we type a capital
 set history=10000             " Huge vim command history
 set spell
+set mouse=a
 
 colorscheme Chasing_Logic
 set background=dark
@@ -375,5 +376,6 @@ let g:airline#extensions#tabline#enabled = 1
 " Use fancy symbols (needs patched font)
 let g:airline_powerline_fonts=1
 
+set wildignore+=*/node_modules/*,*/.git/*
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
