@@ -42,15 +42,16 @@ Plugin 'gmarik/Vundle.vim'
 
 " Hint: keep this in alphabetical order!  To sort it, select the whole list,
 " then use `!sort -f' to sort it (`-f' means case-insensitive).
-" Plugin 'bling/vim-airline'          " Pretty status line
+Plugin 'bling/vim-airline'          " Pretty status line
 Plugin 'flazz/vim-colorschemes'     " Moar color schemes
 Plugin 'godlygeek/tabular'          " Format stuff in columns
 Plugin 'gregsexton/MatchTag'        " HTML tag matching
 Plugin 'kien/ctrlp.vim'             " Global fuzzy search
-Plugin 'klen/python-mode'           " Python navigation & other goodies
+"Plugin 'klen/python-mode'           " Python navigation & other goodies
 Plugin 'L9'                         " Lots of small helpers
 Plugin 'luochen1990/rainbow'        " Easily identify nested statements
 Plugin 'marijnh/tern_for_vim'       " Smart JavaScript auto-complete
+Plugin 'othree/javascript-libraries-syntax.vim' " Autocomplete library identifiers
 Plugin 'pangloss/vim-javascript'    " JavaScript utilities
 Plugin 'plasticboy/vim-markdown'    " Markdown support, yep
 Plugin 'Raimondi/delimitMate'       " Auto-complete quotes, parens, etc.
@@ -88,7 +89,6 @@ set showmatch
 set ignorecase                " Ignore case when searching...
 set smartcase                 " ...unless we type a capital
 set history=10000             " Huge vim command history
-set spell
 set mouse=a
 
 colorscheme Chasing_Logic
@@ -298,9 +298,7 @@ vmap ,] c[<C-R>"]<ESC>
 map ,} ysiw}
 map ,{ ysiw{
 vmap ,} c{ <C-R>" }<ESC>
-vmap ,{ c{<C-R>"}<ESC>
-
-map ,` ysiw`
+vmap ,{ c{ <C-R>" }<ESC>
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
@@ -342,7 +340,10 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 map <leader>r :NERDTreeFind<cr>
 
 " [OSX] Toggle NERDTree
-nmap <D-N> :NERDTreeToggle<CR>
+nnoremap <D-N> :NERDTreeToggle<CR>
+
+" Open current file in NERDTree.
+nnoremap - :NERDTreeFind<CR>
 
 let b:javascript_fold=0
 let g:tern_map_keys=1
@@ -355,12 +356,10 @@ if v:version > 703
   let g:ycm_complete_in_comments=1
 endif
 
-" syntastic stuff
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
+" syntastic
+let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-" Disable default checks in Python, because they are slow
+" Disable automatic checks in Python, because they are very slow
 let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [],'passive_filetypes': ['python'] }
 
 " disable pymode's folding, for now
@@ -371,11 +370,16 @@ let g:pymode_lint = 0
 " Rainbow parentheses for better readability of nested expressions.
 let g:rainbow_active = 1
 
+" airline
 " Show buffer list
 let g:airline#extensions#tabline#enabled = 1
 " Use fancy symbols (needs patched font)
 let g:airline_powerline_fonts=1
 
-set wildignore+=*/node_modules/*,*/.git/*
+" CtrlP
+let g:ctrlp_custom_ignore = 'node_modules\|git\|DS_Store'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+
+" javascript-libraries-syntax':
+let g:used_javascript_libs = 'jquery,angularjs,jasmine'
