@@ -12,7 +12,9 @@ then
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
+brew update
+
 # Install homebrew packages
-brew install grc coreutils spark
+brew install grc coreutils spark macvim maven calc node git cowsay sl brew-cask cmake scons curl ack
 
 exit 0

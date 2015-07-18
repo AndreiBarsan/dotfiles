@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 #
 # bootstrap installs things.
-# Note: This was modified quite heavily in order to disable unneeded stuff 
-# (e.g. python, xcode, zsh (for now), etc.).
 
 cd "$(dirname "$0")/.."
 DOTFILES_ROOT=$(pwd)
@@ -136,8 +134,7 @@ install_dotfiles () {
   done
 }
 
-echo "Skipping git configuration... Edit 'script/bootstrap' to re-enable."
-# setup_gitconfig
+setup_gitconfig
 install_dotfiles
 
 # If we're on a Mac, let's install and setup homebrew.
