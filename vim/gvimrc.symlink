@@ -1,1 +1,4 @@
-/Users/abarsan/.vim/janus/vim/gvimrc
+set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h10
+
+set lines=60
+set columns=190
