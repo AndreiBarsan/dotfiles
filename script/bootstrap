@@ -137,38 +137,48 @@ install_dotfiles () {
 # Miscellaneous tasks which should run after the main packages have been
 # installed and the configuration files symlinked.
 install_bits_and_bobs () {
+  echo
   info "Installing Vundle..."
   if [[ -d ~/.vim/bundle/Vundle.vim ]]; then
+    echo
     info "Cleaning up old Vundle..."
     rm -rf ~/.vim/bundle/Vundle.vim
   fi
   git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
+  echo
   info "Installing vim plugins..."
   mvim +PluginInstall +qall
 
+  echo
   info "Installing native components for plugins who need them..."
+  echo
   info "Installing YouCompleteMe for vim..."
   (
-    if [[ -f "~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycm_core.so" ]]; then
-      warn "YCM seems to have already been setup.  Skipping recompile."
+    if [[ -f ~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycm_core.so ]]; then
+      echo
+      info "YCM seems to have already been setup.  Skipping recompile."
     else
-      cd "~/.vim/bundle/YouCompleteMe"
+      cd ~/.vim/bundle/YouCompleteMe
       ./install.sh --clang-completer
     fi
-  )
+  ) || fail "Could not set up YouCompleteMe for vim."
 
+  echo
   info "Installing Tern for vim..."
   (
     cd ~/.vim/bundle/tern_for_vim
     npm install
-  )
+  ) || fail "Could not set up Tern for vim."
 
+  echo
   info "Installing oh-my-zsh..."
   (
-    cd "~"
+    cd ~
     sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-  )
+  ) || fail "Could not set up oh-my-zsh."
+
+  success "Installed all bits and bobs."
 }
 
 setup_gitconfig
