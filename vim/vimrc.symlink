@@ -91,7 +91,7 @@ set smartcase                 " ...unless we type a capital
 set history=10000             " Huge vim command history
 set mouse=a
 
-colorscheme Chasing_Logic
+colorscheme solarized
 set background=dark
 
 " Use soft tabs
@@ -305,7 +305,7 @@ vmap ,{ c{ <C-R>" }<ESC>
 " Only define it when not defined already.
 if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-		  \ | wincmd p | diffthis
+    \ | wincmd p | diffthis
 endif
 
 " [OSX] Resize windows with arrow keys
