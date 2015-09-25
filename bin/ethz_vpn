@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+sudo openconnect --user=barsana@ETHZ https://sslvpn.ethz.ch
