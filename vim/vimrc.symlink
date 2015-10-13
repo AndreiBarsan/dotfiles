@@ -49,6 +49,7 @@ Plugin 'gregsexton/MatchTag'        " HTML tag matching
 Plugin 'kien/ctrlp.vim'             " Global fuzzy search
 Plugin 'klen/python-mode'           " Python navigation & other goodies
 Plugin 'L9'                         " Lots of small helpers
+Plugin 'lervag/vimtex'              " Edit LaTeX in Vim
 Plugin 'luochen1990/rainbow'        " Easily identify nested statements
 Plugin 'marijnh/tern_for_vim'       " Smart JavaScript auto-complete
 Plugin 'othree/javascript-libraries-syntax.vim' " Autocomplete library identifiers
@@ -95,10 +96,15 @@ colorscheme Chasing_Logic     " Clean theme for quick edits.  Using solarized
                               " for gVim.
 set background=dark
 
-" Use soft tabs
+" Use soft tabs of length two
 autocmd Filetype * set tabstop=2|set shiftwidth=2|set expandtab
 autocmd Filetype python set tabstop=4|set shiftwidth=4|set expandtab
+" ...unless we're in a Makefile.
 autocmd Filetype make set tabstop=4|set shiftwidth=4|set noexpandtab
+
+" Allow longer text lines for Scala
+autocmd FileType scala set textwidth=119
+autocmd FileType scala set cursorcolumn=120
 
 set visualbell
 
@@ -118,6 +124,8 @@ vnoremap <tab> %
 
 " Make auto-format (`=') a bit better
 set formatoptions=qrn1
+" Force automatic text wrapping.
+set formatoptions+=t
 
 " Make j/k work with visual lines, instead of file lines
 nnoremap j gj
@@ -388,3 +396,9 @@ let g:ctrlp_cmd = 'CtrlP'
 
 " javascript-libraries-syntax
 let g:used_javascript_libs = 'jquery,angularjs,jasmine'
+
+" vimtex
+let g:vimtex_latexmk_options = '-xelatex -pdf'
+let g:vimtex_latexmk_continuous = 1
+let g:vimtex_view_general_viewer = '/opt/homebrew-cask/Caskroom/skim/1.4.14/Skim.app/Contents/SharedSupport/displayline'
+let g:vimtex_view_general_options = '@line @pdf @tex'
