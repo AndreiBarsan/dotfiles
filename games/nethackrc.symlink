@@ -1,3 +1,9 @@
-OPTIONS=autodig,!autopickup
-OPTIONS=color,hilite_pet,lit_corridor,DECgraphics,boulder:8
+OPTIONS=color,hilite_pet,lit_corridor
 NAME=Andrei
+
+OPTIONS=showexp,showscore,time,!autopickup
+OPTIONS=autodig,fruit:slime mold,boulder:0
+OPTIONS=msg_window:reversed
+OPTIONS=suppress_alert:3.4.3
+
+OPTIONS=DECgraphics
