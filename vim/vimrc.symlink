@@ -46,6 +46,7 @@ Plugin 'bling/vim-airline'          " Pretty status line
 Plugin 'flazz/vim-colorschemes'     " Moar color schemes
 Plugin 'godlygeek/tabular'          " Format stuff in columns
 Plugin 'gregsexton/MatchTag'        " HTML tag matching
+Plugin 'jceb/vim-orgmode'           " org-mode support in Vim. SpaceMacs is
 Plugin 'kien/ctrlp.vim'             " Global fuzzy search
 "Plugin 'klen/python-mode'           " Python navigation & other goodies
 Plugin 'L9'                         " Lots of small helpers
@@ -62,13 +63,16 @@ Plugin 'scrooloose/nerdtree'        " File browser
 Plugin 'scrooloose/syntastic'       " Lint-o-Matic
 Plugin 'skwp/greplace.vim'          " Global replace tools
 Plugin 'tpope/vim-fugitive'         " git helper
+Plugin 'tpope/vim-speeddating'      " Intuitive date increment/decrement.
+Plugin 'tpope/vim-surround'         " Nice surrounding semantics.
 if v:version > 703
-  Plugin 'Valloric/YouCompleteMe'     " Awesome autocomplete
+  Plugin 'Valloric/YouCompleteMe'   " Awesome autocomplete
 endif
 Plugin 'vim-scripts/a.vim'          " *.c(c|pp)?-*h switcher
 Plugin 'rosenfeld/conque-term'      " Terminal emulation inside vim
 Plugin 'sheerun/vim-polyglot'       " Smart support for tons of languages
 Plugin 'tinymode.vim'               " Easy on-the-fly window resizing
+                                    " still better, yo!
 
 call vundle#end()             " required
 filetype plugin indent on     " required
@@ -104,7 +108,7 @@ autocmd Filetype make set tabstop=4|set shiftwidth=4|set noexpandtab
 
 " Allow longer text lines for Scala
 autocmd FileType scala set textwidth=119
-autocmd FileType scala set cursorcolumn=120
+autocmd FileType scala set colorcolumn=120
 
 set visualbell
 
@@ -283,6 +287,7 @@ cmap w!! w !sudo tee % >/dev/null
 nnoremap 0 ^
 nnoremap ^ 0
 
+" Note: these mappings rely on 'vim-surround'.
 " ," Surround a word with "quotes"
 map ," ysiw"
 vmap ," c"<C-R>""<ESC>

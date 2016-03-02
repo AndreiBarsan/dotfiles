@@ -81,3 +81,7 @@ if [[ -e ~/.zshrc.job ]]; then
 fi
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+# [OSX] iTerm2 integration (e.g. automatic theme switching depending on ssh
+# host and other magic stuff).
+test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
