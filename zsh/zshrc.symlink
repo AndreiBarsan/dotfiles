@@ -58,8 +58,8 @@ WORDCHARS='*?_-[]~=&;!#$%^(){}<>'
 bindkey -e
 
 # Tweak: properly handle ctrl-left and ctrl-right (depends on your terminal settings)
-bindkey '^[[1;5C' forward-word
-bindkey '^[[1;5D' backward-word
+#bindkey '^[[1;5C' forward-word
+#bindkey '^[[1;5D' backward-word
 
 # Proper character encoding (change en_US as needed to your locale)
 export LC_CTYPE=en_US.UTF-8
