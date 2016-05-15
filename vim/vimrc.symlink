@@ -42,7 +42,10 @@ Plugin 'gmarik/Vundle.vim'
 
 " Hint: keep this in alphabetical order!  To sort it, select the whole list,
 " then use `!sort -f' to sort it (`-f' means case-insensitive).
+
 Plugin 'bling/vim-airline'          " Pretty status line
+Plugin 'burnettk/vim-angular'       " AngularJS magic
+Plugin 'cjrh/vim-conda'             " Detect the correct Python when using Anaconda
 Plugin 'flazz/vim-colorschemes'     " Moar color schemes
 Plugin 'godlygeek/tabular'          " Format stuff in columns
 Plugin 'gregsexton/MatchTag'        " HTML tag matching
@@ -362,6 +365,7 @@ nnoremap <C-N> :NERDTreeToggle<CR>
 
 " Open current file in NERDTree.
 nnoremap - :NERDTreeFind<CR>
+let NERDTreeIgnore = ['\.pyc$']
 
 let b:javascript_fold=0
 let g:tern_map_keys=1
@@ -372,6 +376,8 @@ if v:version > 703
   "nnoremap <C-[> :YcmCompleter GoTo<cr>
   let g:ym_collect_identifiers_from_comments_and_strings=1
   let g:ycm_complete_in_comments=1
+  " Bypass Anaconda.
+  let g:ycm_path_to_python_interpreter = '/usr/bin/python'
 endif
 
 " syntastic
@@ -405,7 +411,7 @@ let g:used_javascript_libs = 'jquery,angularjs,jasmine'
 
 " vimtex
 let g:vimtex_enabled = 1
-"let g:vimtex_latexmk_options = '-xelatex -pdf'
+let g:vimtex_latexmk_options = '-xelatex -pdf'
 let g:vimtex_latexmk_continuous = 1
 let g:vimtex_view_general_viewer = '/opt/homebrew-cask/Caskroom/skim/1.4.14/Skim.app/Contents/SharedSupport/displayline'
 let g:vimtex_view_general_options = '@line @pdf @tex'
