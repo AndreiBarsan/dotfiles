@@ -89,8 +89,33 @@ test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_in
 # Python Anaconda support
 export PATH=~/anaconda3/bin:"$PATH"
 
-# Support modules (e.g. to do matlabl command line interop)
+# Support modules (e.g. to do matlab command line interop)
 source /usr/local/opt/modules/Modules/init/zsh
+# Launch Matlab from the command line.
+export PATH="$PATH:/Applications/MATLAB_R2015a.app/bin"
 
-
+# This adds command-line support for the Torch scientific computing framework.
 . /Users/andrei/torch/install/bin/torch-activate
+
+# Add support for stuff installed to '~/bin', such as Bazel.
+export PATH="$PATH:$HOME/bin"
+
+# Allow Jupyter to easily find matlab.
+export MATLAB_EXECUTABLE=/Applications/MATLAB_R2015a.app/bin/matlab
+
+
+. /Users/andrei/torch-cl/install/bin/torch-activate
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f /Users/andrei/workspace/google-cloud-sdk/path.zsh.inc ]; then
+  source '/Users/andrei/workspace/google-cloud-sdk/path.zsh.inc'
+fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f /Users/andrei/workspace/google-cloud-sdk/completion.zsh.inc ]; then
+  source '/Users/andrei/workspace/google-cloud-sdk/completion.zsh.inc'
+fi
+
+# These lines add support for the Muse headband developer kit.
+export PATH="$PATH:/Applications/Muse"
+export DYLD_FALLBACK_LIBRARY_PATH="$DYLD_FALLBACK_LIBRARY_PATH:/Applications/Muse"

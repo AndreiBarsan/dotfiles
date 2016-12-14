@@ -44,20 +44,20 @@ Plugin 'gmarik/Vundle.vim'
 " then use `!sort -f' to sort it (`-f' means case-insensitive).
 
 Plugin 'bling/vim-airline'          " Pretty status line
-Plugin 'burnettk/vim-angular'       " AngularJS magic
-Plugin 'cjrh/vim-conda'             " Detect the correct Python when using Anaconda
+"Plugin 'burnettk/vim-angular'       " AngularJS magic
+"Plugin 'cjrh/vim-conda'             " Detect the correct Python when using Anaconda
 Plugin 'flazz/vim-colorschemes'     " Moar color schemes
 Plugin 'godlygeek/tabular'          " Format stuff in columns
 Plugin 'gregsexton/MatchTag'        " HTML tag matching
-Plugin 'jceb/vim-orgmode'           " org-mode support in Vim. SpaceMacs is
+Plugin 'jceb/vim-orgmode'           " org-mode in Vim. SpaceMacs is still better, yo!
 Plugin 'kien/ctrlp.vim'             " Global fuzzy search
 "Plugin 'klen/python-mode'           " Python navigation & other goodies
 Plugin 'L9'                         " Lots of small helpers
 Plugin 'lervag/vimtex'              " Edit LaTeX in Vim
 Plugin 'luochen1990/rainbow'        " Easily identify nested statements
 Plugin 'marijnh/tern_for_vim'       " Smart JavaScript auto-complete
-Plugin 'othree/javascript-libraries-syntax.vim' " Autocomplete library identifiers
-Plugin 'pangloss/vim-javascript'    " JavaScript utilities
+"Plugin 'othree/javascript-libraries-syntax.vim' " Autocomplete library identifiers
+"Plugin 'pangloss/vim-javascript'    " JavaScript utilities
 Plugin 'plasticboy/vim-markdown'    " Markdown support, yep
 Plugin 'Raimondi/delimitMate'       " Auto-complete quotes, parens, etc.
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}  " Super-speedy HTML typing
@@ -72,10 +72,9 @@ if v:version > 703
   Plugin 'Valloric/YouCompleteMe'   " Awesome autocomplete
 endif
 Plugin 'vim-scripts/a.vim'          " *.c(c|pp)?-*h switcher
-Plugin 'rosenfeld/conque-term'      " Terminal emulation inside vim
+"Plugin 'rosenfeld/conque-term'      " Terminal emulation inside vim
 Plugin 'sheerun/vim-polyglot'       " Smart support for tons of languages
 Plugin 'tinymode.vim'               " Easy on-the-fly window resizing
-                                    " still better, yo!
 
 call vundle#end()             " required
 filetype plugin indent on     " required
@@ -351,11 +350,13 @@ autocmd BufRead,BufNewFile *.ypp set filetype=yacc
 let g:vim_markdown_folding_disabled=1
 
 " Automatically open NERDTree when launching vim, but focus on the new buffer
-function OpenTree()
-  NERDTree
-  execute "normal \<C-w>l"
-endfunction
-autocmd vimenter * call OpenTree()
+" This turns out to be distracting, so I disabled it (24.10.2016).
+" function OpenTree()
+"   NERDTree
+"   execute "normal \<C-w>l"
+"endfunction
+
+" autocmd vimenter * call OpenTree()
 " Automatically quit if the only window left is NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 map <leader>r :NERDTreeFind<cr>
@@ -373,10 +374,10 @@ let g:tern_map_keys=1
 " YouCompleteMe parameters (if applicable).
 if v:version > 703
   " Note: This may produce garbage output in vim (not mvim).
-  "nnoremap <C-[> :YcmCompleter GoTo<cr>
+  nnoremap <C-[> :YcmCompleter GoTo<cr>
   let g:ym_collect_identifiers_from_comments_and_strings=1
   let g:ycm_complete_in_comments=1
-  " Bypass Anaconda.
+  " Ensure we bypass e.g., Anaconda for running this plugin..
   let g:ycm_path_to_python_interpreter = '/usr/bin/python'
 endif
 

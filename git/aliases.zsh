@@ -16,7 +16,9 @@ alias gca='git commit -a'
 alias gco='git checkout'
 alias gcb='git copy-branch-name'
 alias gb='git branch'
-alias gs='git status -sb' # upgrade your git if -sb breaks for you. it's fun.
+
+# Temporarily disabled while I actually need ghostscript.
+#alias gs='git status -sb' # upgrade your git if -sb breaks for you. it's fun.
 
 # If you prefer "git foo" shortcuts instead of e.g. "gfoo", here are some
 # useful ones.
