@@ -3,5 +3,5 @@ set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h10
 set lines=60
 set columns=190
 
-set background="white"
-colorscheme solarized
+"set background="white"
+colorscheme Monokai

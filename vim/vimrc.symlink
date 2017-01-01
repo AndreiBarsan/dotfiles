@@ -43,7 +43,7 @@ Plugin 'gmarik/Vundle.vim'
 " Hint: keep this in alphabetical order!  To sort it, select the whole list,
 " then use `!sort -f' to sort it (`-f' means case-insensitive).
 
-Plugin 'bling/vim-airline'          " Pretty status line
+Plugin 'vim-airline/vim-airline'          " Pretty status line
 "Plugin 'burnettk/vim-angular'       " AngularJS magic
 "Plugin 'cjrh/vim-conda'             " Detect the correct Python when using Anaconda
 Plugin 'flazz/vim-colorschemes'     " Moar color schemes
@@ -64,6 +64,7 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}  " Super-speedy HTML typing
 Plugin 'scrooloose/nerdcommenter'   " Smart en-masse commenter
 Plugin 'scrooloose/nerdtree'        " File browser
 Plugin 'scrooloose/syntastic'       " Lint-o-Matic
+Plugin 'sjl/gundo.vim'              " Navigate undo tree visually
 Plugin 'skwp/greplace.vim'          " Global replace tools
 Plugin 'tpope/vim-fugitive'         " git helper
 Plugin 'tpope/vim-speeddating'      " Intuitive date increment/decrement.
@@ -378,7 +379,7 @@ if v:version > 703
   let g:ym_collect_identifiers_from_comments_and_strings=1
   let g:ycm_complete_in_comments=1
   " Ensure we bypass e.g., Anaconda for running this plugin..
-  let g:ycm_path_to_python_interpreter = '/usr/bin/python'
+  "let g:ycm_path_to_python_interpreter = '/usr/bin/python3'
 endif
 
 " syntastic
@@ -396,11 +397,13 @@ let g:pymode_lint_on_write = 0
 " Rainbow parentheses for better readability of nested expressions.
 let g:rainbow_active = 1
 
-" airline
-" Show buffer list
+" vim-airline
+" Show buffer list when only one tab is open.
 let g:airline#extensions#tabline#enabled = 1
 " Use fancy symbols (needs patched font)
 let g:airline_powerline_fonts=1
+" Ensure it's on from the start.
+set laststatus=2
 
 " CtrlP
 let g:ctrlp_custom_ignore = 'node_modules\|git\|DS_Store'

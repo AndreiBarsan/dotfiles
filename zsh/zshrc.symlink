@@ -7,8 +7,7 @@ export PROJECTS=~/workspace
 # Stash your environment variables in ~/.localrc. This means they'll stay out
 # of your main dotfiles repository (which may be public, like this one), but
 # you'll have access to them in your scripts.
-if [[ -a ~/.localrc ]]
-then
+if [[ -a ~/.localrc ]]; then
   source ~/.localrc
 fi
 
@@ -17,14 +16,12 @@ typeset -U config_files
 config_files=($ZSH/**/*.zsh)
 
 # load the path files
-for file in ${(M)config_files:#*/path.zsh}
-do
+for file in ${(M)config_files:#*/path.zsh}; do
   source $file
 done
 
 # load everything but the path and completion files
-for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}
-do
+for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}; do
   source $file
 done
 
@@ -33,8 +30,7 @@ autoload -U compinit
 compinit
 
 # load every completion after autocomplete loads
-for file in ${(M)config_files:#*/completion.zsh}
-do
+for file in ${(M)config_files:#*/completion.zsh}; do
   source $file
 done
 
@@ -47,11 +43,11 @@ ZSH_THEME="gnzh"
 source "$ZSH/oh-my-zsh.sh"
 
 # Huge command history: the interaction between these two size limits is a little funny, but these should get you pretty far
-SAVEHIST=50000
-HISTSIZE=50000
+SAVEHIST=500000
+HISTSIZE=500000
 
-# Tweak: disable ctrl-d to prevent accidental logouts
-setopt IGNORE_EOF
+# Only disconnect if we triple C-d.
+export IGNOREEOF=2
 
 # Tweak: make sure to treat dots and slashes as word delimiters
 WORDCHARS='*?_-[]~=&;!#$%^(){}<>'
@@ -116,6 +112,18 @@ if [ -f /Users/andrei/workspace/google-cloud-sdk/completion.zsh.inc ]; then
   source '/Users/andrei/workspace/google-cloud-sdk/completion.zsh.inc'
 fi
 
+# Support for autojump, i.e., the `j` command, which acts as a smart `cd` which
+# keeps track of your most active directories.
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+
 # These lines add support for the Muse headband developer kit.
-export PATH="$PATH:/Applications/Muse"
-export DYLD_FALLBACK_LIBRARY_PATH="$DYLD_FALLBACK_LIBRARY_PATH:/Applications/Muse"
+#export PATH="$PATH:/Applications/Muse"
+#export DYLD_FALLBACK_LIBRARY_PATH="$DYLD_FALLBACK_LIBRARY_PATH:/Applications/Muse"
+
+# Show the 7 most recent files when cd-ing into a dir.
+#function prompt_command {
+#    ls -t | head -7
+#}
+export PROMPT_COMMAND="prompt_command"
+
+# Protip: Can possibly customize CDPATH for EVEN MORE agility!

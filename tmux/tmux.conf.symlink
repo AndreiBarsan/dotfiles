@@ -1,3 +1,9 @@
+# Show upcoming calendar event in the statusbar.
 set -g status-right '📅  #(gcalcli agenda --nocolor                 \
   | cut -d " " -f 4- | head -2 | tail -1 | sed "s/^ *//g" | sed "s/    / /g"  \
   | cut -c1-19) '
+
+# Powerline support!
+run-shell "powerline-daemon -q"
+source "/usr/local/Cellar/powerline/2.4/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
+
