@@ -23,3 +23,6 @@ alias sem='master && cd SEM*'
 alias agenda='gcalcli agenda'
 alias calw='gcalcli calw'
 alias calm='gcalcli calm'
+
+# Force regular vim to be MacVim's vim
+alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'

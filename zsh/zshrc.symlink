@@ -124,6 +124,9 @@ fi
 #function prompt_command {
 #    ls -t | head -7
 #}
-export PROMPT_COMMAND="prompt_command"
+# export PROMPT_COMMAND="prompt_command"
 
 # Protip: Can possibly customize CDPATH for EVEN MORE agility!
+
+# Used by e.g., SpatialOS thingy.
+export JAVA_HOME=$(/usr/libexec/java_home)
