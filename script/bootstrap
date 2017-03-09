@@ -148,7 +148,7 @@ install_bits_and_bobs () {
 
   echo
   info "Installing vim plugins..."
-  mvim +PluginInstall +qall
+  vim +PluginInstall +qall
 
   echo
   info "Installing native components for plugins who need them..."
@@ -186,8 +186,7 @@ install_dotfiles
 
 # If we're on a Mac, let's install and setup homebrew together with a bunch
 # of commong useful packages.
-if [ "$(uname -s)" == "Darwin" ]
-then
+if [ "$(uname -s)" == "Darwin" ]; then
   info "installing dependencies"
   if source bin/dot
   then
@@ -195,6 +194,9 @@ then
   else
     fail "error installing dependencies"
   fi
+else
+  # Naively assume Ubuntu/Debian and install some misc. stuff.
+  sudo apt-get install -y spark npm cowsay sl scons silversearcher-ag npm curl
 fi
 
 info "Installing remaining bits and bobs..."
