@@ -1,11 +1,19 @@
-set -g status on
-set -g status-utf8 on
-
-# Use more ergonomic leader Ctrl-a, instead of Ctrl-b
-unbind C-b
+# Use C-a as a prefix (shadows emacs-style C-a, C-e navigation, but it's still
+# better than using a weird leader like C-g)
 set -g prefix C-a
 bind C-a send-prefix
+unbind C-b
 
+set -sg escape-time 1
+set -g base-index 1     # Index stuff starting from 1, not 0.
+setw -g pane-base-index 1
+
+# Watch for activity in background windows
+setw -g monitor-activity on
+set -g visual-activity on
+
+# scrollback size
+set -g history-limit 10000
 
 # Show upcoming calendar event in the statusbar.
 set -g status-right '📅  #(gcalcli agenda --nocolor                 \
@@ -19,6 +27,59 @@ set -g status-right '📅  #(gcalcli agenda --nocolor                 \
 
 # TODO(andrei): C-a h/j/k/l for tmux pane navigation.
 
-set-option -g default-shell /usr/bin/zsh
+set-option -g default-shell /bin/zsh
 
+###########################################################################
+# Window management / navigation
+###########################################################################
 
+# move between windows
+# TODO(andrei): Remove if interferes with vim.
+bind-key C-h previous-window
+bind-key C-l next-window
+
+# C-\ (no prefix) to skip to last window we were in before this one
+bind -n "C-\\" last-window
+
+# C-Space (no prefix) to tab to next window
+bind -n C-Space next-window
+
+set -g mouse
+
+set -g mode-keys vi
+
+# y and p as in vim
+bind Escape copy-mode
+unbind p
+bind p paste-buffer
+
+bind -t vi-copy 'v' begin-selection
+bind -t vi-copy 'y' copy-selection
+bind -t vi-copy 'Space' halfpage-down
+bind -t vi-copy 'Bspace' halfpage-up
+
+# extra commands for interacting with the ICCCM clipboard
+bind C-c run "tmux save-buffer - | xclip -i -sel clipboard"
+bind C-v run "tmux set-buffer \"$(xclip -o -sel clipboard)\"; tmux paste-buffer"
+
+# easy-to-remember split pane commands
+bind | split-window -h
+bind - split-window -v
+unbind '"'
+unbind %
+
+# moving between panes with vim movement keys
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+# moving between windows with vim movement keys
+bind -r C-h select-window -t :-
+bind -r C-l select-window -t :+
+
+# resize panes with vim movement keys
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
