@@ -142,13 +142,13 @@ fi
 # Tries to use tmuxinator wrapper, if available.
 
 if which mux >/dev/null 2>&1; then
-  muxcmd='tmuxinator start project cv'
+  muxcmd="tmuxinator start cv"
 else
-  muxcmd='tmux'
+  muxcmd="tmux"
 fi
 
 if which tmux >/dev/null 2>&1; then
-  test -z ${TMUX} && ${muxcmd}
+  test -z ${TMUX} && eval "${muxcmd}"
 
   # when quitting tmux, try to attach
   # TODO(andrei): Is this actually useful to me?

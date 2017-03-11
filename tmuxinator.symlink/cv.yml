@@ -1,0 +1,25 @@
+# ~/.tmuxinator/cv.yml
+
+name: cv
+root: ~/
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+# pre_window: rbenv shell 2.0.0-p247
+
+# Change the command to call tmux.  This can be used by derivatives/wrappers like byobu.
+# tmux_command: byobu
+
+# Controls whether the tmux session should be attached to automatically. Defaults to true.
+# attach: false
+
+# Runs after everything. Use it to attach to tmux with custom options etc.
+# post: tmux -CC attach -t cv
+
+windows:
+  - dev:
+      layout: tiled
+      panes:
+        -
+        - cd ~/work && vim
+        - cd ~/work
+        - htop
