@@ -1,8 +1,19 @@
-# Use more ergonomic leader Ctrl-a, instead of Ctrl-b
-unbind C-b
-set -g prefix C-a
-bind C-a send-prefix
+# Change prefix from default (C-b) to C-g
+# # C-g doesn't interfere with emacs-style editing keys
 
+unbind -n C-b
+unbind -n C-g
+set -g prefix C-g
+
+# C-g C-g to passthrough a C-g
+unbind C-g
+bind C-g send-key C-g
+
+# Watch for activity in background windows
+setw -g monitor-activity on
+
+# scrollback size
+set -g history-limit 10000
 
 # Show upcoming calendar event in the statusbar.
 set -g status-right '📅  #(gcalcli agenda --nocolor                 \
@@ -16,6 +27,20 @@ set -g status-right '📅  #(gcalcli agenda --nocolor                 \
 
 # TODO(andrei): C-a h/j/k/l for tmux pane navigation.
 
-set-option -g default-shell /usr/bin/zsh
+set-option -g default-shell /bin/zsh
 
+###########################################################################
+# Window management / navigation
+#
+# move between windows
+# TODO(andrei): Remove if interferes with vim.
+bind-key C-h previous-window
+bind-key C-l next-window
 
+# C-\ (no prefix) to skip to last window we were in before this one
+bind -n "C-\\" last-window
+
+# C-Space (no prefix) to tab to next window
+bind -n C-Space next-window
+
+set -g mouse

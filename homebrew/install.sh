@@ -16,7 +16,8 @@ brew update
 
 # Install homebrew packages.
 brew install grc coreutils spark macvim calc npm cowsay sl cmake scons \
-  curl ack homebrew/games/nethack caskroom/cask/brew-cask python
+  curl ack homebrew/games/nethack caskroom/cask/brew-cask python \
+  reattach-to-user-namespace
 
 # Install more stuf using cask.
 brew-cask install karabiner seil
