@@ -1,6 +1,8 @@
 The MIT License
 
-Copyright (c) Zach Holman, http://zachholman.com
+Copyright for portions of project (c) Zach Holman, http://zachholman.com, as
+part of his original dotfiles project. All other copyright for this project are
+held by Andrei Barsan, http://siegedog.com.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
