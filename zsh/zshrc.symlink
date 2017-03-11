@@ -1,7 +1,10 @@
+# TODO(andrei): For maximum versatility, move non-zsh stuff to a .bashrc and
+# source that from here.
+
 # shortcut to this dotfiles path is $ZSH
 export ZSH=$HOME/.dotfiles
 
-# your project folder that we can `c [tab]` to
+# The project folder so that we can `c [tab]` to it.
 export PROJECTS=~/workspace
 
 # Stash your environment variables in ~/.localrc. This means they'll stay out
@@ -35,6 +38,10 @@ for file in ${(M)config_files:#*/completion.zsh}; do
 done
 
 unset config_files
+
+# Tmuxinator for neatly managing tmux sessions.
+# TODO(andrei): Adds ruby deps. Strip away if too slow and stuff.
+source "${ZSH}/tmux/tmuxinator.zsh"
 
 # Setup oh-my-zsh
 export ZSH="$HOME/.oh-my-zsh"
@@ -132,11 +139,21 @@ fi
 # export JAVA_HOME=$(/usr/libexec/java_home)
 
 # If available, start tmux, attaching to any running session.
+# Tries to use tmuxinator wrapper, if available.
+
+if which mux >/dev/null 2>&1; then
+  muxcmd='tmuxinator start project cv'
+else
+  muxcmd='tmux'
+fi
+
 if which tmux >/dev/null 2>&1; then
-  test -z ${TMUX} && tmux
+  test -z ${TMUX} && ${muxcmd}
 
   # when quitting tmux, try to attach
+  # TODO(andrei): Is this actually useful to me?
   while test -z ${TMUX}; do
     tmux attach || break
   done
 fi
+

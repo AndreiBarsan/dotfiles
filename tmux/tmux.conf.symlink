@@ -1,6 +1,7 @@
 # Use C-a as a prefix (shadows emacs-style C-a, C-e navigation, but it's still
 # better than using a weird leader like C-g)
 set -g prefix C-a
+# C-a C-a is the new emacs-style home, i.e., C-a.
 bind C-a send-prefix
 unbind C-b
 
@@ -21,32 +22,24 @@ set -g status-right '📅  #(gcalcli agenda --nocolor                 \
   | cut -c1-19) '
 
 # Powerline support!
-# TODO(andrei): Fix this thing on Linux!
-#run-shell "powerline-daemon -q"
+# TODO(andrei): Fix this thing cross-platform.
+run-shell "powerline-daemon -q"
 #source "/usr/local/Cellar/powerline/2.4/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
-
-# TODO(andrei): C-a h/j/k/l for tmux pane navigation.
+source "/home/andrei/.local/lib/python3.5/site-packages/powerline/bindings/tmux/powerline.conf"
 
 set-option -g default-shell /bin/zsh
+set -g mouse
+set -g mode-keys vi
 
 ###########################################################################
 # Window management / navigation
 ###########################################################################
-
-# move between windows
-# TODO(andrei): Remove if interferes with vim.
-bind-key C-h previous-window
-bind-key C-l next-window
 
 # C-\ (no prefix) to skip to last window we were in before this one
 bind -n "C-\\" last-window
 
 # C-Space (no prefix) to tab to next window
 bind -n C-Space next-window
-
-set -g mouse
-
-set -g mode-keys vi
 
 # y and p as in vim
 bind Escape copy-mode
