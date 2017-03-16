@@ -10,3 +10,6 @@ then
 fi
 
 alias gib='sudo apt-get install'
+
+# Nosy neighbor! :)
+alias ww='watch -n 0.5 w'

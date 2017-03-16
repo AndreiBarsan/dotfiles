@@ -152,8 +152,8 @@ if which tmux >/dev/null 2>&1; then
 
   # when quitting tmux, try to attach
   # TODO(andrei): Is this actually useful to me?
-  while test -z ${TMUX}; do
-    tmux attach || break
-  done
+  # while test -z ${TMUX}; do
+  #  tmux attach || break
+  # done
 fi
 
