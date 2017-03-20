@@ -14,18 +14,16 @@ setw -g monitor-activity on
 set -g visual-activity on
 
 # scrollback size
-set -g history-limit 10000
+set -g history-limit 100000
 
 # Show upcoming calendar event in the statusbar.
-set -g status-right '📅  #(gcalcli agenda --nocolor                 \
-  | cut -d " " -f 4- | head -2 | tail -1 | sed "s/^ *//g" | sed "s/    / /g"  \
-  | cut -c1-19) '
+#set -g status-right '📅  #(gcalcli agenda --nocolor                 \
+#  | cut -d " " -f 4- | head -2 | tail -1 | sed "s/^ *//g" | sed "s/    / /g"  \
+#  | cut -c1-19) '
 
-# Powerline support!
-# TODO(andrei): Fix this thing cross-platform.
+# Powerline support! (variable defined in zshrc for portability)
 run-shell "powerline-daemon -q"
-#source "/usr/local/Cellar/powerline/2.4/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
-source "/home/andrei/.local/lib/python3.5/site-packages/powerline/bindings/tmux/powerline.conf"
+source "$TMUX_POWERLINE_CONF"
 
 set-option -g default-shell /bin/zsh
 set -g mouse
