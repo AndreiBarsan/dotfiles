@@ -42,7 +42,7 @@ unset config_files
 # Tmuxinator for neatly managing tmux sessions.
 if [[ $(uname -s) == 'Linux' ]]; then
   # TODO(andrei): This adds ruby deps. Strip away if too slow and stuff.
-  echo "BEEP BEEP SOURCING TMUXINATOR SHIT"
+  # TODO(andrei): Fix on OS X.
   #source "${ZSH}/tmux/tmuxinator.zsh"
 fi
 
