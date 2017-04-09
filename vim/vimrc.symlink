@@ -115,9 +115,10 @@ autocmd FileType scala set colorcolumn=120
 
 set visualbell
 
+" TODO(andrei): Re-enable these for vanilla vim, but NOT for e.g., IntelliJ.
 " Use sensible regex parsing when searching
-nnoremap / /\v
-vnoremap / /\v
+"nnoremap / /\v
+"vnoremap / /\v
 
 " Make all replacement operations global by default
 set gdefault

@@ -93,7 +93,7 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
 
 # Python Anaconda support
-export PATH=~/anaconda3/bin:"$PATH"
+#export PATH=~/anaconda3/bin:"$PATH"
 
 # Support modules (e.g. to do matlab command line interop)
 #source /usr/local/opt/modules/Modules/init/zsh
@@ -140,6 +140,12 @@ fi
 
 # [OSX] Used by e.g., SpatialOS thingy.
 # export JAVA_HOME=$(/usr/libexec/java_home)
+#
+#
+
+# CUDA 8.0 support on Ubuntu 16
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-8.0/lib64"
+export PATH="$PATH:/usr/local/cuda-8.0/bin"
 
 # If available, start tmux, attaching to any running session.
 # Tries to use tmuxinator wrapper, if available.
