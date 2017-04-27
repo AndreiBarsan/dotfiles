@@ -1,11 +1,18 @@
 # TODO(andrei): For maximum versatility, move non-zsh stuff to a .bashrc and
 # source that from here.
 
-# shortcut to this dotfiles path is $ZSH
-export ZSH=$HOME/.dotfiles
-
 # The project folder so that we can `c [tab]` to it.
-export PROJECTS=~/workspace
+export PROJECTS=~/work
+
+# shortcut to this dotfiles path is $ZSH
+# TODO(andrei): Why is this really necessary? Isn't it just cleaner to keep
+# your actual dotfile repo in 'work/dotfiles'?
+if [[ -d "${HOME}/.dotfiles" ]]; then
+  # I'm inconsistent on many of my machines. Plz no judge.
+  export ZSH="${HOME}/.dotfiles"
+else
+  export ZSH="${PROJECTS}/dotfiles"
+fi
 
 # Stash your environment variables in ~/.localrc. This means they'll stay out
 # of your main dotfiles repository (which may be public, like this one), but
@@ -94,16 +101,18 @@ test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_in
 # seemingly unrelated projects!
 #export PATH=~/anaconda3/bin:"$PATH"
 
-# Support modules (e.g. to do matlab command line interop)
+# [Euler] Support modules (e.g. to do matlab command line interop)
 #source /usr/local/opt/modules/Modules/init/zsh
+
 # [OSX] Launch Matlab from the command line.
 export PATH="$PATH:/Applications/MATLAB_R2015a.app/bin"
 
 # [OSX] This adds command-line support for the Torch scientific computing framework.
 # . /Users/andrei/torch/install/bin/torch-activate
 
-# Add support for stuff installed to '~/bin', such as Bazel.
+# Add support for locally-installed stuff, such as Bazel.
 export PATH="$PATH:$HOME/bin"
+export LD_LIBRARY_PATH="$HOME/lib:$LD_LIBRARY_PATH"
 
 # [OSX] Allow Jupyter to easily find matlab.
 export MATLAB_EXECUTABLE=/Applications/MATLAB_R2015a.app/bin/matlab
@@ -120,6 +129,7 @@ fi
 
 # Support for autojump, i.e., the `j` command, which acts as a smart `cd` which
 # keeps track of your most active directories.
+# TODO(andrei): Make this cross-platform.
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
 # These lines add support for the Muse headband developer kit.
@@ -139,6 +149,10 @@ fi
 
 # [OSX] Used by e.g., SpatialOS thingy.
 # export JAVA_HOME=$(/usr/libexec/java_home)
+
+# CUDA 8.0 support on Ubuntu 16
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-8.0/lib64"
+export PATH="$PATH:/usr/local/cuda-8.0/bin"
 
 # If available, start tmux, attaching to any running session.
 # Tries to use tmuxinator wrapper, if available.

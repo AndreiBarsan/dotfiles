@@ -164,13 +164,19 @@ install_bits_and_bobs () {
     fi
   ) || fail "Could not set up YouCompleteMe for vim."
 
-  echo
-  info "Installing Tern for vim..."
-  (
-    cd ~/.vim/bundle/tern_for_vim
-    npm install
-  ) || fail "Could not set up Tern for vim."
+  #echo
+  #info "Installing Tern for vim..."
+  #(
+    #cd ~/.vim/bundle/tern_for_vim
+    #npm install
+  #) # || fail "Could not set up Tern for vim."
+  #if ! [[ $? -eq 0 ]]; then
+    #echo "Could not set up Tern for vim; skipping."
+  #fi
 
+  # TODO(andrei): This always wants to (1) make a backup of zshrc, even after
+  # the correct one is symlinked in and (2) set zsh as the default shell, which
+  # is nontrivial on system
   echo
   info "Installing oh-my-zsh..."
   (
@@ -188,16 +194,27 @@ install_dotfiles
 # of commong useful packages.
 if [ "$(uname -s)" == "Darwin" ]; then
   info "installing dependencies"
-  if source bin/dot
-  then
+  if source bin/dot; then
     success "dependencies installed"
   else
     fail "error installing dependencies"
   fi
 else
   # Naively assume Ubuntu/Debian and install some misc. stuff.
-  sudo apt-get install -y spark npm cowsay sl scons silversearcher-ag npm \
-    curl htop
+
+  # TODO(andrei): Local install of tiny helpers, such as ag. Find out if
+  # there's an easy way of doing it, so you don't have to manually write
+  # scripts for everything.
+  # TODO(andrei): 'replicate' program in 'dotfiles/bin' which sets up my
+  # dotfiles on a given host. Tip: it could even be used to augment my
+  # .ssh/config file and create a proper ssh-to symlink.
+
+  # TODO(andrei): Extract this into common helper.
+  CAN_I_RUN_SUDO=$(sudo -n uptime 2>&1|grep "load"|wc -l)
+  if [ ${CAN_I_RUN_SUDO} -gt 0 ]; then
+    sudo apt-get install -y spark npm cowsay sl scons silversearcher-ag npm \
+      curl htop
+  fi
 fi
 
 info "Installing remaining bits and bobs..."
