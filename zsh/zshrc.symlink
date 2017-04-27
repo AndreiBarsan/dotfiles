@@ -1,11 +1,24 @@
 # TODO(andrei): For maximum versatility, move non-zsh stuff to a .bashrc and
 # source that from here.
 
-# shortcut to this dotfiles path is $ZSH
-export ZSH=$HOME/.dotfiles
+# This file defines the 'module' command support on Euryale. This is a very
+# brittle way of doing things, but it seems to be the only reliable way.
+if [[ -f '/etc/profile.d/11-modules.sh' ]]; then
+  source /etc/profile.d/11-modules.sh 2>&1 1>/dev/null
+fi
 
 # The project folder so that we can `c [tab]` to it.
-export PROJECTS=~/workspace
+export PROJECTS=~/work
+
+# shortcut to this dotfiles path is $ZSH
+# TODO(andrei): Why is this really necessary? Isn't it just cleaner to keep
+# your actual dotfile repo in 'work/dotfiles'?
+if [[ -d "${HOME}/.dotfiles" ]]; then
+  # I'm inconsistent on many of my machines. Plz no judge.
+  export ZSH="${HOME}/.dotfiles"
+else
+  export ZSH="${PROJECTS}/dotfiles"
+fi
 
 # Stash your environment variables in ~/.localrc. This means they'll stay out
 # of your main dotfiles repository (which may be public, like this one), but
@@ -40,7 +53,7 @@ done
 unset config_files
 
 # Tmuxinator for neatly managing tmux sessions.
-if [[ $(uname -s) == 'Linux' ]]; then
+if [[ -f "${ZSH}/tmux/tmuxinator.zsh" ]]; then
   # TODO(andrei): This adds ruby deps. Strip away if too slow and stuff.
   # TODO(andrei): Fix on OS X.
   #source "${ZSH}/tmux/tmuxinator.zsh"
@@ -52,9 +65,10 @@ plugins=(git osx zsh-syntax-highlighting brew)
 ZSH_THEME="gnzh"
 source "$ZSH/oh-my-zsh.sh"
 
-# Huge command history: the interaction between these two size limits is a little funny, but these should get you pretty far
-SAVEHIST=500000
-HISTSIZE=500000
+# Huge command history: the interaction between these two size limits is a
+# little funny, but these should go a pretty long way.
+SAVEHIST=5000000
+HISTSIZE=5000000
 
 # Only disconnect if we triple C-d.
 export IGNOREEOF=2
@@ -67,14 +81,11 @@ bindkey -e
 #bindkey '^[[1;5C' forward-word
 #bindkey '^[[1;5D' backward-word
 
-# Proper character encoding (change en_US as needed to your locale)
+# Proper character encoding
 export LC_CTYPE=en_US.UTF-8
 
 # Fuck-powered autocorrect
-alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
-alias fuck!=fuck
-alias Fuck=fuck
-alias Fuck!=fuck
+eval "$(thefuck --alias)"
 
 # Additional config parameters
 if [[ -e ~/.local.bash ]]; then
@@ -92,19 +103,22 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 # host and other magic stuff).
 test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
 
-# Python Anaconda support
-# export PATH=~/anaconda3/bin:"$PATH"
+# Python Anaconda support. Removing this can fix MANY weird build errors for
+# seemingly unrelated projects!
+#export PATH=~/anaconda3/bin:"$PATH"
 
-# Support modules (e.g. to do matlab command line interop)
+# [Euler] Support modules (e.g. to do matlab command line interop)
 #source /usr/local/opt/modules/Modules/init/zsh
+
 # [OSX] Launch Matlab from the command line.
 export PATH="$PATH:/Applications/MATLAB_R2015a.app/bin"
 
 # [OSX] This adds command-line support for the Torch scientific computing framework.
 # . /Users/andrei/torch/install/bin/torch-activate
 
-# Add support for stuff installed to '~/bin', such as Bazel.
+# Add support for locally-installed stuff, such as Bazel.
 export PATH="$PATH:$HOME/bin"
+export LD_LIBRARY_PATH="$HOME/lib:$LD_LIBRARY_PATH"
 
 # [OSX] Allow Jupyter to easily find matlab.
 export MATLAB_EXECUTABLE=/Applications/MATLAB_R2015a.app/bin/matlab
@@ -121,6 +135,7 @@ fi
 
 # Support for autojump, i.e., the `j` command, which acts as a smart `cd` which
 # keeps track of your most active directories.
+# TODO(andrei): Make this cross-platform.
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
 # These lines add support for the Muse headband developer kit.
@@ -140,8 +155,6 @@ fi
 
 # [OSX] Used by e.g., SpatialOS thingy.
 # export JAVA_HOME=$(/usr/libexec/java_home)
-#
-#
 
 # CUDA 8.0 support on Ubuntu 16
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-8.0/lib64"
@@ -153,13 +166,15 @@ source ~/work/tbbsrc/build/linux_intel64_gcc_cc5.4.0_libc2.23_kernel4.4.0_releas
 # If available, start tmux, attaching to any running session.
 # Tries to use tmuxinator wrapper, if available.
 if [[ $(uname -s) == 'Linux' ]]; then
+  # TODO(andrei): For maximum cross-platformness, PLEASE just install poweline
+  # locally in '~/bin'.
   export TMUX_POWERLINE_CONF="/home/andrei/.local/lib/python3.5/site-packages/powerline/bindings/tmux/powerline.conf"
 else
   export TMUX_POWERLINE_CONF="/Users/andrei/Library/Python/3.6/lib/python/site-packages/powerline/bindings/tmux/powerline.conf"
 fi
 
 # TODO(andrei): Tmuxinator support on OS X.
-if which mux >/dev/null 2>&1; then
+if which tmuxinator >/dev/null 2>&1; then
   muxcmd="tmuxinator start cv"
 else
   muxcmd="tmux"
@@ -167,10 +182,4 @@ fi
 
 if which tmux >/dev/null 2>&1; then
   test -z ${TMUX} && eval "${muxcmd}"
-
-  # when quitting tmux, try to attach
-  # TODO(andrei): Is this actually useful to me?
-  # while test -z ${TMUX}; do
-  #  tmux attach || break
-  # done
 fi
