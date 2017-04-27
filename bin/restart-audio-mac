@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+echo "Restarting OS X audio shit... (Requires Administrator Rights)"
+
+sudo kextunload /System/Library/Extensions/AppleHDA.kext
+sudo kextload /System/Library/Extensions/AppleHDA.kext
+
+# TODO(andrei): This may not be necessary.
+ps aux | grep 'coreaudio[d]' | awk '{print $2}' | xargs sudo kill
+
