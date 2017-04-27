@@ -1,6 +1,12 @@
 # TODO(andrei): For maximum versatility, move non-zsh stuff to a .bashrc and
 # source that from here.
 
+# This file defines the 'module' command support on Euryale. This is a very
+# brittle way of doing things, but it seems to be the only reliable way.
+if [[ -f '/etc/profile.d/11-modules.sh' ]]; then
+  source /etc/profile.d/11-modules.sh 2>&1 1>/dev/null
+fi
+
 # The project folder so that we can `c [tab]` to it.
 export PROJECTS=~/work
 
@@ -47,7 +53,7 @@ done
 unset config_files
 
 # Tmuxinator for neatly managing tmux sessions.
-if [[ $(uname -s) == 'Linux' ]]; then
+if [[ -f "${ZSH}/tmux/tmuxinator.zsh" ]]; then
   # TODO(andrei): This adds ruby deps. Strip away if too slow and stuff.
   # TODO(andrei): Fix on OS X.
   #source "${ZSH}/tmux/tmuxinator.zsh"
@@ -163,7 +169,7 @@ else
 fi
 
 # TODO(andrei): Tmuxinator support on OS X.
-if which mux >/dev/null 2>&1; then
+if which tmuxinator >/dev/null 2>&1; then
   muxcmd="tmuxinator start cv"
 else
   muxcmd="tmux"
