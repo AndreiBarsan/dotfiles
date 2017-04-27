@@ -163,6 +163,8 @@ export PATH="$PATH:/usr/local/cuda-8.0/bin"
 # If available, start tmux, attaching to any running session.
 # Tries to use tmuxinator wrapper, if available.
 if [[ $(uname -s) == 'Linux' ]]; then
+  # TODO(andrei): For maximum cross-platformness, PLEASE just install poweline
+  # locally in '~/bin'.
   export TMUX_POWERLINE_CONF="/home/andrei/.local/lib/python3.5/site-packages/powerline/bindings/tmux/powerline.conf"
 else
   export TMUX_POWERLINE_CONF="/Users/andrei/Library/Python/3.6/lib/python/site-packages/powerline/bindings/tmux/powerline.conf"
