@@ -69,7 +69,7 @@ Plugin 'skwp/greplace.vim'          " Global replace tools
 Plugin 'tpope/vim-fugitive'         " git helper
 Plugin 'tpope/vim-speeddating'      " Intuitive date increment/decrement.
 Plugin 'tpope/vim-surround'         " Nice surrounding semantics.
-if v:version > 703
+if v:version > 703 && has('patch143')
   Plugin 'Valloric/YouCompleteMe'   " Awesome autocomplete
 endif
 Plugin 'vim-scripts/a.vim'          " *.c(c|pp)?-*h switcher
@@ -374,7 +374,7 @@ let b:javascript_fold=0
 let g:tern_map_keys=1
 
 " YouCompleteMe parameters (if applicable).
-if v:version > 703
+if v:version > 703 && has('patch143')
   " Note: This may produce garbage output in vim (not mvim).
   nnoremap <C-[> :YcmCompleter GoTo<cr>
   let g:ym_collect_identifiers_from_comments_and_strings=1

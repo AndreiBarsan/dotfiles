@@ -1,11 +1,18 @@
 # TODO(andrei): For maximum versatility, move non-zsh stuff to a .bashrc and
 # source that from here.
 
-# shortcut to this dotfiles path is $ZSH
-export ZSH=$HOME/.dotfiles
-
 # The project folder so that we can `c [tab]` to it.
-export PROJECTS=~/workspace
+export PROJECTS=~/work
+
+# shortcut to this dotfiles path is $ZSH
+# TODO(andrei): Why is this really necessary? Isn't it just cleaner to keep
+# your actual dotfile repo in 'work/dotfiles'?
+if [[ -d "${HOME}/.dotfiles" ]]; then
+  # I'm inconsistent on many of my machines. Plz no judge.
+  export ZSH="${HOME}/.dotfiles"
+else
+  export ZSH="${PROJECTS}/dotfiles"
+fi
 
 # Stash your environment variables in ~/.localrc. This means they'll stay out
 # of your main dotfiles repository (which may be public, like this one), but
