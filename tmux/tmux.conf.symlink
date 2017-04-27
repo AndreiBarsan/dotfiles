@@ -29,6 +29,14 @@ set-option -g default-shell /bin/zsh
 set -g mouse
 set -g mode-keys vi
 
+# TODO(andrei): Version-check this. It requires tmux 2.1.
+# Active/inactive pane coloring
+set -g window-style 'fg=colour247,bg=colour236'
+set -g window-active-style 'fg=colour255,bg=black'
+
+# TODO(andrei): Hostname-based coloring of panes in a cross-platform manner,
+# better than the iterm stuff.
+
 ###########################################################################
 # Window management / navigation
 ###########################################################################

@@ -52,9 +52,10 @@ plugins=(git osx zsh-syntax-highlighting brew)
 ZSH_THEME="gnzh"
 source "$ZSH/oh-my-zsh.sh"
 
-# Huge command history: the interaction between these two size limits is a little funny, but these should get you pretty far
-SAVEHIST=500000
-HISTSIZE=500000
+# Huge command history: the interaction between these two size limits is a
+# little funny, but these should go a pretty long way.
+SAVEHIST=5000000
+HISTSIZE=5000000
 
 # Only disconnect if we triple C-d.
 export IGNOREEOF=2
@@ -67,14 +68,11 @@ bindkey -e
 #bindkey '^[[1;5C' forward-word
 #bindkey '^[[1;5D' backward-word
 
-# Proper character encoding (change en_US as needed to your locale)
+# Proper character encoding
 export LC_CTYPE=en_US.UTF-8
 
 # Fuck-powered autocorrect
-alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
-alias fuck!=fuck
-alias Fuck=fuck
-alias Fuck!=fuck
+eval "$(thefuck --alias)"
 
 # Additional config parameters
 if [[ -e ~/.local.bash ]]; then
@@ -92,8 +90,9 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 # host and other magic stuff).
 test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
 
-# Python Anaconda support
-export PATH=~/anaconda3/bin:"$PATH"
+# Python Anaconda support. Removing this can fix MANY weird build errors for
+# seemingly unrelated projects!
+#export PATH=~/anaconda3/bin:"$PATH"
 
 # Support modules (e.g. to do matlab command line interop)
 #source /usr/local/opt/modules/Modules/init/zsh
