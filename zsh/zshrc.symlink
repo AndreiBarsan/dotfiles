@@ -93,7 +93,7 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
 
 # Python Anaconda support
-#export PATH=~/anaconda3/bin:"$PATH"
+# export PATH=~/anaconda3/bin:"$PATH"
 
 # Support modules (e.g. to do matlab command line interop)
 #source /usr/local/opt/modules/Modules/init/zsh
@@ -147,6 +147,9 @@ fi
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-8.0/lib64"
 export PATH="$PATH:/usr/local/cuda-8.0/bin"
 
+# Intel TBB (Threading Building Blocks) support on Linux for local install
+source ~/work/tbbsrc/build/linux_intel64_gcc_cc5.4.0_libc2.23_kernel4.4.0_release/tbbvars.sh
+
 # If available, start tmux, attaching to any running session.
 # Tries to use tmuxinator wrapper, if available.
 if [[ $(uname -s) == 'Linux' ]]; then
@@ -171,4 +174,3 @@ if which tmux >/dev/null 2>&1; then
   #  tmux attach || break
   # done
 fi
-
