@@ -179,15 +179,27 @@ install_bits_and_bobs () {
   # is nontrivial on system
   echo
   info "Installing oh-my-zsh..."
-  (
+  #(
     cd ~
-    sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-  ) || fail "Could not set up oh-my-zsh."
+    if [ ! -n "$ZSH" ]; then
+      ZSH=~/.oh-my-zsh
+    fi
+    umask g-w,o-w
+    env git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git $ZSH || {
+      fail "Error: git clone of oh-my-zsh repo failed\n"
+    }
+
+  #) || fail "Could not set up oh-my-zsh."
 
   success "Installed all bits and bobs."
 }
 
 setup_gitconfig
+
+info "Installing bits and bobs BEFORE symlinking configs, since some of " \
+  "these bits and bobs may try to overwrite config files."
+install_bits_and_bobs
+
 install_dotfiles
 
 # If we're on a Mac, let's install and setup homebrew together with a bunch
@@ -216,9 +228,6 @@ else
       curl htop
   fi
 fi
-
-info "Installing remaining bits and bobs..."
-install_bits_and_bobs
 
 echo ''
 echo '  All installed!'
