@@ -138,11 +138,14 @@ install_dotfiles () {
 # installed and the configuration files symlinked.
 install_bits_and_bobs () {
 
-  echo
-  info "Putting just the vimrc into place..."
-  vimrc_src="$DOTFILES_ROOT/vim/vimrc.symlink"
-  dst="$HOME/.$(basename "${src%.*}")"
-  link_file "$src" "$dst"
+  vimrc_src="${DOTFILES_ROOT}/vim/vimrc.symlink"
+  vimrc_dst="$HOME/.$(basename "${vimrc_src%.*}")"
+  if ! [[ -L ${vimrc_dst} ]]; then
+    # If the file does exist and is a symlink, then we assume it's the right one.
+    echo
+    info "Putting just the vimrc into place..."
+    link_file "$vimrc_src" "$vimrc_dst"
+  fi
 
   echo
   info "Installing Vundle..."
@@ -190,35 +193,44 @@ install_bits_and_bobs () {
     if [ ! -n "$ZSH" ]; then
       ZSH=~/.oh-my-zsh
     fi
-    umask g-w,o-w
-    env git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git $ZSH || {
-      fail "Error: git clone of oh-my-zsh repo failed\n"
-    }
 
-  ) # || fail "Could not set up oh-my-zsh."
+    # Only do work if the folder isn't there.
+    if ! [[ -d "$ZSH" ]]; then
+      umask g-w,o-w
+      env git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git $ZSH || {
+        fail "Error: git clone of oh-my-zsh repo failed\n"
+      }
+    fi
+
+  ) || fail "Could not set up oh-my-zsh."
 
   echo
   info "Installing ag, the silver searcher."
   (
     # Install 'liblzma' for the local user.
-    cd "/tmp"
-    git clone https://github.com/kobolabs/liblzma
-    cd liblzma
-    ./configure --prefix="${HOME}" && make -j && make install
+    # TODO(andrei): Consider installing these in some local folder for future
+    # inspection, reinstalling, etc.
+    cd "$(mktemp -d)" && \
+    git clone https://github.com/kobolabs/liblzma >/dev/null && \
+    cd liblzma && \
+    ./configure --prefix="${HOME}" >/dev/null && make -j >/dev/null && \
+    make install >/dev/null || {
+      fail "Could not set up liblzma."
+    }
 
     # Install 'the_silver_searcher' itself.
-    cd "/tmp"
-    git clone https://github.com/ggreer/the_silver_searcher
-    cd the_silver_searcher
-    PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${HOME}/lib/pkgconfig" ./build.sh --prefix="${HOME}" && \
-    make install
+    cd "$(mktemp -d)" && \
+    git clone https://github.com/ggreer/the_silver_searcher >/dev/null && \
+    cd the_silver_searcher && \
+    PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${HOME}/lib/pkgconfig" ./build.sh --prefix="${HOME}" >/dev/null && \
+    make install >/dev/null
   ) || fail "Could not set up ag."
 
   echo
   info "Installing thefuck via pip..."
   (
     if which pip >/dev/null 2>&1; then
-      pip install --user thefuck --upgrade
+      pip install --user thefuck --upgrade >/dev/null
     fi
   )
 
