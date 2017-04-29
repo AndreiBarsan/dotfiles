@@ -85,7 +85,9 @@ bindkey -e
 export LC_CTYPE=en_US.UTF-8
 
 # Fuck-powered autocorrect
-eval "$(thefuck --alias)"
+if which thefuck >/dev/null 2>&1; then
+  eval "$(thefuck --alias)"
+fi
 
 # Additional config parameters
 if [[ -e ~/.local.bash ]]; then
