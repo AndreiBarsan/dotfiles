@@ -26,12 +26,11 @@ run-shell "powerline-daemon -q"
 source "$TMUX_POWERLINE_CONF"
 
 set-option -g default-shell /bin/zsh
-set -g mouse
 set -g mode-keys vi
 
-# Active/inactive pane coloring. Requires tmux 2.1.
+# Active/inactive pane coloring and sane mouse controls. Requires tmux 2.1.
 if-shell "if [[ $(tmux -V | cud -d' ' -f2) -ge 2.1 ]]; then true; else false; fi" \
-'set -g window-style "fg=colour247,bg=colour236"; set -g window-active-style "fg=colour255,bg=black"'
+'set -g window-style "fg=colour247,bg=colour236"; set -g window-active-style "fg=colour255,bg=black"; set -g mouse'
 
 # TODO(andrei): Hostname-based coloring of panes in a cross-platform manner,
 # better than the iterm stuff.
