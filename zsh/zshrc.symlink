@@ -4,14 +4,14 @@
 # This file defines the 'module' command support on Euryale. This is a very
 # brittle way of doing things, but it seems to be the only reliable way.
 if [[ -f '/etc/profile.d/11-modules.sh' ]]; then
-  source /etc/profile.d/11-modules.sh 2>&1 1>/dev/null
+  source /etc/profile.d/11-modules.sh >/dev/null 2>&1
 fi
 
 # The project folder so that we can `c [tab]` to it.
 export PROJECTS=~/work
 
-# shortcut to this dotfiles path is $ZSH
-# TODO(andrei): Why is this really necessary? Isn't it just cleaner to keep
+# Shortcut to this dotfile's path is $ZSH.
+# TODO(andrei): Is this really necessary? Isn't it just cleaner to keep
 # your actual dotfile repo in 'work/dotfiles'?
 if [[ -d "${HOME}/.dotfiles" ]]; then
   # I'm inconsistent on many of my machines. Plz no judge.
@@ -20,9 +20,8 @@ else
   export ZSH="${PROJECTS}/dotfiles"
 fi
 
-# Stash your environment variables in ~/.localrc. This means they'll stay out
-# of your main dotfiles repository (which may be public, like this one), but
-# you'll have access to them in your scripts.
+# Stash local environment variables in ~/.localrc. This means they'll stay out
+# of the main dotfiles repository (which is public).
 if [[ -a ~/.localrc ]]; then
   source ~/.localrc
 fi
@@ -85,7 +84,9 @@ bindkey -e
 export LC_CTYPE=en_US.UTF-8
 
 # Fuck-powered autocorrect
-eval "$(thefuck --alias)"
+if which thefuck >/dev/null 2>&1; then
+  eval "$(thefuck --alias)"
+fi
 
 # Additional config parameters
 if [[ -e ~/.local.bash ]]; then
@@ -160,6 +161,11 @@ fi
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-8.0/lib64"
 export PATH="$PATH:/usr/local/cuda-8.0/bin"
 
+# Intel TBB (Threading Building Blocks) support on Linux for local install
+if [[ -d "${PROJECTS}/tbbsrc" ]]; then
+  source "${PROJECTS}/build/linux_intel64_gcc_cc5.4.0_libc2.23_kernel4.4.0_release/tbbvars.sh"
+fi
+
 # If available, start tmux, attaching to any running session.
 # Tries to use tmuxinator wrapper, if available.
 if [[ $(uname -s) == 'Linux' ]]; then
@@ -177,6 +183,7 @@ else
   muxcmd="tmux"
 fi
 
+# Everything locked and loaded. Attach to tmux if we haven't already.
 if which tmux >/dev/null 2>&1; then
   test -z ${TMUX} && eval "${muxcmd}"
 fi

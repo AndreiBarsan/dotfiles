@@ -26,13 +26,11 @@ run-shell "powerline-daemon -q"
 source "$TMUX_POWERLINE_CONF"
 
 set-option -g default-shell /bin/zsh
-set -g mouse
 set -g mode-keys vi
 
-# TODO(andrei): Version-check this. It requires tmux 2.1.
-# Active/inactive pane coloring
-set -g window-style 'fg=colour247,bg=colour236'
-set -g window-active-style 'fg=colour255,bg=black'
+# Active/inactive pane coloring and sane mouse controls. Requires tmux 2.1.
+if-shell "if [[ $(tmux -V | cud -d' ' -f2) -ge 2.1 ]]; then true; else false; fi" \
+'set -g window-style "fg=colour247,bg=colour236"; set -g window-active-style "fg=colour255,bg=black"; set -g mouse'
 
 # TODO(andrei): Hostname-based coloring of panes in a cross-platform manner,
 # better than the iterm stuff.
@@ -57,6 +55,7 @@ bind -t vi-copy 'y' copy-selection
 bind -t vi-copy 'Space' halfpage-down
 bind -t vi-copy 'Bspace' halfpage-up
 
+# TODO(andrei): Make this work properly on linux.
 # extra commands for interacting with the ICCCM clipboard
 bind C-c run "tmux save-buffer - | xclip -i -sel clipboard"
 bind C-v run "tmux set-buffer \"$(xclip -o -sel clipboard)\"; tmux paste-buffer"
