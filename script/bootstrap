@@ -179,7 +179,7 @@ install_bits_and_bobs () {
   # is nontrivial on system
   echo
   info "Installing oh-my-zsh..."
-  #(
+  (
     cd ~
     if [ ! -n "$ZSH" ]; then
       ZSH=~/.oh-my-zsh
@@ -189,10 +189,33 @@ install_bits_and_bobs () {
       fail "Error: git clone of oh-my-zsh repo failed\n"
     }
 
-  #) || fail "Could not set up oh-my-zsh."
+  ) # || fail "Could not set up oh-my-zsh."
+
+  echo
+  info "Installing ag, the silver searcher."
+  (
+    # Install 'liblzma' for the local user.
+    cd "/tmp"
+    git clone https://github.com/kobolabs/liblzma
+    cd liblzma
+    ./configure --prefix="${HOME}" && make -j && make install
+
+    # Install 'the_silver_searcher' itself.
+    cd "/tmp"
+    git clone https://github.com/ggreer/the_silver_searcher
+    cd the_silver_searcher
+    PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${HOME}/lib/pkgconfig" ./build.sh --prefix="${HOME}" && \
+    make install
+  ) || fail "Could not set up ag."
 
   success "Installed all bits and bobs."
 }
+
+# Suport locally installing things.
+mkdir -p "${HOME}/bin"
+mkdir -p "${HOME}/lib"
+mkdir -p "${HOME}/man"
+mkdir -p "${HOME}/include"
 
 setup_gitconfig
 
