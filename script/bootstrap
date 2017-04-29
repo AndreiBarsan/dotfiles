@@ -137,6 +137,13 @@ install_dotfiles () {
 # Miscellaneous tasks which should run after the main packages have been
 # installed and the configuration files symlinked.
 install_bits_and_bobs () {
+
+  echo
+  info "Putting just the vimrc into place..."
+  vimrc_src="$DOTFILES_ROOT/vim/vimrc.symlink"
+  dst="$HOME/.$(basename "${src%.*}")"
+  link_file "$src" "$dst"
+
   echo
   info "Installing Vundle..."
   if [[ -d ~/.vim/bundle/Vundle.vim ]]; then
@@ -151,7 +158,7 @@ install_bits_and_bobs () {
   vim +PluginInstall +qall
 
   echo
-  info "Installing native components for plugins who need them..."
+  info "Installing native components for vim plugins who need them..."
   echo
   info "Installing YouCompleteMe for vim..."
   (
@@ -174,15 +181,22 @@ install_bits_and_bobs () {
     #echo "Could not set up Tern for vim; skipping."
   #fi
 
-  # TODO(andrei): This always wants to (1) make a backup of zshrc, even after
-  # the correct one is symlinked in and (2) set zsh as the default shell, which
-  # is nontrivial on system
+  # Note: this should be run before symlinking the dotfiles into place, since
+  # it replaces the current zshrc, and there's no way to stop it.
   echo
   info "Installing oh-my-zsh..."
   (
     cd ~
     sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
   ) || fail "Could not set up oh-my-zsh."
+
+  echo
+  info "Installing thefuck via pip..."
+  (
+    if which pip >/dev/null 2>&1; then
+      pip install --user thefuck --upgrade
+    fi
+  )
 
   success "Installed all bits and bobs."
 }
