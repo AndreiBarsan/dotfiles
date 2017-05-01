@@ -428,3 +428,7 @@ let g:vimtex_view_general_options = '@line @pdf @tex'
 " Vimux
 " Run arbitrary commands in a separate pane, on the fly. Woo!
 noremap <leader>p :VimuxPromptCommand<CR>
+" Run last command executed by VimuxRunCommand
+noremap <Leader>l :VimuxRunLastCommand<CR>
+" Inspect runner pane: jump to it directly in tmux copy mode.
+noremap <Leader>vi :VimuxInspectRunner<CR>
