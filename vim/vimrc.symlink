@@ -23,6 +23,7 @@
 " TODO(andrei): learn about organizing projects in vim
 " TODO(andrei): preserve each tab's current dir
 " TODO(andrei): Stuff flagged [OSX] or [MacVim] belong in a separate file.
+" TODO(andrei): Configure C-k better.
 
 set nocompatible              " be iMproved, required
 filetype off                  " required for setting up the plugins
@@ -42,40 +43,43 @@ Plugin 'gmarik/Vundle.vim'
 
 " Hint: keep this in alphabetical order!  To sort it, select the whole list,
 " then use `!sort -f' to sort it (`-f' means case-insensitive).
-
-Plugin 'vim-airline/vim-airline'          " Pretty status line
-"Plugin 'burnettk/vim-angular'       " AngularJS magic
-"Plugin 'cjrh/vim-conda'             " Detect the correct Python when using Anaconda
+Plugin 'benmills/vimux'             " Pretty interactions with tmux.
+Plugin 'cjrh/vim-conda'             " Detect the correct Python when using Anaconda
 Plugin 'flazz/vim-colorschemes'     " Moar color schemes
 Plugin 'godlygeek/tabular'          " Format stuff in columns
 Plugin 'gregsexton/MatchTag'        " HTML tag matching
 Plugin 'jceb/vim-orgmode'           " org-mode in Vim. SpaceMacs is still better, yo!
 Plugin 'kien/ctrlp.vim'             " Global fuzzy search
-"Plugin 'klen/python-mode'           " Python navigation & other goodies
 Plugin 'L9'                         " Lots of small helpers
 Plugin 'lervag/vimtex'              " Edit LaTeX in Vim
 Plugin 'luochen1990/rainbow'        " Easily identify nested statements
 Plugin 'marijnh/tern_for_vim'       " Smart JavaScript auto-complete
-"Plugin 'othree/javascript-libraries-syntax.vim' " Autocomplete library identifiers
-"Plugin 'pangloss/vim-javascript'    " JavaScript utilities
+Plugin 'othree/javascript-libraries-syntax.vim' " Autocomplete library identifiers
+Plugin 'pangloss/vim-javascript'    " JavaScript utilities
 Plugin 'plasticboy/vim-markdown'    " Markdown support, yep
 Plugin 'Raimondi/delimitMate'       " Auto-complete quotes, parens, etc.
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}  " Super-speedy HTML typing
 Plugin 'scrooloose/nerdcommenter'   " Smart en-masse commenter
 Plugin 'scrooloose/nerdtree'        " File browser
 Plugin 'scrooloose/syntastic'       " Lint-o-Matic
+Plugin 'sheerun/vim-polyglot'       " Smart support for tons of languages
 Plugin 'sjl/gundo.vim'              " Navigate undo tree visually
 Plugin 'skwp/greplace.vim'          " Global replace tools
+Plugin 'tinymode.vim'               " Easy on-the-fly window resizing
 Plugin 'tpope/vim-fugitive'         " git helper
 Plugin 'tpope/vim-speeddating'      " Intuitive date increment/decrement.
 Plugin 'tpope/vim-surround'         " Nice surrounding semantics.
-if v:version > 703 && has('patch143')
-  Plugin 'Valloric/YouCompleteMe'   " Awesome autocomplete
-endif
+Plugin 'vim-airline/vim-airline'    " Pretty status line
 Plugin 'vim-scripts/a.vim'          " *.c(c|pp)?-*h switcher
-"Plugin 'rosenfeld/conque-term'      " Terminal emulation inside vim
-Plugin 'sheerun/vim-polyglot'       " Smart support for tons of languages
-Plugin 'tinymode.vim'               " Easy on-the-fly window resizing
+
+if v:version > 703 && has('patch143')
+  " Awesome autocomplete, but requires a very specific minimum vim version.
+  Plugin 'Valloric/YouCompleteMe'
+endif
+
+" Plugin purgatory
+"Plugin 'burnettk/vim-angular'       " AngularJS magic
+"Plugin 'klen/python-mode'           " Python navigation & other goodies
 
 call vundle#end()             " required
 filetype plugin indent on     " required
@@ -420,3 +424,7 @@ let g:vimtex_enabled = 1
 let g:vimtex_latexmk_continuous = 1
 let g:vimtex_view_general_viewer = '/opt/homebrew-cask/Caskroom/skim/1.4.14/Skim.app/Contents/SharedSupport/displayline'
 let g:vimtex_view_general_options = '@line @pdf @tex'
+
+" Vimux
+" Run arbitrary commands in a separate pane, on the fly. Woo!
+noremap <leader>p :VimuxPromptCommand<CR>

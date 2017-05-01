@@ -60,9 +60,9 @@ bind -t vi-copy 'Bspace' halfpage-up
 bind C-c run "tmux save-buffer - | xclip -i -sel clipboard"
 bind C-v run "tmux set-buffer \"$(xclip -o -sel clipboard)\"; tmux paste-buffer"
 
-# easy-to-remember split pane commands
-bind | split-window -h
-bind - split-window -v
+# Easy-to-remember split pane commands which open in the same folder!
+bind | split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
 unbind '"'
 unbind %
 
