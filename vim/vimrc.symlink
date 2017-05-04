@@ -81,6 +81,7 @@ endif
 " keeping it disabled for now
 "Plugin 'cjrh/vim-conda'             " Detect the correct Python when using Anaconda
 "Plugin 'burnettk/vim-angular'       " AngularJS magic
+"Plugin 'cjrh/vim-conda'             " Detect the correct Python when using Anaconda
 "Plugin 'klen/python-mode'           " Python navigation & other goodies
 
 call vundle#end()             " required
