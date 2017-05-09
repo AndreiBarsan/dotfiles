@@ -77,6 +77,9 @@ if v:version > 703 && has('patch143')
 endif
 
 " Plugin purgatory
+" This makes startup VERY slow, so I'm keeping it disabled for no, so I'm
+" keeping it disabled for now
+"Plugin 'cjrh/vim-conda'             " Detect the correct Python when using Anaconda
 "Plugin 'burnettk/vim-angular'       " AngularJS magic
 "Plugin 'cjrh/vim-conda'             " Detect the correct Python when using Anaconda
 "Plugin 'klen/python-mode'           " Python navigation & other goodies
@@ -457,3 +460,7 @@ noremap <leader>p :VimuxPromptCommand<CR>
 noremap <Leader>l :VimuxRunLastCommand<CR>
 " Inspect runner pane: jump to it directly in tmux copy mode.
 noremap <Leader>vi :VimuxInspectRunner<CR>
+
+" vim-conda
+"let g:conda_startup_msg_suppress = 1
+

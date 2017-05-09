@@ -16,10 +16,13 @@ set -g visual-activity on
 # scrollback size
 set -g history-limit 100000
 
-# Show upcoming calendar event in the statusbar.
-#set -g status-right '📅  #(gcalcli agenda --nocolor                 \
-#  | cut -d " " -f 4- | head -2 | tail -1 | sed "s/^ *//g" | sed "s/    / /g"  \
-#  | cut -c1-19) '
+# Some pre-powerline statusbar customization, for system where it isn't available.
+set -g status-bg blue
+set -g status-fg white
+set -g status-left-length 100
+# It would be nice to display info in the bar about whether we have a slurm
+# allocation, but it's too much of a PITA currently.
+#set -g status-left '[#S] [#(env echo SLURM: $SLURM_JOB_ID)]'
 
 # Powerline support! (variable defined in zshrc for portability)
 run-shell "powerline-daemon -q"

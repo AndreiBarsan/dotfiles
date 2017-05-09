@@ -60,7 +60,7 @@ fi
 
 # Setup oh-my-zsh
 export ZSH="$HOME/.oh-my-zsh"
-plugins=(git osx zsh-syntax-highlighting brew)
+plugins=(git osx zsh-syntax-highlighting brew conda)
 ZSH_THEME="gnzh"
 source "$ZSH/oh-my-zsh.sh"
 
