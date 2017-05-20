@@ -32,8 +32,30 @@ set-option -g default-shell /bin/zsh
 set -g mode-keys vi
 
 # Active/inactive pane coloring and sane mouse controls. Requires tmux 2.1.
-if-shell "if [[ $(tmux -V | cud -d' ' -f2) -ge 2.1 ]]; then true; else false; fi" \
-'set -g window-style "fg=colour247,bg=colour232"; set -g window-active-style "fg=colour255,bg=black"; set -g mouse'
+#if-shell "if [[ `tmux -V | cut -d' ' -f2` -gt 2.0 ]]; then true; else false; fi" \
+#'set -g window-style "fg=colour247,bg=colour232"; set -g window-active-style "fg=colour255,bg=black"; set -g mouse'
+#if-shell "if [[ `tmux -V | cut -d' ' -f2` -ge 2.1 ]]; then true; else false; fi" \
+    #'set -g mouse on; set -g mouse-utf8 on'
+
+# Get fucking mouse support right.
+# Version-specific commands [grumble, grumble]
+# See: https://github.com/tmux/tmux/blob/master/CHANGES]
+# Snippet source: http://stackoverflow.com/a/40902312/1055295
+run-shell "tmux setenv -g TMUX_VERSION $(tmux -V | cut -c 6-)"
+
+if-shell -b '[ "$(echo "$TMUX_VERSION < 2.1" | bc)" = 1 ]' \
+  "set -g mouse-select-pane on; set -g mode-mouse on; \
+      set -g mouse-resize-pane on; set -g mouse-select-window on"
+
+# In version 2.1 "mouse" replaced the previous 4 mouse options
+if-shell -b '[ "$(echo "$TMUX_VERSION >= 2.1" | bc)" = 1 ]' \
+ "set -g mouse on"
+
+# UTF8 is autodetected in 2.2 onwards, but errors if explicitly set
+if-shell -b '[ "$(echo "$TMUX_VERSION < 2.2" | bc)" = 1 ]' \
+ "set -g utf8 on; set -g status-utf8 on; set -g mouse-utf8 on"
+
+#set -g mouse
 
 # TODO(andrei): Hostname-based coloring of panes in a cross-platform manner,
 # better than the iterm stuff.
@@ -53,23 +75,32 @@ bind Escape copy-mode
 unbind p
 bind p paste-buffer
 
-bind -t vi-copy 'v' begin-selection
-bind -t vi-copy 'y' copy-selection
-bind -t vi-copy 'Space' halfpage-down
-bind -t vi-copy 'Bspace' halfpage-up
+#bind -t vi-copy 'v' begin-selection
+#bind -t vi-copy 'y' copy-selection
+#bind -t vi-copy 'Space' halfpage-down
+#bind -t vi-copy 'Bspace' halfpage-up
 
 # TODO(andrei): Make this work properly on linux.
 # extra commands for interacting with the ICCCM clipboard
-bind C-c run "tmux save-buffer - | xclip -i -sel clipboard"
-bind C-v run "tmux set-buffer \"$(xclip -o -sel clipboard)\"; tmux paste-buffer"
+#bind C-c run "tmux save-buffer - | xclip -i -sel clipboard"
+#bind C-v run "tmux set-buffer \"$(xclip -o -sel clipboard)\"; tmux paste-buffer"
 
 # TODO(andrei): Does this work now?
 # OSX copy-paste support.
-bind-key -t vi-copy v begin-selection
-bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
+#bind-key -t vi-copy v begin-selection
+#bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
 # Update default binding of `Enter` to also use copy-pipe
-unbind -t vi-copy Enter
-bind-key -t vi-copy Enter copy-pipe "reattach-to-user-namespace pbcopy"
+#unbind -t vi-copy Enter
+#bind-key -t vi-copy Enter copy-pipe "reattach-to-user-namespace pbcopy"
+#bind-key -t vi-copy y copy-pipe 'xclip -selection clipboard >/dev/null'
+#bind-key -t vi-copy y copy-pipe 'xclip -selection clipboard >/dev/null'
+#bind -T copy-mode-vi y send -X copy-pipe "xclip -selection c"
+bind -t vi-copy y copy-pipe 'xclip -selection clipboard -in'
+
+
+# TODO(andrei): BE CONSISTENT!
+bind C-p run "tmux set-buffer \"$(xclip -o)\"; tmux paste-buffer"
+#bind C-y run "tmux save-buffer - | xclip -i"
 
 # Easy-to-remember split pane commands which open in the same folder!
 bind | split-window -h -c "#{pane_current_path}"

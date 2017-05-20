@@ -19,7 +19,7 @@ windows:
   - dev:
       layout: tiled
       panes:
-        -
-        - cd ~/work && vim
-        - cd ~/work
+        - cd ~/work/InfiniTAM
+        - cd ~/work && euryale
+        - exit
         - htop

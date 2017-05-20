@@ -6,6 +6,10 @@
 if [[ -f '/etc/profile.d/11-modules.sh' ]]; then
   source /etc/profile.d/11-modules.sh >/dev/null 2>&1
 fi
+# Module support on Ubuntu 14.04 LTS.
+if [ -f /etc/profile.d/modules.sh ]; then
+  source /etc/profile.d/modules.sh
+fi
 
 # The project folder so that we can `c [tab]` to it.
 export PROJECTS=~/work
