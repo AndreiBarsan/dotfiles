@@ -30,6 +30,8 @@ filetype off                  " required for setting up the plugins
 set encoding=utf-8
 
 " The default leader is `\', which is a bit annoying.
+" The *local* leader, which is typically used for commands which only pertain
+" to certain file types, such as TeX, is '\'.
 let mapleader = ','
 " Don't time out waiting for leader commands.
 set notimeout
@@ -50,7 +52,7 @@ Plugin 'gregsexton/MatchTag'        " HTML tag matching
 "Plugin 'jceb/vim-orgmode'           " org-mode in Vim. SpaceMacs is still better, yo!
 Plugin 'kien/ctrlp.vim'             " Global fuzzy search
 Plugin 'L9'                         " Lots of small helpers
-"Plugin 'lervag/vimtex'              " Edit LaTeX in Vim
+Plugin 'lervag/vimtex'              " Edit LaTeX in Vim
 Plugin 'luochen1990/rainbow'        " Easily identify nested statements
 "Plugin 'marijnh/tern_for_vim'       " Smart JavaScript auto-complete
 "Plugin 'othree/javascript-libraries-syntax.vim' " Autocomplete library identifiers
@@ -366,9 +368,19 @@ autocmd BufReadPre BUILD set filetype=python
 " Correctly highlight C and C++ code in Bison grammar files.
 autocmd BufRead,BufNewFile *.ypp set filetype=yacc
 
+" Make the active vim window more obvious.
+augroup BgHighlight
+    " TODO(andrei): Remember the old column limit.
+    autocmd!
+    autocmd WinEnter * set cul   | set colorcolumn=80
+    autocmd WinLeave * set nocul | set colorcolumn=0
+augroup END
+
 "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin Configuration
-"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 let g:vim_markdown_folding_disabled=1
 
 " Automatically open NERDTree when launching vim, but focus on the new buffer
@@ -448,16 +460,29 @@ let g:used_javascript_libs = 'jquery,angularjs,jasmine'
 
 " vimtex
 let g:vimtex_enabled = 1
+let g:vimtext_mappings_enabled = 1
 "let g:vimtex_latexmk_options = '-xelatex -pdf'
 let g:vimtex_latexmk_continuous = 1
-let g:vimtex_view_general_viewer = '/opt/homebrew-cask/Caskroom/skim/1.4.14/Skim.app/Contents/SharedSupport/displayline'
-let g:vimtex_view_general_options = '@line @pdf @tex'
+" OSX config TODO(andrei): Isn't this suppported without extra flags?
+"let g:vimtex_view_general_viewer = '/opt/homebrew-cask/Caskroom/skim/1.4.14/Skim.app/Contents/SharedSupport/displayline'
+"let g:vimtex_view_general_options = '@line @pdf @tex'
+
+" Manually set a few Vimtex commands which would otherwise be annoying to run
+" using the local leader.
+nnoremap <leader>l :VimtexCompile<CR>
+nnoremap <leader>v :VimtexView<CR>
+
+" Ubuntu Linux Config
+" No need for custom stuff, since Zathura support is baked into vimtex.
+" Why Zathura? Because it's minimalistic and uses vim controls.
+let g:vimtex_view_method='zathura'
 
 " Vimux
 " Run arbitrary commands in a separate pane, on the fly. Woo!
 noremap <leader>p :VimuxPromptCommand<CR>
 " Run last command executed by VimuxRunCommand
-noremap <Leader>l :VimuxRunLastCommand<CR>
+" Disabled since it conflicted with the vimtex mappings.
+"noremap <Leader>l :VimuxRunLastCommand<CR>
 " Inspect runner pane: jump to it directly in tmux copy mode.
 noremap <Leader>vi :VimuxInspectRunner<CR>
 
