@@ -1,7 +1,12 @@
-set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h10
+"set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h10
+"set guifont=Inconsolata\ for\ Powerline
+set guifont=Inconsolata\ for\ Powerline\ Medium\ 12
 
 set lines=60
-set columns=190
+set columns=100
 
 "set background="white"
-colorscheme Monokai
+"colorscheme Monokai
+
+set background=light
+colorscheme mac_classic

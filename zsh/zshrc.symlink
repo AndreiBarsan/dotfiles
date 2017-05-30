@@ -6,6 +6,10 @@
 if [[ -f '/etc/profile.d/11-modules.sh' ]]; then
   source /etc/profile.d/11-modules.sh >/dev/null 2>&1
 fi
+# Module support on Ubuntu 14.04 LTS.
+if [ -f /etc/profile.d/modules.sh ]; then
+  source /etc/profile.d/modules.sh
+fi
 
 # The project folder so that we can `c [tab]` to it.
 export PROJECTS=~/work
@@ -83,10 +87,11 @@ bindkey -e
 # Proper character encoding
 export LC_CTYPE=en_US.UTF-8
 
-# Fuck-powered autocorrect
-if which thefuck >/dev/null 2>&1; then
-  eval "$(thefuck --alias)"
-fi
+# Fuck-powered autocorrect.
+# Disabled because it's been freezing up lately...
+#if which thefuck >/dev/null 2>&1; then
+  #eval "$(thefuck --alias)"
+#fi
 
 # Additional config parameters
 if [[ -e ~/.local.bash ]]; then
