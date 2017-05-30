@@ -425,7 +425,7 @@ let g:used_javascript_libs = 'jquery,angularjs,jasmine'
 let g:vimtex_enabled = 1
 "let g:vimtex_latexmk_options = '-xelatex -pdf'
 let g:vimtex_latexmk_continuous = 1
-let g:vimtex_view_general_viewer = '/opt/homebrew-cask/Caskroom/skim/1.4.14/Skim.app/Contents/SharedSupport/displayline'
+let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
 let g:vimtex_view_general_options = '@line @pdf @tex'
 
 " Vimux
