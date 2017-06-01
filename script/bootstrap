@@ -165,24 +165,16 @@ install_bits_and_bobs () {
   echo
   info "Installing YouCompleteMe for vim..."
   (
+    # TODO(andrei): Cross-platform installation of prerequisites, e.g.,
+    #   sudo apt-get install python-dev python3-dev cmake
     if [[ -f ~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycm_core.so ]]; then
       echo
       info "YCM seems to have already been setup.  Skipping recompile."
     else
       cd ~/.vim/bundle/YouCompleteMe
-      ./install.sh --clang-completer
+      ./install.py --clang-completer
     fi
   ) || fail "Could not set up YouCompleteMe for vim."
-
-  #echo
-  #info "Installing Tern for vim..."
-  #(
-    #cd ~/.vim/bundle/tern_for_vim
-    #npm install
-  #) # || fail "Could not set up Tern for vim."
-  #if ! [[ $? -eq 0 ]]; then
-    #echo "Could not set up Tern for vim; skipping."
-  #fi
 
   # Note: this should be run before symlinking the dotfiles into place, since
   # it replaces the current zshrc, and there's no way to stop it.
@@ -208,8 +200,10 @@ install_bits_and_bobs () {
   info "Installing ag, the silver searcher."
   (
     # Install 'liblzma' for the local user.
+
     # TODO(andrei): Consider installing these in some local folder for future
     # inspection, reinstalling, etc.
+
     cd "$(mktemp -d)" && \
     git clone https://github.com/kobolabs/liblzma >/dev/null && \
     cd liblzma && \
@@ -234,6 +228,15 @@ install_bits_and_bobs () {
     fi
   )
 
+  echo
+  info "Installing patched powerline fonts..."
+  (
+    cd /tmp
+    git clone https://github.com/powerline/fonts
+    cd fonts
+    ./install.sh
+  )
+
   success "Installed all bits and bobs."
 }
 
@@ -245,14 +248,9 @@ mkdir -p "${HOME}/include"
 
 setup_gitconfig
 
-info "Installing bits and bobs BEFORE symlinking configs, since some of " \
-  "these bits and bobs may try to overwrite config files."
-install_bits_and_bobs
-
-install_dotfiles
-
 # If we're on a Mac, let's install and setup homebrew together with a bunch
-# of commong useful packages.
+# of commong useful packages. This is done *before* the bits and bobs, since we
+# may need some of these tools (e.g., cmake) for installing bits and bobs.
 if [ "$(uname -s)" == "Darwin" ]; then
   info "installing dependencies"
   if source bin/dot; then
@@ -263,9 +261,6 @@ if [ "$(uname -s)" == "Darwin" ]; then
 else
   # Naively assume Ubuntu/Debian and install some misc. stuff.
 
-  # TODO(andrei): Local install of tiny helpers, such as ag. Find out if
-  # there's an easy way of doing it, so you don't have to manually write
-  # scripts for everything.
   # TODO(andrei): 'replicate' program in 'dotfiles/bin' which sets up my
   # dotfiles on a given host. Tip: it could even be used to augment my
   # .ssh/config file and create a proper ssh-to symlink.
@@ -273,10 +268,17 @@ else
   # TODO(andrei): Extract this into common helper.
   CAN_I_RUN_SUDO=$(sudo -n uptime 2>&1|grep "load"|wc -l)
   if [ ${CAN_I_RUN_SUDO} -gt 0 ]; then
-    sudo apt-get install -y spark npm cowsay sl scons silversearcher-ag npm \
-      curl htop
+    sudo apt install -y build-essential cowsay sl scons cmake npm \
+      curl htop autoconf autotools-dev python-dev python3-dev libpcre3 \
+      libpcre3-dev lzma lzma-dev
   fi
 fi
+
+info "Installing bits and bobs BEFORE symlinking configs, since some of " \
+  "these bits and bobs may try to overwrite config files."
+install_bits_and_bobs
+
+install_dotfiles
 
 echo ''
 echo '  All installed!'
