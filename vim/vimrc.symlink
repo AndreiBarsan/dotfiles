@@ -465,8 +465,9 @@ let g:vimtex_enabled = 1
 let g:vimtext_mappings_enabled = 1
 "let g:vimtex_latexmk_options = '-xelatex -pdf'
 let g:vimtex_latexmk_continuous = 1
+
 " OSX config TODO(andrei): Isn't this suppported without extra flags?
-"let g:vimtex_view_general_viewer = '/opt/homebrew-cask/Caskroom/skim/1.4.14/Skim.app/Contents/SharedSupport/displayline'
+"let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
 "let g:vimtex_view_general_options = '@line @pdf @tex'
 
 " Manually set a few Vimtex commands which would otherwise be annoying to run
