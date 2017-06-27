@@ -1,6 +1,7 @@
 "set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h10
 "set guifont=Inconsolata\ for\ Powerline
-set guifont=Inconsolata\ for\ Powerline\ Medium\ 12
+"set guifont=Inconsolata\ for\ Powerline\ Medium\ 12
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline
 
 set lines=60
 set columns=100
