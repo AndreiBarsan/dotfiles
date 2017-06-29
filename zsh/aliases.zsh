@@ -28,3 +28,4 @@ alias calm='gcalcli calm'
 if [[ "$(uname -s)" == "Darwin" ]]; then
   alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
 fi
+

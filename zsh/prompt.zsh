@@ -77,6 +77,7 @@ autoload colors && colors
   #export RPROMPT="%{$fg_bold[cyan]%}%{$reset_color%}"
 #}
 
+
 #precmd() {
   #title "zsh" "%m" "%55<...<%~"
   #set_prompt
