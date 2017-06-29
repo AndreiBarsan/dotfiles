@@ -5,10 +5,10 @@ set -e
 set -o pipefail
 
 if ag --version >/dev/null 2>&1; then
-  ag "$@"
+  ag -- "$@"
 else
   # Use 'grep -R' as a fallback, ignoring binary files, showing neat file names
   # and line numbers for matches, etc.
   grep -R -I -n -H --color=always --exclude-dir={.bzr,CVS,.git,.hg,.svn} \
-    --context=2 "$@" | less -R
+    --context=2 -- "$@" | less -R
 fi
