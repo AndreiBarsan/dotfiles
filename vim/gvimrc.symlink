@@ -1,6 +1,14 @@
 "set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h10
 "set guifont=Inconsolata\ for\ Powerline
 set guifont=Inconsolata\ for\ Powerline\ Medium\ 12
+ 
+" Disable the scrollbars (NERDTree)
+set guioptions-=r
+set guioptions-=L
+
+" [OSX] Disable the macvim toolbar
+set guioptions-=T
+
 
 set lines=60
 set columns=100

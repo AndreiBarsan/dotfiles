@@ -20,10 +20,18 @@
 " TODO(andrei): learn more about sparkup
 " TODO(andrei): learn more about tabular
 " TODO(andrei): learn more about nerdcommenter
-" TODO(andrei): learn about organizing projects in vim
 " TODO(andrei): preserve each tab's current dir
 " TODO(andrei): Stuff flagged [OSX] or [MacVim] belong in a separate file.
 " TODO(andrei): Configure C-k better.
+" 
+" Current spare slots for mapping things:
+"  * <space>: doesn't do anything interesting in normal mode (Experimentally
+"    using it to trigger Ctrl-P fuzzy search at the moment)
+"  * <enter>: ditto
+"  * <K>:     tries to open the manual; not too useful
+"  * <leader>qwerty...
+"  * <C-q>, <C-w>
+
 
 set nocompatible              " be iMproved, required
 filetype off                  " required for setting up the plugins
@@ -342,19 +350,11 @@ if !exists(":DiffOrig")
     \ | wincmd p | diffthis
 endif
 
-" [OSX] Resize windows with arrow keys
-" TODO(andrei): Remove if the cross-platform approach from above works.
-"nnoremap <D-Up> <C-w>+
-"nnoremap <D-Down> <C-w>-
-"nnoremap <D-Left> <C-w><
-"nnoremap <D-Right>  <C-w>>
-
-" [gVim] Disable the scrollbars (NERDTree)
-set guioptions-=r
-set guioptions-=L
-
-" [OSX] Disable the macvim toolbar
-set guioptions-=T
+" Resize windows with arrow keys using <leader>hjkl.
+nnoremap <leader>k 5<C-w>-
+nnoremap <leader>j 5<C-w>+
+nnoremap <leader>h 5<C-w><
+nnoremap <leader>l 5<C-w>>
 
 " Correctly highlight C and C++ code in Bison grammar files.
 autocmd BufRead,BufNewFile *.ypp set filetype=yacc
@@ -438,6 +438,9 @@ set laststatus=2
 let g:ctrlp_custom_ignore = 'node_modules\|git\|DS_Store'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+" Experimental: tap space to search!
+nnoremap <space> :CtrlP<CR>
 
 " javascript-libraries-syntax
 let g:used_javascript_libs = 'jquery,angularjs,jasmine'
