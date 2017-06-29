@@ -183,7 +183,7 @@ if [[ -d "${TBB_INSTALL_DIR}" ]]; then
 fi
 
 # Autocomplete wolf commands
-if [[ $(which wolf >/dev/null) -eq 0 ]]; then
+if $(command -v wolf >/dev/null 2>&1); then
   source <(wolf --bash-completion-script $(which wolf))
 fi
 

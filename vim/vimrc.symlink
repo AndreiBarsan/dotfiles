@@ -110,8 +110,7 @@ set smartcase                 " ...unless we type a capital
 set history=10000             " Huge vim command history
 set mouse=a
 
-colorscheme Chasing_Logic     " Clean theme for quick edits.  Using solarized
-                              " for gVim.
+colorscheme xemacs
 set background=dark
 
 " Use soft tabs of length two
