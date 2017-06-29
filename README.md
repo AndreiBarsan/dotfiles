@@ -31,6 +31,30 @@ defaults, and so on. Tweak this script, and occasionally run `dot` from
 time to time to keep your environment fresh and up-to-date. You can find
 this script in `bin/`.
 
+## this fork
+
+There are several major differences between this (obviously personalized) fork
+and @holman's upstream version.
+
+First, I'm a vim user so my vimrc has way more stuff in it, and I've removed
+all the atom configs and utilities.
+
+Second, I use tmux extensively, so I've added a `tmux.conf` with a lot of
+goodies like plugin support via [tpm](https://github.com/tmux-plugins/tpm).
+
+I also added many things to the `bin/` directory, such as quick-and-dirty
+single-word commands for ssh-ing to things defined in my (private)
+`.ssh/config`, as well as some CUDA and OpenCV helpers.
+
+There's also some scripts for checking one's writing for things like weasel
+words, repetitions, etc. See `bin/passive.sh`, `bin/dups.pl`, and
+`bin/weasel.sh`.
+
+Apart from these major differences, there are also lots of other tiny tweaks
+all over the place. Feel free to open up an issue if you're interested in
+something but it doesn't seem to be working right!
+
+
 ## topical
 
 Everything's built around topic areas. If you're adding a new area to your
@@ -79,4 +103,5 @@ and I'd love to get it fixed for you!
 ## thanks
 
 Thanks to [Zach Holman](https://github.com/holman), whose repository I
-originally forked.
+originally forked. I learned a **ton** from your repo, and still use many of
+the little helpers and aliases you added to it. Thank you!
