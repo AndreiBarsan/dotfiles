@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Builds and installs a Kintinuous-specific OpenCV. Kintinuous and its custom
+# dependencies do NOT build using a "vanilla" system OpenCV installation from
+# a package manager.
+# This version also plays well with DynSLAM, which is a nice plus.
+
+echo "Will uninstall current OpenCV, rebild it, and reinstall it."
+
+OPENCV_DIR="${HOME}/work/opencv-2.4.13.2"
+
+cd "${OPENCV_DIR}" || {
+  echo >&2 "Could not cd into the OpenCV source dir..."
+  exit -1
+}
+
+# This uninstalls the existing version.
+cd "build" && sudo make uninstall || {
+  echo >&2 "Could not uninstall existing OpenCV."
+  exit -1
+}
+
+# Keep the previous build in a backup folder just in case.
+cd .. && rm -rf build-old && mv build build-old && mkdir build && cd build
+
+# This configures OpenCV. Different programs require different features, but
+# crash when other features are enabled. These options are always conflicting.
+# YAY!
+cmake -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_OPENCL=OFF -D WITH_OPENMP=ON \
+  -D INSTALL_C_EXAMPLES=OFF -D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF \
+  -D WITH_QT=OFF -D WITH_OPENGL=OFF -D WITH_VTK=OFF -D BUILD_PERF_TESTS=OFF \
+  -D BUILD_TESTS=OFF -D WITH_CUDA=OFF -D BUILD_opencv_gpu=OFF .. || {
+  echo >&2 "cmaking OpenCV failed. Stopping."
+  exit -1
+}
+
+make -j6 || {
+  echo >&2 "Building OpenCV failed. Stopping."
+  exit -1
+}
+
+sudo make install && sudo ldconfig || {
+  echo >&2 "Installing/ldconfiging OpenCV failed. Stopping."
+  exit -1
+}
+
+echo "Done reinstalling OpenCV..."
