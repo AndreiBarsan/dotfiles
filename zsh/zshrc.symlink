@@ -6,10 +6,15 @@
 if [[ -f '/etc/profile.d/11-modules.sh' ]]; then
   source /etc/profile.d/11-modules.sh >/dev/null 2>&1
 fi
+
 # Module support on Ubuntu 14.04 LTS.
 if [ -f /etc/profile.d/modules.sh ]; then
   source /etc/profile.d/modules.sh
 fi
+
+# Continuously refresh compinit, so we can instantly autocomplete the names of
+# freshly installed packages.
+zstyle ':completion:*' rehash true
 
 # The project folder so that we can `c [tab]` to it.
 export PROJECTS=~/work
@@ -48,6 +53,10 @@ done
 autoload -U compinit
 compinit
 
+# Support bash-style autocompletion, not just zsh-style
+autoload bashcompinit
+bashcompinit
+
 # load every completion after autocomplete loads
 for file in ${(M)config_files:#*/completion.zsh}; do
   source $file
@@ -59,7 +68,7 @@ unset config_files
 if [[ -f "${ZSH}/tmux/tmuxinator.zsh" ]]; then
   # TODO(andrei): This adds ruby deps. Strip away if too slow and stuff.
   # TODO(andrei): Fix on OS X.
-  #source "${ZSH}/tmux/tmuxinator.zsh"
+  source "${ZSH}/tmux/tmuxinator.zsh"
 fi
 
 # Setup oh-my-zsh
@@ -129,12 +138,12 @@ export LD_LIBRARY_PATH="$HOME/lib:$LD_LIBRARY_PATH"
 # [OSX] Allow Jupyter to easily find matlab.
 export MATLAB_EXECUTABLE=/Applications/MATLAB_R2015a.app/bin/matlab
 
-# The next line updates PATH for the Google Cloud SDK.
+#0J The next line updates PATH for the Google Cloud SDK.
 if [ -f /Users/andrei/workspace/google-cloud-sdk/path.zsh.inc ]; then
   source '/Users/andrei/workspace/google-cloud-sdk/path.zsh.inc'
 fi
 
-# The next line enables shell command completion for gcloud.
+# The next line enables shell command completion for gcloud on OSX.
 if [ -f /Users/andrei/workspace/google-cloud-sdk/completion.zsh.inc ]; then
   source '/Users/andrei/workspace/google-cloud-sdk/completion.zsh.inc'
 fi
@@ -151,24 +160,31 @@ fi
 # Show the 7 most recent files when cd-ing into a dir.
 #function prompt_command {
 #    ls -t | head -7
-#}
+#}1J
 # export PROMPT_COMMAND="prompt_command"
 
 # Protip: Can possibly customize CDPATH for EVEN MORE agility!
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
-
-# [OSX] Used by e.g., SpatialOS thingy.
-# export JAVA_HOME=$(/usr/libexec/java_home)
 
 # CUDA 8.0 support on Ubuntu 16
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-8.0/lib64"
 export PATH="$PATH:/usr/local/cuda-8.0/bin"
 
 # Intel TBB (Threading Building Blocks) support on Linux for local install
-if [[ -d "${PROJECTS}/tbbsrc" ]]; then
-  source "${PROJECTS}/tbbsrc/build/linux_intel64_gcc_cc5.4.0_libc2.23_kernel4.4.0_release/tbbvars.sh"
+# Note: it may be easier to just use the 'libtbb-dev' package.
+export TBB_INSTALL_DIR="${PROJECTS}/tbbsrc"
+if [[ -d "${TBB_INSTALL_DIR}" ]]; then
+  RELEASE_FOLDER="${TBB_INSTALL_DIR}/build/linux_intel64_gcc_cc5.4.1_libc2.23_kernel4.4.0_release/"
+  DEBUG_FOLDER="${TBB_INSTALL_DIR}/build/linux_intel64_gcc_cc5.4.1_libc2.23_kernel4.4.0_debug/"
+  source "${RELEASE_FOLDER}/tbbvars.sh"
+  export TBB_INCLUDE_DIRS="$TBB_INSTALL_DIR/include"
+  export TBB_LIBRARY_RELEASE="$RELEASE_FOLDER"
+  export TBB_LIBRARY_DEBUG="$DEBUG_FOLDER"
+  export TBB_LIBRARY="$TBB_LIBRARY_RELEASE"
+fi
+
+# Autocomplete wolf commands
+if [[ $(which wolf >/dev/null) -eq 0 ]]; then
+  source <(wolf --bash-completion-script $(which wolf))
 fi
 
 # If available, start tmux, attaching to any running session.
@@ -179,6 +195,7 @@ if [[ $(uname -s) == 'Linux' ]]; then
   #export TMUX_POWERLINE_CONF="/home/andrei/.local/lib/python3.5/site-packages/powerline/bindings/tmux/powerline.conf"
   export TMUX_POWERLINE_CONF=~"/.local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
 else
+  # TODO(andrei): WHY the flip is this still not working?
   export TMUX_POWERLINE_CONF="/Users/andrei/Library/Python/3.6/lib/python/site-packages/powerline/bindings/tmux/powerline.conf"
 fi
 
@@ -189,6 +206,8 @@ else
   muxcmd="tmux"
 fi
 
+# TODO(andrei): Maybe a special var to explicitly disable auto-attaching to
+# a tmux instance?
 # Everything locked and loaded. Attach to tmux if we haven't already.
 if which tmux >/dev/null 2>&1; then
   test -z ${TMUX} && eval "${muxcmd}"
