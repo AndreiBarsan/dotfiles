@@ -82,11 +82,9 @@ endif
 " keeping it disabled for now
 "Plugin 'cjrh/vim-conda'             " Detect the correct Python when using Anaconda
 "Plugin 'burnettk/vim-angular'       " AngularJS magic
-"Plugin 'cjrh/vim-conda'             " Detect the correct Python when using Anaconda
 "Plugin 'klen/python-mode'           " Python navigation & other goodies
 "Plugin 'tinymode.vim'               " Easy on-the-fly window resizing
 "Plugin 'tpope/vim-fugitive'         " git helper
-"Plugin 'tpope/vim-speeddating'      " Intuitive date increment/decrement.
 
 call vundle#end()             " required
 filetype plugin indent on     " required
@@ -122,13 +120,15 @@ autocmd Filetype make set tabstop=4|set shiftwidth=4|set noexpandtab
 " Allow longer text lines for Scala
 autocmd FileType scala set textwidth=119
 autocmd FileType scala set colorcolumn=120
+" ...and C++ since modern C++ is pretty verbose.
+autocmd FileType cpp set textwidth=99
+autocmd Filetype cpp set colorcolumn=100
 
 set visualbell
 
-" TODO(andrei): Re-enable these for vanilla vim, but NOT for e.g., IntelliJ.
 " Use sensible regex parsing when searching
-"nnoremap / /\v
-"vnoremap / /\v
+nnoremap / /\v
+vnoremap / /\v
 
 " Make all replacement operations global by default
 set gdefault
@@ -233,21 +233,12 @@ nnoremap <silent> <C-j> <C-w>j
 nnoremap <silent> <C-k> <C-w>k
 nnoremap <silent> <C-l> <C-w>l
 
-" Resize windows using C-Shift-hjkl
-" Okay, C-S chords are not supported in vim.
-" Fuck this.
-"nnoremap <silent> <C-S-h> 3<C-w><
-"nnoremap <silent> <C-S-j> 3<C-w>+
-"nnoremap <silent> <C-S-k> 3<C-w>-
-"nnoremap <silent> <C-S-l> 3<C-w>>
+" TODO(andrei): Plugin for easy pane resizing in vim.
 
 " Leader+z/x to navigate through buffers
 nnoremap <silent> <leader>z :bp<cr>
 nnoremap <silent> <leader>x :bn<cr>
-" Also support Tab, since I don't need no terminal tab now that I got my buddy
-" tmux over here! Shift-tab doesn't quite work for historical reasons.
-" TODO(andrei): Fix conflict with brace naviation.
-"nnoremap <silent> <Tab> :bn<cr>
+nnoremap <silent> %         :bn<cr>
 
 " Create window splits easier.
 nnoremap <silent> vv <C-w>v
@@ -273,8 +264,10 @@ set sidescrolloff=15
 " If you visually select something and hit paste that thing gets yanked into
 " your buffer. This generally is annoying when you're copying one item and
 " repeatedly pasting it. This changes the paste command in visual mode so that
-" it doesn't overwrite whatever is in your paste buffer.
+" it doesn't overwrite whatever is in your paste buffer. Same for using 'x' to
+" delete single characters.
 vnoremap p "_dP
+nnoremap x "_x
 
 " Quickly open `.vimrc'
 nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
@@ -309,7 +302,7 @@ cmap w!! w !sudo tee % >/dev/null
 
 " Make 0 go to the first character rather than the beginning of the line. When
 " we're programming, we're almost always interested in working with text rather
-" than empty space. If you want the traditional beginning of line, use ^
+" than empty space. If you want the traditional beginning of line, use ^.
 nnoremap 0 ^
 nnoremap ^ 0
 
@@ -363,9 +356,6 @@ set guioptions-=L
 " [OSX] Disable the macvim toolbar
 set guioptions-=T
 
-" [Twitter] Enable Python syntax for Pants BUILD files
-autocmd BufReadPre BUILD set filetype=python
-
 " Correctly highlight C and C++ code in Bison grammar files.
 autocmd BufRead,BufNewFile *.ypp set filetype=yacc
 
@@ -377,19 +367,12 @@ augroup BgHighlight
     autocmd WinLeave * set nocul | set colorcolumn=0
 augroup END
 
-"
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin Configuration
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:vim_markdown_folding_disabled=1
-
-" Automatically open NERDTree when launching vim, but focus on the new buffer
-" This turns out to be distracting, so I disabled it (24.10.2016).
-" function OpenTree()
-"   NERDTree
-"   execute "normal \<C-w>l"
-"endfunction
 
 " autocmd vimenter * call OpenTree()
 " Automatically quit if the only window left is NERDTree
@@ -465,19 +448,21 @@ let g:vimtext_mappings_enabled = 1
 "let g:vimtex_latexmk_options = '-xelatex -pdf'
 let g:vimtex_latexmk_continuous = 1
 
-" OSX config TODO(andrei): Isn't this suppported without extra flags?
-"let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
-"let g:vimtex_view_general_options = '@line @pdf @tex'
-
 " Manually set a few Vimtex commands which would otherwise be annoying to run
 " using the local leader.
 nnoremap <leader>l :VimtexCompile<CR>
 nnoremap <leader>v :VimtexView<CR>
 
 " Ubuntu Linux Config
-" No need for custom stuff, since Zathura support is baked into vimtex.
-" Why Zathura? Because it's minimalistic and uses vim controls.
-let g:vimtex_view_method='zathura'
+if has('macunix')
+  " Use Skim on OSX because it's stable and feature-rich, and Zathura doesn't
+  " work properly for some reason.
+  let g:vimtex_view_method='skim'
+else
+  " No need for custom stuff, since Zathura support is baked into vimtex.
+  " Why Zathura? Because it's minimalistic and uses vim controls.
+  let g:vimtex_view_method='zathura'
+endif
 
 " Vimux
 " Run arbitrary commands in a separate pane, on the fly. Woo!
