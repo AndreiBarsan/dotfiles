@@ -453,8 +453,8 @@ let g:vimtex_latexmk_continuous = 1
 
 " Manually set a few Vimtex commands which would otherwise be annoying to run
 " using the local leader.
-nnoremap <leader>l :VimtexCompile<CR>
-nnoremap <leader>v :VimtexView<CR>
+nnoremap <leader>c :VimtexCompile<CR>
+nnoremap <leader>v :VimtexView<CR><space><CR>
 
 " Ubuntu Linux Config
 if has('macunix')

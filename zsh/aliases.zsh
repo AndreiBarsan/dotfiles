@@ -29,3 +29,5 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
   alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
 fi
 
+# A servername is required when doing TeX work in vim with live preview.
+alias vv='vim --servername vim'
