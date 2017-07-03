@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Helper which attempts to fix a finnicy MacBook Pro cam under MacOS.
+
+sudo killall VDCAssistant || echo >&2 "Could not kill VDCAssistant"
+sudo killall AppleCameraAssistant || echo >&2 "Could not kill AppleCameraAssistant"
+
+# If this doesn't work, you can try to do an SMC reset, but that may not help
+# your webcam (it didn't seem to help me).
