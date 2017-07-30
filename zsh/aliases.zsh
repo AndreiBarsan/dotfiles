@@ -26,5 +26,10 @@ alias calm='gcalcli calm'
 
 # [OSX] Force regular vim to be MacVim's vim
 if [[ "$(uname -s)" == "Darwin" ]]; then
-  alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
+  alias vim='reattach-to-user-namespace /Applications/MacVim.app/Contents/MacOS/Vim --servername vim-server'
+  alias mvim='reattach-to-user-namespace mvim --servername vim-server'
+  alias open='reattach-to-user-namespace open'
+else
+  alias vim='vim --servername vim-server'
+  alias open='xdg-open'
 fi
