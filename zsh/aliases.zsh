@@ -32,5 +32,5 @@ fi
 # A servername is required when doing TeX work in vim with live preview.
 alias vv='vim --servername vim'
 
-# Lazy cmake project build, backing up t
+# Lazy cmake project build, backing up the old folder just in case
 alias cmk='([[ ! -d build/ ]] || mv -v build build-old) && mkdir build/ && cd build && cmake .. && make -j8'

@@ -20,7 +20,6 @@
 " TODO(andrei): learn more about sparkup
 " TODO(andrei): learn more about tabular
 " TODO(andrei): learn more about nerdcommenter
-" TODO(andrei): preserve each tab's current dir
 " TODO(andrei): Stuff flagged [OSX] or [MacVim] belong in a separate file.
 " TODO(andrei): Configure C-k better.
 "
@@ -31,7 +30,6 @@
 "  * <K>:     tries to open the manual; not too useful
 "  * <leader>qwerty...
 "  * <C-q>, <C-w>
-
 
 set nocompatible              " be iMproved, required
 filetype off                  " required for setting up the plugins
