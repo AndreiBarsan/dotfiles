@@ -20,10 +20,16 @@
 " TODO(andrei): learn more about sparkup
 " TODO(andrei): learn more about tabular
 " TODO(andrei): learn more about nerdcommenter
-" TODO(andrei): learn about organizing projects in vim
-" TODO(andrei): preserve each tab's current dir
 " TODO(andrei): Stuff flagged [OSX] or [MacVim] belong in a separate file.
 " TODO(andrei): Configure C-k better.
+"
+" Current spare slots for mapping things:
+"  * <space>: doesn't do anything interesting in normal mode (Experimentally
+"    using it to trigger Ctrl-P fuzzy search at the moment)
+"  * <enter>: ditto
+"  * <K>:     tries to open the manual; not too useful
+"  * <leader>qwerty...
+"  * <C-q>, <C-w>
 
 set nocompatible              " be iMproved, required
 filetype off                  " required for setting up the plugins
@@ -47,23 +53,20 @@ Plugin 'gmarik/Vundle.vim'
 " then use `!sort -f' to sort it (`-f' means case-insensitive).
 Plugin 'benmills/vimux'             " Pretty interactions with tmux.
 Plugin 'flazz/vim-colorschemes'     " Moar color schemes
-"Plugin 'godlygeek/tabular'          " Format stuff in columns
+Plugin 'godlygeek/tabular'          " Format stuff in columns
 Plugin 'gregsexton/MatchTag'        " HTML tag matching
-"Plugin 'jceb/vim-orgmode'           " org-mode in Vim. SpaceMacs is still better, yo!
-Plugin 'honza/vim-snippets'         " Snippets for UltiSnips"
+Plugin 'jceb/vim-orgmode'           " org-mode in Vim. SpaceMacs is still better, yo!
+Plugin 'honza/vim-snippets'         " Snippets for UltiSnips
 Plugin 'kien/ctrlp.vim'             " Global fuzzy search
 Plugin 'L9'                         " Lots of small helpers
 Plugin 'lervag/vimtex'              " Edit LaTeX in Vim
 Plugin 'luochen1990/rainbow'        " Easily identify nested statements
-"Plugin 'marijnh/tern_for_vim'       " Smart JavaScript auto-complete
-"Plugin 'othree/javascript-libraries-syntax.vim' " Autocomplete library identifiers
-"Plugin 'pangloss/vim-javascript'    " JavaScript utilities
 Plugin 'plasticboy/vim-markdown'    " Markdown support, yep
 Plugin 'Raimondi/delimitMate'       " Auto-complete quotes, parens, etc.
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}  " Super-speedy HTML typing
 Plugin 'scrooloose/nerdcommenter'   " Smart en-masse commenter
 Plugin 'scrooloose/nerdtree'        " File browser
-"Plugin 'scrooloose/syntastic'       " Lint-o-Matic
+Plugin 'scrooloose/syntastic'       " Lint-o-Matic
 Plugin 'sheerun/vim-polyglot'       " Smart support for tons of languages
 Plugin 'SirVer/ultisnips'           " Code snippet management
 Plugin 'sjl/gundo.vim'              " Navigate undo tree visually
@@ -71,8 +74,10 @@ Plugin 'skwp/greplace.vim'          " Global replace tools
 Plugin 'tpope/vim-surround'         " Nice surrounding semantics.
 Plugin 'vim-airline/vim-airline'    " Pretty status line
 Plugin 'vim-scripts/a.vim'          " *.c(c|pp)?-*h switcher
+Plugin 'johngrib/vim-game-code-break'
 
-if v:version > 703 && has('patch143')
+
+if (v:version > 703 && has('patch143')) || v:version >= 800
   " Awesome autocomplete, but requires a very specific minimum vim version.
   Plugin 'Valloric/YouCompleteMe'
 endif
@@ -82,11 +87,12 @@ endif
 " keeping it disabled for now
 "Plugin 'cjrh/vim-conda'             " Detect the correct Python when using Anaconda
 "Plugin 'burnettk/vim-angular'       " AngularJS magic
-"Plugin 'cjrh/vim-conda'             " Detect the correct Python when using Anaconda
 "Plugin 'klen/python-mode'           " Python navigation & other goodies
 "Plugin 'tinymode.vim'               " Easy on-the-fly window resizing
 "Plugin 'tpope/vim-fugitive'         " git helper
-"Plugin 'tpope/vim-speeddating'      " Intuitive date increment/decrement.
+"Plugin 'marijnh/tern_for_vim'       " Smart JavaScript auto-complete
+"Plugin 'othree/javascript-libraries-syntax.vim' " Autocomplete library identifiers
+"Plugin 'pangloss/vim-javascript'    " JavaScript utilities
 
 call vundle#end()             " required
 filetype plugin indent on     " required
@@ -110,8 +116,7 @@ set smartcase                 " ...unless we type a capital
 set history=10000             " Huge vim command history
 set mouse=a
 
-colorscheme Chasing_Logic     " Clean theme for quick edits.  Using solarized
-                              " for gVim.
+colorscheme xemacs
 set background=dark
 
 " Use soft tabs of length two
@@ -123,13 +128,15 @@ autocmd Filetype make set tabstop=4|set shiftwidth=4|set noexpandtab
 " Allow longer text lines for Scala
 autocmd FileType scala set textwidth=119
 autocmd FileType scala set colorcolumn=120
+" ...and C++ since modern C++ is pretty verbose.
+autocmd FileType cpp set textwidth=99
+autocmd Filetype cpp set colorcolumn=100
 
 set visualbell
 
-" TODO(andrei): Re-enable these for vanilla vim, but NOT for e.g., IntelliJ.
 " Use sensible regex parsing when searching
-"nnoremap / /\v
-"vnoremap / /\v
+nnoremap / /\v
+vnoremap / /\v
 
 " Make all replacement operations global by default
 set gdefault
@@ -234,21 +241,12 @@ nnoremap <silent> <C-j> <C-w>j
 nnoremap <silent> <C-k> <C-w>k
 nnoremap <silent> <C-l> <C-w>l
 
-" Resize windows using C-Shift-hjkl
-" Okay, C-S chords are not supported in vim.
-" Fuck this.
-"nnoremap <silent> <C-S-h> 3<C-w><
-"nnoremap <silent> <C-S-j> 3<C-w>+
-"nnoremap <silent> <C-S-k> 3<C-w>-
-"nnoremap <silent> <C-S-l> 3<C-w>>
+" TODO(andrei): Plugin for easy pane resizing in vim.
 
 " Leader+z/x to navigate through buffers
 nnoremap <silent> <leader>z :bp<cr>
 nnoremap <silent> <leader>x :bn<cr>
-" Also support Tab, since I don't need no terminal tab now that I got my buddy
-" tmux over here! Shift-tab doesn't quite work for historical reasons.
-" TODO(andrei): Fix conflict with brace naviation.
-"nnoremap <silent> <Tab> :bn<cr>
+nnoremap <silent> %         :bn<cr>
 
 " Create window splits easier.
 nnoremap <silent> vv <C-w>v
@@ -274,8 +272,10 @@ set sidescrolloff=15
 " If you visually select something and hit paste that thing gets yanked into
 " your buffer. This generally is annoying when you're copying one item and
 " repeatedly pasting it. This changes the paste command in visual mode so that
-" it doesn't overwrite whatever is in your paste buffer.
+" it doesn't overwrite whatever is in your paste buffer. Same for using 'x' to
+" delete single characters.
 vnoremap p "_dP
+nnoremap x "_x
 
 " Quickly open `.vimrc'
 nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
@@ -310,7 +310,7 @@ cmap w!! w !sudo tee % >/dev/null
 
 " Make 0 go to the first character rather than the beginning of the line. When
 " we're programming, we're almost always interested in working with text rather
-" than empty space. If you want the traditional beginning of line, use ^
+" than empty space. If you want the traditional beginning of line, use ^.
 nnoremap 0 ^
 nnoremap ^ 0
 
@@ -350,22 +350,11 @@ if !exists(":DiffOrig")
     \ | wincmd p | diffthis
 endif
 
-" [OSX] Resize windows with arrow keys
-" TODO(andrei): Remove if the cross-platform approach from above works.
-"nnoremap <D-Up> <C-w>+
-"nnoremap <D-Down> <C-w>-
-"nnoremap <D-Left> <C-w><
-"nnoremap <D-Right>  <C-w>>
-
-" [gVim] Disable the scrollbars (NERDTree)
-set guioptions-=r
-set guioptions-=L
-
-" [OSX] Disable the macvim toolbar
-set guioptions-=T
-
-" [Twitter] Enable Python syntax for Pants BUILD files
-autocmd BufReadPre BUILD set filetype=python
+" Resize windows with arrow keys using <leader>hjkl.
+nnoremap <leader>k 5<C-w>-
+nnoremap <leader>j 5<C-w>+
+nnoremap <leader>h 5<C-w><
+nnoremap <leader>l 5<C-w>>
 
 " Correctly highlight C and C++ code in Bison grammar files.
 autocmd BufRead,BufNewFile *.ypp set filetype=yacc
@@ -378,19 +367,12 @@ augroup BgHighlight
     autocmd WinLeave * set nocul | set colorcolumn=0
 augroup END
 
-"
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin Configuration
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:vim_markdown_folding_disabled=1
-
-" Automatically open NERDTree when launching vim, but focus on the new buffer
-" This turns out to be distracting, so I disabled it (24.10.2016).
-" function OpenTree()
-"   NERDTree
-"   execute "normal \<C-w>l"
-"endfunction
 
 " autocmd vimenter * call OpenTree()
 " Automatically quit if the only window left is NERDTree
@@ -406,6 +388,13 @@ let NERDTreeIgnore = ['\.pyc$']
 
 let b:javascript_fold=0
 let g:tern_map_keys=1
+
+" NerdCommenter
+let g:NERDSpaceDelims = 1
+let g:NERDCompactSexyComs = 1
+" This actually means <C-/>. And doesn't work in gvim... 
+nmap <C-_> <plug>NERDCommenterInvert<cr>
+vmap <C-_> <plug>NERDCommenterInvert<cr>
 
 " YouCompleteMe parameters (if applicable).
 if v:version > 703 && has('patch143')
@@ -429,22 +418,32 @@ if v:version > 703 && has('patch143')
   "let g:ycm_path_to_python_interpreter = '/usr/bin/python3'
 endif
 
-" syntastic
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Syntastic
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 " Disable automatic checks in Python, because they are very slow
 "let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [],'passive_filetypes': ['python'] }
 
 " disable pymode's folding, for now
-let g:pymode_folding = 0
+"let g:pymode_folding = 0
 " We have syntastic for linting (but pymode might be better).
-let g:pymode_lint = 0
-let g:pymode_lint_on_write = 0
+"let g:pymode_lint = 0
+"let g:pymode_lint_on_write = 0
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" rainbow
 " Rainbow parentheses for better readability of nested expressions.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:rainbow_active = 1
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-airline
+" Like powerline but lighter, and with fewer dependencies.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Show buffer list when only one tab is open.
 let g:airline#extensions#tabline#enabled = 1
 " Use fancy symbols (needs patched font)
@@ -452,28 +451,43 @@ let g:airline_powerline_fonts=1
 " Ensure it's on from the start.
 set laststatus=2
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CtrlP: Fuzzy search when you ctrl+P.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ctrlp_custom_ignore = 'node_modules\|git\|DS_Store'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+" Experimental: tap space to search!
+nnoremap <space> :CtrlP<CR>
 
 " javascript-libraries-syntax
 let g:used_javascript_libs = 'jquery,angularjs,jasmine'
 
-" vimtex
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vimtex                                                                      "
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:vimtex_enabled = 1
 let g:vimtext_mappings_enabled = 1
 "let g:vimtex_latexmk_options = '-xelatex -pdf'
 let g:vimtex_latexmk_continuous = 1
 
-" OSX config TODO(andrei): Isn't this suppported without extra flags?
-"let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
-"let g:vimtex_view_general_options = '@line @pdf @tex'
-
 " Manually set a few Vimtex commands which would otherwise be annoying to run
 " using the local leader.
-nnoremap <leader>l :VimtexCompile<CR>
-nnoremap <leader>v :VimtexView<CR>
+nnoremap <leader>c :VimtexCompile<CR>
+nnoremap <leader>v :VimtexView<CR><space><CR>
+
+if has('macunix')
+  " Use Skim on OSX because it's stable and feature-rich, and Zathura doesn't
+  " work properly for some reason.
+  let g:vimtex_view_method='skim'
+else
+  " No need for custom stuff, since Zathura support is baked into vimtex.
+  " Why Zathura? Because it's minimalistic and uses vim controls.
+  let g:vimtex_view_method='zathura'
+endif
 
 " Ubuntu Linux Config
 " No need for custom stuff, since Zathura support is baked into vimtex.
@@ -481,8 +495,10 @@ nnoremap <leader>v :VimtexView<CR>
 "let g:vimtex_view_method='zathura'
 let g:vimtex_view_method='skim'
 
-" Vimux
-" Run arbitrary commands in a separate pane, on the fly. Woo!
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vimux                                                                       "
+" Run arbitrary commands in a separate tmux pane, on the fly. Woo!            "
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 noremap <leader>p :VimuxPromptCommand<CR>
 " Run last command executed by VimuxRunCommand
 " Disabled since it conflicted with the vimtex mappings.
@@ -493,7 +509,9 @@ noremap <Leader>vi :VimuxInspectRunner<CR>
 " vim-conda
 "let g:conda_startup_msg_suppress = 1
 
-" UltiSnips
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" UltiSnips                                                                   "
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:UltiSnipsExpandTrigger="<C-j>"
 let g:UltiSnipsJumpForwardTrigger="<C-j>"
 let g:UltiSnipsJumpBackwardTrigger="<C-k>"
