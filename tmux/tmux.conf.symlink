@@ -38,16 +38,16 @@ set -g mode-keys vi
 # Version-specific commands [grumble, grumble]
 # See: https://github.com/tmux/tmux/blob/master/CHANGES]
 # Snippet source: http://stackoverflow.com/a/40902312/1055295
-# run-shell "tmux setenv -g TMUX_VERSION $(tmux -V | cut -c 6-)"
+run-shell "tmux setenv -g TMUX_VERSION $(tmux -V | cut -c 6-)"
 
 # TODO(andrei): Remove this if solved by the tmux-yank plugin!
-# if-shell -b '[ "$(echo "$TMUX_VERSION < 2.1" | bc)" = 1 ]' \
-  # "set -g mouse-select-pane on; set -g mode-mouse on; \
-      # set -g mouse-resize-pane on; set -g mouse-select-window on"
+if-shell -b '[ "$(echo "$TMUX_VERSION < 2.1" | bc)" = 1 ]' \
+  "set -g mouse-select-pane on; set -g mode-mouse on; \
+      set -g mouse-resize-pane on; set -g mouse-select-window on"
 
 # In version 2.1 "mouse" replaced the previous 4 mouse options
-# if-shell -b '[ "$(echo "$TMUX_VERSION >= 2.1" | bc)" = 1 ]' \
- # "set -g mouse on"
+if-shell -b '[ "$(echo "$TMUX_VERSION >= 2.1" | bc)" = 1 ]' \
+ "set -g mouse on"
 
 # UTF8 is autodetected in 2.2 onwards, but errors if explicitly set
 if-shell -b '[ "$(echo "$TMUX_VERSION < 2.2" | bc)" = 1 ]' \
