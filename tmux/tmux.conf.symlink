@@ -34,19 +34,20 @@ set -g mode-keys vi
 #if-shell "if [[ `tmux -V | cut -d' ' -f2` -ge 2.1 ]]; then true; else false; fi" \
     #'set -g mouse on; set -g mouse-utf8 on'
 
-# Get fucking mouse support right. TODO(andrei): Fix on OSX...
+# Get fucking mouse support right.
 # Version-specific commands [grumble, grumble]
 # See: https://github.com/tmux/tmux/blob/master/CHANGES]
 # Snippet source: http://stackoverflow.com/a/40902312/1055295
-run-shell "tmux setenv -g TMUX_VERSION $(tmux -V | cut -c 6-)"
+# run-shell "tmux setenv -g TMUX_VERSION $(tmux -V | cut -c 6-)"
 
-if-shell -b '[ "$(echo "$TMUX_VERSION < 2.1" | bc)" = 1 ]' \
-  "set -g mouse-select-pane on; set -g mode-mouse on; \
-      set -g mouse-resize-pane on; set -g mouse-select-window on"
+# TODO(andrei): Remove this if solved by the tmux-yank plugin!
+# if-shell -b '[ "$(echo "$TMUX_VERSION < 2.1" | bc)" = 1 ]' \
+  # "set -g mouse-select-pane on; set -g mode-mouse on; \
+      # set -g mouse-resize-pane on; set -g mouse-select-window on"
 
 # In version 2.1 "mouse" replaced the previous 4 mouse options
-if-shell -b '[ "$(echo "$TMUX_VERSION >= 2.1" | bc)" = 1 ]' \
- "set -g mouse on"
+# if-shell -b '[ "$(echo "$TMUX_VERSION >= 2.1" | bc)" = 1 ]' \
+ # "set -g mouse on"
 
 # UTF8 is autodetected in 2.2 onwards, but errors if explicitly set
 if-shell -b '[ "$(echo "$TMUX_VERSION < 2.2" | bc)" = 1 ]' \
@@ -54,7 +55,9 @@ if-shell -b '[ "$(echo "$TMUX_VERSION < 2.2" | bc)" = 1 ]' \
 
 
 # TODO(andrei): Hostname-based coloring of panes in a cross-platform manner,
-# better than the iterm stuff.
+# better than the iterm stuff. Should be doable based on that one guy's example
+# after the news about the company which deleted all its shit by accidentally
+# running test scripts in production.
 
 ###########################################################################
 # Window management / navigation
@@ -70,8 +73,10 @@ bind -n C-Space next-window
 bind Escape copy-mode
 unbind p
 bind p paste-buffer
-bind -t vi-copy 'v' begin-selection
-bind -t vi-copy 'y' copy-selection
+
+# TODO(andrei): Clean up this crap if no longer needed thanks to plugins.
+# bind -t vi-copy 'v' begin-selection
+# bind -t vi-copy 'y' copy-selection
 
 # Linux-specific copying
 #bind -t vi-copy y copy-pipe "xclip -sel clip -i"
@@ -120,6 +125,9 @@ set -g @plugin 'tmux-plugins/tmux-sensible'
 
 # Persists sessions across restarts: [prefix] C-s = save, C-r = restore
 set -g @plugin 'tmux-plugins/tmux-resurrect'
+# tmux-continuum goes one step further and does this continuously, seamlessly.
+set -g @plugin 'tmux-plugins/tmux-continuum'
+
 # Sane copying and pasting
 # Linux: recommended to have xsel installed.
 set -g @shell_mode 'vi'

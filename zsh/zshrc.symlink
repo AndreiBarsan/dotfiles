@@ -1,5 +1,7 @@
 # TODO(andrei): For maximum versatility, move non-zsh stuff to a .bashrc and
 # source that from here.
+# 
+# Handy for macOS sessions: 
 
 # This file defines the 'module' command support on Euryale. This is a very
 # brittle way of doing things, but it seems to be the only reliable way.
@@ -112,7 +114,8 @@ if [[ -e ~/.zshrc.job ]]; then
   source ~/.zshrc.job
 fi
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+# export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+export PATH="$PATH:$HOME/.local/bin"
 
 # [OSX] iTerm2 integration (e.g. automatic theme switching depending on ssh
 # host and other magic stuff).
@@ -192,14 +195,11 @@ fi
 if [[ $(uname -s) == 'Linux' ]]; then
   # TODO(andrei): For maximum cross-platformness, PLEASE just install poweline
   # locally in '~/bin'.
-  #export TMUX_POWERLINE_CONF="/home/andrei/.local/lib/python3.5/site-packages/powerline/bindings/tmux/powerline.conf"
   export TMUX_POWERLINE_CONF=~"/.local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
 else
-  # TODO(andrei): WHY the flip is this still not working?
-  export TMUX_POWERLINE_CONF="/Users/andrei/Library/Python/3.6/lib/python/site-packages/powerline/bindings/tmux/powerline.conf"
+  export TMUX_POWERLINE_CONF="/Users/andrei/.local/lib/python3.6/site-packages/powerline/bindings/tmux/powerline.conf"
 fi
 
-# TODO(andrei): Tmuxinator support on OS X.
 if which tmuxinator >/dev/null 2>&1; then
   muxcmd="tmuxinator start cv"
 else
@@ -207,7 +207,7 @@ else
 fi
 
 # TODO(andrei): Maybe a special var to explicitly disable auto-attaching to
-# a tmux instance?
+# a tmux instance for, say, IDEs?
 # Everything locked and loaded. Attach to tmux if we haven't already.
 if which tmux >/dev/null 2>&1; then
   test -z ${TMUX} && eval "${muxcmd}"

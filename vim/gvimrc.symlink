@@ -1,7 +1,8 @@
 "set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h10
 "set guifont=Inconsolata\ for\ Powerline
 
-set guifont=Inconsolata\ for\ Powerline\ Medium\ 12
+" set guifont=Inconsolata\ for\ Powerline\ Medium\ 12
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline
 
 " Disable the scrollbars (NERDTree)
 set guioptions-=r
@@ -16,5 +17,5 @@ set columns=100
 "set background="white"
 "colorscheme Monokai
 
-set background=light
-colorscheme mac_classic
+set background=dark
+colorscheme Chasing_Logic
