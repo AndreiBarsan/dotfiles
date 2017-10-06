@@ -12,6 +12,13 @@ if [ -f /etc/profile.d/modules.sh ]; then
   source /etc/profile.d/modules.sh
 fi
 
+# [UofT] Set a sensible $PATH for CSLab.
+if [ -z "$LEVEL" ] ; then
+	export LEVEL=1
+	export PATH=$HOME/bin:/local/bin:$PATH
+	umask 077
+fi
+
 # Continuously refresh compinit, so we can instantly autocomplete the names of
 # freshly installed packages.
 zstyle ':completion:*' rehash true

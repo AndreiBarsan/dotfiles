@@ -30,7 +30,9 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
   alias mvim='reattach-to-user-namespace mvim --servername vim-server'
   alias open='reattach-to-user-namespace open'
 else
-  alias vim='vim --servername vim-server'
+  # Temporarily disabled since the version on U of T's servers doesn't have
+  # server support *grumble grumble*.
+  # alias vim='vim --servername vim-server'
   alias open='xdg-open'
 fi
 
@@ -39,3 +41,8 @@ alias vv='vim --servername vim'
 
 # Lazy cmake project build, backing up the old folder just in case
 alias cmk='([[ ! -d build/ ]] || mv -v build build-old) && mkdir build/ && cd build && cmake .. && make -j8'
+
+# Traditional safety measure
+alias mv='mv -i'
+alias rm='rm -i'
+alias cp='cp -i'
