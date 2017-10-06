@@ -1,11 +1,13 @@
 # TODO(andrei): For maximum versatility, move non-zsh stuff to a .bashrc and
 # source that from here.
+# 
+# Handy for macOS sessions: 
 
 # This file defines the 'module' command support on Euryale. This is a very
 # brittle way of doing things, but it seems to be the only reliable way.
-if [[ -f '/etc/profile.d/11-modules.sh' ]]; then
-  source /etc/profile.d/11-modules.sh >/dev/null 2>&1
-fi
+# if [[ -f '/etc/profile.d/11-modules.sh' ]]; then
+  # source /etc/profile.d/11-modules.sh >/dev/null 2>&1
+# fi
 
 # Module support on Ubuntu 14.04 LTS.
 if [ -f /etc/profile.d/modules.sh ]; then
@@ -119,7 +121,8 @@ if [[ -e ~/.zshrc.job ]]; then
   source ~/.zshrc.job
 fi
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+# export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+export PATH="$PATH:$HOME/.local/bin"
 
 # [OSX] iTerm2 integration (e.g. automatic theme switching depending on ssh
 # host and other magic stuff).
@@ -146,9 +149,9 @@ export LD_LIBRARY_PATH="$HOME/lib:$LD_LIBRARY_PATH"
 export MATLAB_EXECUTABLE=/Applications/MATLAB_R2015a.app/bin/matlab
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f ~/workspace/google-cloud-sdk/path.zsh.inc ]; then
-  source ~/workspace/google-cloud-sdk/path.zsh.inc
-fi
+# if [ -f ~/workspace/google-cloud-sdk/path.zsh.inc ]; then
+  # source ~/workspace/google-cloud-sdk/path.zsh.inc
+# fi
 
 # The next line enables shell command completion for gcloud on OSX.
 if [ -f /Users/andrei/workspace/google-cloud-sdk/completion.zsh.inc ]; then
@@ -178,35 +181,36 @@ export PATH="$PATH:/usr/local/cuda-8.0/bin"
 
 # Intel TBB (Threading Building Blocks) support on Linux for local install
 # Note: it may be easier to just use the 'libtbb-dev' package.
-export TBB_INSTALL_DIR="${PROJECTS}/tbbsrc"
-if [[ -d "${TBB_INSTALL_DIR}" ]]; then
-  RELEASE_FOLDER="${TBB_INSTALL_DIR}/build/linux_intel64_gcc_cc5.4.1_libc2.23_kernel4.4.0_release/"
-  DEBUG_FOLDER="${TBB_INSTALL_DIR}/build/linux_intel64_gcc_cc5.4.1_libc2.23_kernel4.4.0_debug/"
-  source "${RELEASE_FOLDER}/tbbvars.sh"
-  export TBB_INCLUDE_DIRS="$TBB_INSTALL_DIR/include"
-  export TBB_LIBRARY_RELEASE="$RELEASE_FOLDER"
-  export TBB_LIBRARY_DEBUG="$DEBUG_FOLDER"
-  export TBB_LIBRARY="$TBB_LIBRARY_RELEASE"
-fi
+# export TBB_INSTALL_DIR="${PROJECTS}/tbbsrc"
+# if [[ -d "${TBB_INSTALL_DIR}" ]]; then
+  # RELEASE_FOLDER="${TBB_INSTALL_DIR}/build/linux_intel64_gcc_cc5.4.1_libc2.23_kernel4.4.0_release/"
+  # DEBUG_FOLDER="${TBB_INSTALL_DIR}/build/linux_intel64_gcc_cc5.4.1_libc2.23_kernel4.4.0_debug/"
+  # source "${RELEASE_FOLDER}/tbbvars.sh"
+  # export TBB_INCLUDE_DIRS="$TBB_INSTALL_DIR/include"
+  # export TBB_LIBRARY_RELEASE="$RELEASE_FOLDER"
+  # export TBB_LIBRARY_DEBUG="$DEBUG_FOLDER"
+  # export TBB_LIBRARY="$TBB_LIBRARY_RELEASE"
+# fi
 
 # Autocomplete wolf commands
 if $(command -v wolf >/dev/null 2>&1); then
   source <(wolf --bash-completion-script $(which wolf))
 fi
 
+# Ensure user installations of powerline work.
+# TODO(andrei): This may be redundant!!
+export PATH=~"/.local/bin:$PATH"
+
 # If available, start tmux, attaching to any running session.
 # Tries to use tmuxinator wrapper, if available.
 if [[ $(uname -s) == 'Linux' ]]; then
   # TODO(andrei): For maximum cross-platformness, PLEASE just install poweline
   # locally in '~/bin'.
-  #export TMUX_POWERLINE_CONF="/home/andrei/.local/lib/python3.5/site-packages/powerline/bindings/tmux/powerline.conf"
   export TMUX_POWERLINE_CONF=~"/.local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
 else
-  # TODO(andrei): WHY the flip is this still not working?
-  export TMUX_POWERLINE_CONF="/Users/andrei/Library/Python/3.6/lib/python/site-packages/powerline/bindings/tmux/powerline.conf"
+  export TMUX_POWERLINE_CONF="/Users/andrei/.local/lib/python3.6/site-packages/powerline/bindings/tmux/powerline.conf"
 fi
 
-# TODO(andrei): Tmuxinator support on OS X.
 if which tmuxinator >/dev/null 2>&1; then
   muxcmd="tmuxinator start cv"
 else
@@ -214,7 +218,7 @@ else
 fi
 
 # TODO(andrei): Maybe a special var to explicitly disable auto-attaching to
-# a tmux instance?
+# a tmux instance for, say, IDEs?
 # Everything locked and loaded. Attach to tmux if we haven't already.
 if which tmux >/dev/null 2>&1; then
   test -z ${TMUX} && eval "${muxcmd}"
