@@ -199,3 +199,8 @@ muxcmd="tmux"
 if which tmux >/dev/null 2>&1; then
   test -z ${TMUX} && eval "${muxcmd}"
 fi
+
+# The previous command "fails" if we're already inside tmux, but we don't
+# want that to be shown as an ugly red error code when we're, e.g., reloading
+# the config.
+true
