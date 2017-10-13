@@ -6,12 +6,13 @@ bind C-a send-prefix
 unbind C-b
 
 set -sg escape-time 1
-set -g base-index 1     # Index stuff starting from 1, not 0.
-setw -g pane-base-index 1
 
 # Watch for activity in background windows
 setw -g monitor-activity on
 set -g visual-activity on
+
+# Allow custom window [C-a ,] names to stick.
+set-option -g allow-rename off
 
 # scrollback size
 set -g history-limit 100000

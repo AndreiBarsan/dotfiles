@@ -28,6 +28,9 @@ zstyle ':completion:*' rehash true
 # The project folder so that we can `c [tab]` to it.
 export PROJECTS=~/work
 
+# tmux already nicely handles window titles.
+DISABLE_AUTO_TITLE="true"
+
 # Shortcut to this dotfile's path is $ZSH.
 # TODO(andrei): Is this really necessary? Isn't it just cleaner to keep
 # your actual dotfile repo in 'work/dotfiles'?

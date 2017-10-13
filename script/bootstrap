@@ -224,7 +224,7 @@ install_bits_and_bobs () {
   info "Installing thefuck via pip..."
   (
     if which pip >/dev/null 2>&1; then
-      pip install --user thefuck --upgrade >/dev/null
+      pip3 install --user thefuck --upgrade >/dev/null
     fi
   )
 
