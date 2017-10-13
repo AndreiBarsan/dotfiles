@@ -9,10 +9,10 @@
   # source /etc/profile.d/11-modules.sh >/dev/null 2>&1
 # fi
 
-# Module support on Ubuntu 14.04 LTS.
-if [ -f /etc/profile.d/modules.sh ]; then
-  source /etc/profile.d/modules.sh
-fi
+# [ETH] Module support on Ubuntu 14.04 LTS.
+# if [ -f /etc/profile.d/modules.sh ]; then
+  # source /etc/profile.d/modules.sh
+# fi
 
 # [UofT] Set a sensible $PATH for CSLab.
 if [ -z "$LEVEL" ] ; then
@@ -74,11 +74,11 @@ done
 unset config_files
 
 # Tmuxinator for neatly managing tmux sessions.
-if [[ -f "${ZSH}/tmux/tmuxinator.zsh" ]]; then
+# if [[ -f "${ZSH}/tmux/tmuxinator.zsh" ]]; then
   # TODO(andrei): This adds ruby deps. Strip away if too slow and stuff.
   # TODO(andrei): Fix on OS X.
-  source "${ZSH}/tmux/tmuxinator.zsh"
-fi
+  # source "${ZSH}/tmux/tmuxinator.zsh"
+# fi
 
 # Setup oh-my-zsh
 export ZSH="$HOME/.oh-my-zsh"
@@ -107,9 +107,9 @@ export LC_CTYPE=en_US.UTF-8
 
 # Fuck-powered autocorrect.
 # Disabled because it's been freezing up lately...
-#if which thefuck >/dev/null 2>&1; then
-  #eval "$(thefuck --alias)"
-#fi
+if which thefuck >/dev/null 2>&1; then
+  eval "$(thefuck --alias)"
+fi
 
 # Additional config parameters
 if [[ -e ~/.local.bash ]]; then
@@ -117,9 +117,9 @@ if [[ -e ~/.local.bash ]]; then
 fi
 
 # Job-specific stuff that shouldn't be subject to source control.
-if [[ -e ~/.zshrc.job ]]; then
-  source ~/.zshrc.job
-fi
+# if [[ -e ~/.zshrc.job ]]; then
+  # source ~/.zshrc.job
+# fi
 
 # export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 export PATH="$PATH:$HOME/.local/bin"
@@ -136,7 +136,7 @@ test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_in
 #source /usr/local/opt/modules/Modules/init/zsh
 
 # [OSX] Launch Matlab from the command line.
-export PATH="$PATH:/Applications/MATLAB_R2015a.app/bin"
+# export PATH="$PATH:/Applications/MATLAB_R2015a.app/bin"
 
 # [OSX] This adds command-line support for the Torch scientific computing framework.
 # . /Users/andrei/torch/install/bin/torch-activate
@@ -146,7 +146,7 @@ export PATH="$PATH:$HOME/bin"
 export LD_LIBRARY_PATH="$HOME/lib:$LD_LIBRARY_PATH"
 
 # [OSX] Allow Jupyter to easily find matlab.
-export MATLAB_EXECUTABLE=/Applications/MATLAB_R2015a.app/bin/matlab
+# export MATLAB_EXECUTABLE=/Applications/MATLAB_R2015a.app/bin/matlab
 
 # The next line updates PATH for the Google Cloud SDK.
 # if [ -f ~/workspace/google-cloud-sdk/path.zsh.inc ]; then
@@ -154,43 +154,18 @@ export MATLAB_EXECUTABLE=/Applications/MATLAB_R2015a.app/bin/matlab
 # fi
 
 # The next line enables shell command completion for gcloud on OSX.
-if [ -f /Users/andrei/workspace/google-cloud-sdk/completion.zsh.inc ]; then
-  source '/Users/andrei/workspace/google-cloud-sdk/completion.zsh.inc'
-fi
+# if [ -f /Users/andrei/workspace/google-cloud-sdk/completion.zsh.inc ]; then
+  # source '/Users/andrei/workspace/google-cloud-sdk/completion.zsh.inc'
+# fi
 
 # Support for autojump, i.e., the `j` command, which acts as a smart `cd` which
 # keeps track of your most active directories.
 # TODO(andrei): Make this cross-platform.
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
-# These lines add support for the Muse headband developer kit.
-#export PATH="$PATH:/Applications/Muse"
-#export DYLD_FALLBACK_LIBRARY_PATH="$DYLD_FALLBACK_LIBRARY_PATH:/Applications/Muse"
-
-# Show the 7 most recent files when cd-ing into a dir.
-#function prompt_command {
-#    ls -t | head -7
-#}1J
-# export PROMPT_COMMAND="prompt_command"
-
-# Protip: Can possibly customize CDPATH for EVEN MORE agility!
-
-# CUDA 8.0 support on Ubuntu 16
+# [ETH] CUDA 8.0 support on Ubuntu 16
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-8.0/lib64"
 export PATH="$PATH:/usr/local/cuda-8.0/bin"
-
-# Intel TBB (Threading Building Blocks) support on Linux for local install
-# Note: it may be easier to just use the 'libtbb-dev' package.
-# export TBB_INSTALL_DIR="${PROJECTS}/tbbsrc"
-# if [[ -d "${TBB_INSTALL_DIR}" ]]; then
-  # RELEASE_FOLDER="${TBB_INSTALL_DIR}/build/linux_intel64_gcc_cc5.4.1_libc2.23_kernel4.4.0_release/"
-  # DEBUG_FOLDER="${TBB_INSTALL_DIR}/build/linux_intel64_gcc_cc5.4.1_libc2.23_kernel4.4.0_debug/"
-  # source "${RELEASE_FOLDER}/tbbvars.sh"
-  # export TBB_INCLUDE_DIRS="$TBB_INSTALL_DIR/include"
-  # export TBB_LIBRARY_RELEASE="$RELEASE_FOLDER"
-  # export TBB_LIBRARY_DEBUG="$DEBUG_FOLDER"
-  # export TBB_LIBRARY="$TBB_LIBRARY_RELEASE"
-# fi
 
 # Autocomplete wolf commands
 if $(command -v wolf >/dev/null 2>&1); then
@@ -211,11 +186,12 @@ else
   export TMUX_POWERLINE_CONF="/Users/andrei/.local/lib/python3.6/site-packages/powerline/bindings/tmux/powerline.conf"
 fi
 
-if which tmuxinator >/dev/null 2>&1; then
-  muxcmd="tmuxinator start cv"
-else
-  muxcmd="tmux"
-fi
+# if which tmuxinator >/dev/null 2>&1; then
+  # muxcmd="tmuxinator start cv"
+# else
+  # muxcmd="tmux"
+# fi
+muxcmd="tmux"
 
 # TODO(andrei): Maybe a special var to explicitly disable auto-attaching to
 # a tmux instance for, say, IDEs?
