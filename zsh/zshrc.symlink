@@ -17,7 +17,7 @@
 # [UofT] Set a sensible $PATH for CSLab.
 if [ -z "$LEVEL" ] ; then
 	export LEVEL=1
-	export PATH=$HOME/bin:/local/bin:$PATH
+	export PATH=$HOME/bin:/local/bin:$HOME/local/bin:$PATH
 	umask 077
 fi
 
@@ -166,10 +166,6 @@ export LD_LIBRARY_PATH="$HOME/lib:$LD_LIBRARY_PATH"
 # TODO(andrei): Make this cross-platform.
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
-# [ETH] CUDA 8.0 support on Ubuntu 16
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-8.0/lib64"
-export PATH="$PATH:/usr/local/cuda-8.0/bin"
-
 # Autocomplete wolf commands
 if $(command -v wolf >/dev/null 2>&1); then
   source <(wolf --bash-completion-script $(which wolf))
@@ -178,16 +174,6 @@ fi
 # Ensure user installations of powerline work.
 # TODO(andrei): This may be redundant!!
 export PATH=~"/.local/bin:$PATH"
-
-# If available, start tmux, attaching to any running session.
-# Tries to use tmuxinator wrapper, if available.
-if [[ $(uname -s) == 'Linux' ]]; then
-  # TODO(andrei): For maximum cross-platformness, PLEASE just install poweline
-  # locally in '~/bin'.
-  export TMUX_POWERLINE_CONF=~"/.local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
-else
-  export TMUX_POWERLINE_CONF="/Users/andrei/.local/lib/python3.6/site-packages/powerline/bindings/tmux/powerline.conf"
-fi
 
 # if which tmuxinator >/dev/null 2>&1; then
   # muxcmd="tmuxinator start cv"
