@@ -3,7 +3,9 @@
 if [[ $(uname -s) == 'Linux' ]]; then
   export EDITOR='vim'
 elif [[ $(uname -s) == 'Darwin' ]]; then
-  export EDITOR='reattach-to-user-namespace /Applications/MacVim.app/Contents/bin/vim'
+  # export EDITOR='reattach-to-user-namespace /Applications/MacVim.app/Contents/MacOS/Vim'
+  # vim should already be aliased to the right thing...
+  export EDITOR='vim'
 else 
   export EDITOR='vim'
 fi
