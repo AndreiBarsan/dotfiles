@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Quick and dirty method to setup a conda ML env.
+
+set -e
+
+if [[ "$#" -ne 1 ]]; then
+  echo >&2 "Usage: $0 <env name>"
+  exit 1
+fi
+
+ENV_NAME="$1"
+
+if [[ $(uname -s) == "Darwin" ]]; then
+  export PATH="/usr/local/anaconda3/bin:$PATH"
+else
+  echo >&2 "Only macOS supported currently."  
+  exit 2
+fi
+
+if [[ $(which conda 1>/dev/null) ]]; then
+  echo >&2 "Could not locate conda."
+  exit 3
+fi
+
+conda create --name $ENV_NAME python=3.6 -y
+
+. activate $ENV_NAME
+
+conda install -y numpy scipy scikit-learn scikit-image jupyter pandas
+
+echo
+echo "----------------------------------------"
+echo
+echo "Done! Run "
+echo
+echo "    . activate $ENV_NAME"
+echo
+echo "to get started."

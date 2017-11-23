@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+# Get into a GPU box ASAP.
+
+ssh slurm srun --gres=gpu:1 -p gpuc --pty zsh -i
+
+# TODO autosource conda env and kick off an ipython nb, maybe
