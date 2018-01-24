@@ -139,18 +139,12 @@ install_dotfiles () {
 install_bits_and_bobs () {
   # Set up a recent version of vim
   (
-    if [ "$(uname -s)" == "Darwin" ]; then
-      echo "I cannot build vim from source on macOS yet."
-      # Exits the current subshell only, not the function/script.
-      exit
-    fi
-
-    # TODO(andrei): Make this cross-platform (FWIW PITA on Mac).
+    # TODO(andrei): Ensure this is cross-platform.
     if which vim >/dev/null 2>&1 ; then
       echo "Detected vim."
       VIMVERSION=$(vim --version | head -1 | cut -d ' ' -f 5)
 
-      if echo "$VIMVERSION >= 8.0" | bc; then
+      if [[ 1 -eq $(echo "$VIMVERSION >= 8.0" | bc) ]]; then
         echo "vim version [$VIMVERSION] OK!"
         exit
       fi
@@ -160,22 +154,27 @@ install_bits_and_bobs () {
       echo "No vim detected. Installing from source."
     fi
 
-    sudo apt install checkinstall
     cd ~/work
-    git clone https://github.com/vim/vim.git
-    cd vim
+    git clone https://github.com/vim/vim.git >/dev/null 2>&1
+    mkdir -p ~/.local
+    cd ~/work/vim
+    VIMDIR=~/.local
     ./configure --with-features=huge \
             --enable-multibyte \
             --enable-rubyinterp=yes \
-            --enable-python3interp=yes \
+            --enable-pythoninterp=yes \
+	    --with-python-config-dir=/usr/lib/python2.6/config-x86_64-linux-gnu/ \
             --enable-perlinterp=yes \
             --enable-luainterp=yes \
             --enable-gui=gtk2 \
             --enable-cscope \
-            --prefix=/usr/local || fail "Could not configure vim"
-    make VIMRUNTIMEDIR=/usr/local/share/vim/vim80 -j24 || fail "Could not make vim"
-    sudo checkinstall || fail "Coul not checkinstall vim"
+            --prefix=$VIMDIR >/dev/null || fail "Could not configure vim"
+    make VIMRUNTIMEDIR=$VIMDIR/share/vim/vim80 -j24 >/dev/null || fail "Could not make vim"
+    make install >/dev/null && ln -s ~/.local/bin/vim ~/bin/vim || fail "Could not install vim (locally)"
   ) || fail "Could not set up vim from source"
+
+  # Ensure the rest of the script uses the right vim, if applicable.
+  export PATH=~/bin:$PATH
 
   vimrc_src="${DOTFILES_ROOT}/vim/vimrc.symlink"
   vimrc_dst="$HOME/.$(basename "${vimrc_src%.*}")"
