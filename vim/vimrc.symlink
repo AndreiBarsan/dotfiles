@@ -82,7 +82,7 @@ Plugin 'vim-scripts/a.vim'          " *.c(c|pp)?-*h switcher
 if (v:version > 703 && has('patch143')) || v:version >= 800
   " Awesome autocomplete, but requires a very specific minimum vim version.
   " Disabled at times when I'm not doing a lot of dev in vim.
-  " Plugin 'Valloric/YouCompleteMe'
+  Plugin 'Valloric/YouCompleteMe'
 endif
 
 " Plugin purgatory
@@ -140,6 +140,9 @@ set visualbell
 " Use sensible regex parsing when searching
 nnoremap / /\v
 vnoremap / /\v
+
+" Allow 'natural' backspace behavior
+set backspace=indent,eol,start
 
 " Make all replacement operations global by default
 set gdefault
