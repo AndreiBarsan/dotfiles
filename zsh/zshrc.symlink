@@ -101,13 +101,6 @@ bindkey -e
 # Proper character encoding
 export LC_CTYPE=en_US.UTF-8
 
-# Fuck-powered autocorrect.
-if which thefuck >/dev/null 2>&1; then
-  # Does not work on the guppies (should work once I set Anaconda to be enabled
-  # by defaul).
-  eval "$(thefuck --alias >/dev/null 2>&1)"
-fi
-
 # Additional config parameters
 if [[ -e ~/.local.bash ]]; then
   source ~/.local.bash
@@ -166,6 +159,14 @@ fi
 # TODO(andrei): This may be redundant!!
 export PATH=~"/.local/bin:$PATH"
 
+# Fuck-powered autocorrect.
+if which fuck >/dev/null 2>&1; then
+  # Does not work on the guppies (should work once I set Anaconda to be enabled
+  # by defaul).
+  eval "$(thefuck --alias >/dev/null 2>&1)"
+fi
+
+
 muxcmd="tmux"
 
 # Set 'NO_TMUX' to prevent zsh from spawning a tmux session. This can be useful
@@ -181,3 +182,4 @@ fi
 # want that to be shown as an ugly red error code when we're, e.g., reloading
 # the config.
 true
+
