@@ -28,9 +28,7 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
   alias mvim='DISPLAY=:0 reattach-to-user-namespace mvim --servername vim-server'
   alias open='DISPLAY=:0 reattach-to-user-namespace open'
 else
-  # Temporarily disabled since the version on U of T's servers doesn't have
-  # server support *grumble grumble*.
-  # alias vim='vim --servername vim-server'
+  alias vim='vim --servername vim-server'
   alias open='xdg-open'
 fi
 

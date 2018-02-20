@@ -158,9 +158,15 @@ if which fuck >/dev/null 2>&1; then
   eval "$(thefuck --alias >/dev/null 2>&1)"
 fi
 
+# Set up linuxbrew if available
+if [[ -d "$HOME/.linuxbrew" ]]; then
+  export PATH="/home/andreib/.linuxbrew/bin:$PATH"
+  export MANPATH="/home/andreib/.linuxbrew/share/man:$MANPATH"
+  export INFOPATH="/home/andreib/.linuxbrew/share/info:$INFOPATH"
+fi
+
 
 muxcmd="tmux"
-
 # Set 'NO_TMUX' to prevent zsh from spawning a tmux session. This can be useful
 # if you want to quickly exec zsh without it kicking off tmux.
 if [[ -n "$NO_TMUX" ]]; then
@@ -174,4 +180,3 @@ fi
 # want that to be shown as an ugly red error code when we're, e.g., reloading
 # the config.
 true
-
