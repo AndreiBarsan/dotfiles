@@ -63,7 +63,7 @@ Plugin 'lervag/vimtex'              " Edit LaTeX in Vim
 Plugin 'luochen1990/rainbow'        " Easily identify nested statements
 Plugin 'plasticboy/vim-markdown'    " Markdown support, yep
 " Plugin 'Raimondi/delimitMate'       " Auto-complete quotes, parens, etc.
-" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}  " Super-speedy HTML typing
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}  " Super-speedy HTML typing
 Plugin 'scrooloose/nerdcommenter'   " Smart en-masse commenter
 Plugin 'scrooloose/nerdtree'        " File browser
 " Plugin 'scrooloose/syntastic'       " Lint-o-Matic
