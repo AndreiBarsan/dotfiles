@@ -53,16 +53,16 @@ Plugin 'gmarik/Vundle.vim'
 " then use `!sort -f' to sort it (`-f' means case-insensitive).
 Plugin 'benmills/vimux'             " Pretty interactions with tmux.
 Plugin 'flazz/vim-colorschemes'     " Moar color schemes
-Plugin 'godlygeek/tabular'          " Format stuff in columns
-Plugin 'gregsexton/MatchTag'        " HTML tag matching
-" Plugin 'jceb/vim-orgmode'           " org-mode in Vim. SpaceMacs is still better, yo!
+" Plugin 'godlygeek/tabular'          " Format stuff in columns
+" Plugin 'gregsexton/MatchTag'        " HTML tag matching
+Plugin 'jceb/vim-orgmode'           " org-mode in Vim. SpaceMacs is still better, yo!
 Plugin 'honza/vim-snippets'         " Snippets for UltiSnips
 Plugin 'kien/ctrlp.vim'             " Global fuzzy search
-" Plugin 'L9'                         " Lots of small helpers
+Plugin 'L9'                         " Lots of small helpers
 Plugin 'lervag/vimtex'              " Edit LaTeX in Vim
 Plugin 'luochen1990/rainbow'        " Easily identify nested statements
 Plugin 'plasticboy/vim-markdown'    " Markdown support, yep
-" Plugin 'Raimondi/delimitMate'       " Auto-complete quotes, parens, etc.
+Plugin 'Raimondi/delimitMate'       " Auto-complete quotes, parens, etc.
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}  " Super-speedy HTML typing
 Plugin 'scrooloose/nerdcommenter'   " Smart en-masse commenter
 Plugin 'scrooloose/nerdtree'        " File browser
@@ -75,14 +75,14 @@ Plugin 'tpope/vim-surround'         " Nice surrounding semantics.
 Plugin 'vim-airline/vim-airline'    " Pretty status line
 Plugin 'vim-scripts/a.vim'          " *.c(c|pp)?-*h switcher
 " Plugin 'johngrib/vim-game-code-break'
- Plugin 'tmux-plugins/vim-tmux'      " Play nice with tmux
- Plugin 'tmux-plugins/vim-tmux-focus-events'
+Plugin 'tmux-plugins/vim-tmux'      " Play nice with tmux
+Plugin 'tmux-plugins/vim-tmux-focus-events'
 
 
 if (v:version > 703 && has('patch143')) || v:version >= 800
   " Awesome autocomplete, but requires a very specific minimum vim version.
   " Disabled at times when I'm not doing a lot of dev in vim.
-  " Plugin 'Valloric/YouCompleteMe'
+  Plugin 'Valloric/YouCompleteMe'
 endif
 
 " Plugin purgatory
@@ -109,7 +109,8 @@ set number
 set hidden                    " Allow buffers in the background
 set noswapfile                " Shoo, shoo, swap files!
 set textwidth=79              " Use gq in visual mode to enforce it!
-set cursorline                " Highlight the current line
+" set cursorline              " Highlight the current line (can slow down vim
+                              "a lot!"
 set colorcolumn=80
 set hlsearch
 set incsearch
@@ -140,6 +141,9 @@ set visualbell
 " Use sensible regex parsing when searching
 nnoremap / /\v
 vnoremap / /\v
+
+" Allow 'natural' backspace behavior
+set backspace=indent,eol,start
 
 " Make all replacement operations global by default
 set gdefault
@@ -474,7 +478,7 @@ let g:used_javascript_libs = 'jquery,angularjs,jasmine'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:vimtex_enabled = 1
 let g:vimtext_mappings_enabled = 1
-"let g:vimtex_latexmk_options = '-xelatex -pdf'
+let g:vimtex_latexmk_options = '-xelatex -pdf'
 let g:vimtex_latexmk_continuous = 1
 
 " Manually set a few Vimtex commands which would otherwise be annoying to run
@@ -482,21 +486,18 @@ let g:vimtex_latexmk_continuous = 1
 nnoremap <leader>c :VimtexCompile<CR>
 nnoremap <leader>v :VimtexView<CR><space><CR>
 
-if has('macunix')
+let g:os = substitute(system('uname'), '\n', '', '')
+if g:os == "Darwin"
   " Use Skim on OSX because it's stable and feature-rich, and Zathura doesn't
   " work properly for some reason.
   let g:vimtex_view_method='skim'
 else
   " No need for custom stuff, since Zathura support is baked into vimtex.
   " Why Zathura? Because it's minimalistic and uses vim controls.
-  let g:vimtex_view_method='zathura'
+  " let g:vimtex_view_method='zathura'
+  let g:vimtex_view_method='mupdf'
 endif
 
-" Ubuntu Linux Config
-" No need for custom stuff, since Zathura support is baked into vimtex.
-" Why Zathura? Because it's minimalistic and uses vim controls.
-"let g:vimtex_view_method='zathura'
-let g:vimtex_view_method='skim'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vimux                                                                       "

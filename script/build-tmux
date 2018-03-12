@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -eu
+
+if [[ -z "$PROJECTS" ]]; then
+  echo >&2 "Please run this script after the basic bootstrap setup, so that " \
+    "I know where I should download and build tmux."
+  exit 10
+fi
+
+if ! [[ -d "$PROJECTS" ]]; then
+  echo >&2 "The projects directory [$PROJECTS] does not exist. Not creating " \
+    "by default, since it's a sign that this script is being called at an " \
+    "inappropriate time."
+  exit 20
+fi
+
+if [[ -d "$PROJECTS/tmux" ]]; then
+  mv -v "$PROJECTS/tmux" "$PROJECTS/tmux-old" || exit 25
+fi
+
+cd "$PROJECTS"
+git clone https://github.com/tmux/tmux.git || exit 30
+cd tmux
+sed -i 's/AC_INIT(tmux, master)/AC_INIT(tmux, 2.60)/g' configure.ac
+sh autogen.sh || exit 40
+./configure --prefix "$HOME/.local" || exit 50
+make -j24 || exit 60
+make install || exit 70
+
+echo "tmux master installed successfully"
+
+
+
+
+  
+

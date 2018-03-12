@@ -137,6 +137,45 @@ install_dotfiles () {
 # Miscellaneous tasks which should run after the main packages have been
 # installed and the configuration files symlinked.
 install_bits_and_bobs () {
+  # Set up a recent version of vim
+  (
+    if [ "$(uname -s)" == "Darwin" ]; then
+      echo "I cannot build vim from source on macOS yet."
+      # Exits the current subshell only, not the function/script.
+      exit
+    fi
+
+    # TODO(andrei): Make this cross-platform (FWIW PITA on Mac).
+    if which vim >/dev/null 2>&1 ; then
+      echo "Detected vim."
+      VIMVERSION=$(vim --version | head -1 | cut -d ' ' -f 5)
+
+      if $(echo "$VIMVERSION >= 8.0" | bc); then
+        echo "vim version [$VIMVERSION] OK!"
+        exit
+      fi
+
+      echo "Vim version [$VIMVERSION] insufficient. Installing from source."
+    else
+      echo "No vim detected. Installing from source."
+    fi
+
+    sudo apt install checkinstall
+    cd ~/work
+    git clone https://github.com/vim/vim.git
+    cd vim
+    ./configure --with-features=huge \
+            --enable-multibyte \
+            --enable-rubyinterp=yes \
+            --enable-python3interp=yes \
+            --enable-perlinterp=yes \
+            --enable-luainterp=yes \
+            --enable-gui=gtk2 \
+            --enable-cscope \
+            --prefix=/usr/local || fail "Could not configure vim"
+    make VIMRUNTIMEDIR=/usr/local/share/vim/vim80 -j24 || fail "Could not make vim"
+    sudo checkinstall || fail "Coul not checkinstall vim"
+  ) || fail "Could not set up vim from source"
 
   vimrc_src="${DOTFILES_ROOT}/vim/vimrc.symlink"
   vimrc_dst="$HOME/.$(basename "${vimrc_src%.*}")"
@@ -191,51 +230,63 @@ install_bits_and_bobs () {
       umask g-w,o-w
       env git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git $ZSH || {
         fail "Error: git clone of oh-my-zsh repo failed\n"
-      }
+    }
     fi
 
   ) || fail "Could not set up oh-my-zsh."
 
-  echo
-  info "Installing ag, the silver searcher."
-  (
-    # Install 'liblzma' for the local user.
+  if which ag >/dev/null 2>&1; then
+    info "ag already installed"
+  else
+    info "Installing ag, the silver searcher."
+    (
+      # Install 'liblzma' for the local user.
 
-    # TODO(andrei): Consider installing these in some local folder for future
-    # inspection, reinstalling, etc.
+      # TODO(andrei): Consider installing these in some local folder for future
+      # inspection, reinstalling, etc.
 
-    cd "$(mktemp -d)" && \
-    git clone https://github.com/kobolabs/liblzma >/dev/null && \
-    cd liblzma && \
-    ./configure --prefix="${HOME}" >/dev/null && make -j >/dev/null && \
-    make install >/dev/null || {
-      fail "Could not set up liblzma."
-    }
+      cd "$(mktemp -d)" && \
+      git clone https://github.com/kobolabs/liblzma >/dev/null && \
+      cd liblzma && \
+      ./configure --prefix="${HOME}" >/dev/null && make -j >/dev/null && \
+      make install >/dev/null || {
+        fail "Could not set up liblzma."
+      }
 
-    # Install 'the_silver_searcher' itself.
-    cd "$(mktemp -d)" && \
-    git clone https://github.com/ggreer/the_silver_searcher >/dev/null && \
-    cd the_silver_searcher && \
-    PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${HOME}/lib/pkgconfig" ./build.sh --prefix="${HOME}" >/dev/null && \
-    make install >/dev/null
-  ) || fail "Could not set up ag."
+      # Install 'the_silver_searcher' itself.
+      cd "$(mktemp -d)" && \
+      git clone https://github.com/ggreer/the_silver_searcher >/dev/null && \
+      cd the_silver_searcher && \
+      PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${HOME}/lib/pkgconfig" ./build.sh --prefix="${HOME}" >/dev/null && \
+      make install >/dev/null
+    ) || fail "Could not set up ag."
+  fi
 
-  echo
   info "Installing thefuck via pip..."
   (
-    if which pip >/dev/null 2>&1; then
+    if which pip3 >/dev/null 2>&1; then
       pip3 install --user thefuck --upgrade >/dev/null
     fi
   )
 
-  echo
   info "Installing patched powerline fonts..."
   (
     cd /tmp
+    if [[ -d "fonts" ]]; then
+      rm -rf "fonts"
+    fi
     git clone https://github.com/powerline/fonts
     cd fonts
     ./install.sh
   )
+
+  if ! [[ -d "$HOME/.tmux" && -d "$HOME/.tmux/plugins" && -d "$HOME/.tmux/plugins/tpm" ]]; then
+    info "No Tmux Plugin Manager. Installing..."
+    (
+      git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+      success "Installed tpm for tmux."
+    ) || fail "Could not set up tmux tpm."
+  fi
 
   success "Installed all bits and bobs."
 }

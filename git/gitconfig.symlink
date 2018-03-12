@@ -1,8 +1,8 @@
 [hub]
         protocol = https
 [user]
-        name = AndreiBarsan
-        email = andrei.ioan.barsan@gmail.com
+	name = AndreiBarsan
+	email = andrei.ioan.barsan@gmail.com
 [credential]
 	helper = osxkeychain
 [alias]
@@ -51,3 +51,8 @@
 	insteadOf = git://
 [init]
 	templatedir = ~/.git_template
+[pull]
+	rebase = true
+[merge]
+	conflictstyle = diff3
+	defaultToUpstream = true

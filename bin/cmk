@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Lazy cmake project build, backing up the old folder just in case
+
+CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
+CPU_COUNT=${CPU_COUNT:-8}
+
+set -eu
+
+([[ ! -d build/ ]] || mv -v build build-old) && mkdir build/ && cd build &&
+  cmake .. &&
+  make -j$CPU_COUNT
+

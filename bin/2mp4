@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Converts something like a webm to a more standard MP4, which is accepted by
+# more messaging clients as a media attachment.
+
+set -eu
+
+FILE="$1"
+NO_EXT="${FILE%.*}"
+
+ffmpeg -i "$FILE" "$NO_EXT.mp4"
