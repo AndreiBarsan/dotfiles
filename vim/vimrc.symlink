@@ -493,9 +493,13 @@ if g:os == "Darwin"
   let g:vimtex_view_method='skim'
 else
   " No need for custom stuff, since Zathura support is baked into vimtex.
-  " Why Zathura? Because it's minimalistic and uses vim controls.
-  " let g:vimtex_view_method='zathura'
-  let g:vimtex_view_method='mupdf'
+  " Why Zathura? Because it's minimalistic and uses vim controls. Also, it's
+  " much nicer than mupdf. Who the fuck thinks it's a good idea to disallow
+  " mouse-based scrolling??
+  let g:vimtex_view_method='zathura'
+
+  " For when zathura doesn't work.
+  " let g:vimtex_view_method='mupdf'
 endif
 
 
@@ -506,7 +510,7 @@ endif
 noremap <leader>p :VimuxPromptCommand<CR>
 " Run last command executed by VimuxRunCommand
 " Disabled since it conflicted with the vimtex mappings.
-"noremap <Leader>l :VimuxRunLastCommand<CR>
+noremap <Leader>o :VimuxRunLastCommand<CR>
 " Inspect runner pane: jump to it directly in tmux copy mode.
 noremap <Leader>vi :VimuxInspectRunner<CR>
 

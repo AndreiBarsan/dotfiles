@@ -163,9 +163,6 @@ install_bits_and_bobs () {
             --enable-multibyte \
             --enable-rubyinterp=yes \
             --enable-pythoninterp=yes \
-	    --with-python-config-dir=/usr/lib/python2.6/config-x86_64-linux-gnu/ \
-            --enable-perlinterp=yes \
-            --enable-luainterp=yes \
             --enable-gui=gtk2 \
             --enable-cscope \
             --prefix=$VIMDIR >/dev/null || fail "Could not configure vim"
