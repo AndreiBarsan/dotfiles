@@ -7,6 +7,8 @@ unbind C-b
 
 set -sg escape-time 1
 
+set-option -g default-terminal "screen-256color"
+
 # Watch for activity in background windows
 setw -g monitor-activity on
 set -g visual-activity on

@@ -319,7 +319,7 @@ else
   # TODO(andrei): Extract this into common helper.
   CAN_I_RUN_SUDO=$(sudo -n uptime 2>&1|grep "load"|wc -l)
   if [ ${CAN_I_RUN_SUDO} -gt 0 ]; then
-    sudo apt install -y build-essential cowsay sl scons cmake npm \
+    sudo apt install -y build-essential cowsay sl scons npm \
       curl htop autoconf autotools-dev python-dev python3-dev libpcre3 \
       libpcre3-dev lzma lzma-dev
   fi

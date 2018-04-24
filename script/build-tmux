@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# TODO nicer
+sudo apt install libevent-2.0.5 libevent-dev
+
 set -eu
 
 if [[ -z "$PROJECTS" ]]; then
@@ -16,6 +19,7 @@ if ! [[ -d "$PROJECTS" ]]; then
 fi
 
 if [[ -d "$PROJECTS/tmux" ]]; then
+  # TODO alternatively, cd, make uninstall, make clean, git pull
   mv -v "$PROJECTS/tmux" "$PROJECTS/tmux-old" || exit 25
 fi
 
