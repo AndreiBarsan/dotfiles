@@ -56,7 +56,7 @@ Plugin 'flazz/vim-colorschemes'     " Moar color schemes
 " Plugin 'godlygeek/tabular'          " Format stuff in columns
 " Plugin 'gregsexton/MatchTag'        " HTML tag matching
 Plugin 'jceb/vim-orgmode'           " org-mode in Vim. SpaceMacs is still better, yo!
-Plugin 'honza/vim-snippets'         " Snippets for UltiSnips
+" Plugin 'honza/vim-snippets'         " Snippets for UltiSnips
 Plugin 'kien/ctrlp.vim'             " Global fuzzy search
 Plugin 'L9'                         " Lots of small helpers
 Plugin 'lervag/vimtex'              " Edit LaTeX in Vim
@@ -68,7 +68,7 @@ Plugin 'scrooloose/nerdcommenter'   " Smart en-masse commenter
 Plugin 'scrooloose/nerdtree'        " File browser
 " Plugin 'scrooloose/syntastic'       " Lint-o-Matic
 " Plugin 'sheerun/vim-polyglot'       " Smart support for tons of languages
-Plugin 'SirVer/ultisnips'           " Code snippet management
+" Plugin 'SirVer/ultisnips'           " Code snippet management
 Plugin 'sjl/gundo.vim'              " Navigate undo tree visually
 " Plugin 'skwp/greplace.vim'          " Global replace tools
 Plugin 'tpope/vim-surround'         " Nice surrounding semantics.
@@ -82,7 +82,7 @@ Plugin 'tmux-plugins/vim-tmux-focus-events'
 if (v:version > 703 && has('patch143')) || v:version >= 800
   " Awesome autocomplete, but requires a very specific minimum vim version.
   " Disabled at times when I'm not doing a lot of dev in vim.
-  Plugin 'Valloric/YouCompleteMe'
+  " Plugin 'Valloric/YouCompleteMe'
 endif
 
 " Plugin purgatory

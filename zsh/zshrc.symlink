@@ -151,6 +151,10 @@ fi
 # TODO(andrei): This may be redundant!!
 export PATH=~"/.local/bin:$PATH"
 
+# The oh-my-zsh defaults are pretty tiny. Let's fix that!
+export HISTSIZE=1000000
+export SAVEHIST=1000000
+
 # Fuck-powered autocorrect.
 if which fuck >/dev/null 2>&1; then
   # Does not work on the guppies (should work once I set Anaconda to be enabled
