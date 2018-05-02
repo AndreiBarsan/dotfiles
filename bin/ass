@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Assembles images in a folder into a nice video.
+
+set -eu
+
+if [[ "$#" -ne 2 ]]; then
+  echo >&2 "Usage: $0 <pattern> <output_video>"
+  echo >&2 ""
+  echo >&2 "Example: $0 imgs/foo%03d.png render.mp4"
+  echo >&2 ""
+  exit 1
+fi
+
+FRAMERATE=10
+IN_FMT="$1"
+OUT_FPATH="$2"
+
+ffmpeg -framerate $FRAMERATE -i "$IN_FMT" "$OUT_FPATH"
+
