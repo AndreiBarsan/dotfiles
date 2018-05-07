@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -eu
+
+PATHS=("/usr/local/cuda/include/cudnn.h" "/usr/include/cudnn.h")
+
+for P in ${PATHS[@]}; do
+  echo -n "Search => $P: "
+  if [[ -f "$P" ]]; then
+    echo "Found!"
+    cat "$P" | grep CUDNN_MAJOR -A 2
+  else
+    echo "Nope."
+  fi
+done
