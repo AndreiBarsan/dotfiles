@@ -14,7 +14,7 @@ values."
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layer-path '()
-   ;; List of configuration layers to load. If it is the symbol `all' instead
+   ;; List of configuration layers tospacemacs org mode not load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
@@ -24,6 +24,7 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     helm
      auto-completion
      better-defaults
      emacs-lisp
@@ -57,9 +58,11 @@ This function is called at the very startup of Spacemacs initialization
 before layers configuration.
 You should not put any user code in there besides modifying the variable
 values."
+
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
+   dotspacemacs-elpa-https t
    ;; One of `vim', `emacs' or `hybrid'. Evil is always enabled but if the
    ;; variable is `emacs' then the `holy-mode' is enabled at startup. `hybrid'
    ;; uses emacs key bindings for vim's insert mode, but otherwise leaves evil
@@ -93,7 +96,7 @@ values."
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("DejaVu Sans Mono for Powerline"
-                               :size 10
+                               :size 18
                                :weight normal
                                :width normal
                                :powerline-scale 1.0)
@@ -193,35 +196,37 @@ values."
    ;; TODO maybe disable or fix in org mode, since it's messed up by the
    ;; variable font size.
    dotspacemacs-line-numbers t
-   ))
+   )
+
+  ;; Possible fix for broken org mode
+  (package-initialize '())
+
+  )
 
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
 It is called immediately after `dotspacemacs/init'.  You are free to put any
 user code."
-  ;;(require 'ob-python)
-  ;;(require 'ob-ditaa)
-  ;;
-  ;;(setq org-ditaa-jar-path "/usr/local/bin/ditaa")
-  ;;
-  ;;(org-babel-do-load-languages
-  ;;'org-babel-load-languages
-  ;;'((python . t)
-  ;;(ditaa . t)
-  ;;))
+ ;;  (setq org-todo-keywords
+ ;;       '((sequence "TODO(t!)" "NEXT(n!)" "STARTED(s!)" "WAITING(w!)" "READY(r!)" "|" "DONE(d!)" "CANCELLED(c!)")))
+ ;; (setq org-todo-keyword-faces
+ ;;       '(("TODO" . "red")
+ ;;         ("NEXT" . "orange")
+ ;;         ("STARTED" . "orange")
+ ;;         ("WAITING" . "blue")
+ ;;         ("READY" . "brown")
+ ;;         ("DONE" . "green")
+ ;;         ("CANCELLED" . "green")))
 
-;  (setq org-todo-keywords
-;       '((sequence "TODO(t!)" "NEXT(n!)" "STARTED(s!)" "WAITING(w!)" "READY(r!)" "|" "DONE(d!)" "CANCELLED(c!)")))
-; (setq org-todo-keyword-faces
-;       '(("TODO" . "red")
-;         ("NEXT" . "orange")
-;         ("STARTED" . "orange")
-;         ("WAITING" . "blue")
-;         ("READY" . "brown")
-;         ("DONE" . "green")
-;         ("CANCELLED" . "green")))
+   (setq org-todo-keywords
+        '((sequence "TODO(t!)" "WAITING(w!)" "DONE(d!)" "CANCELLED(c!)")))
+  (setq org-todo-keyword-faces
+        '(("TODO" . "red")
+          ("WAITING" . "blue")
+          ("DONE" . "green")
+          ("CANCELLED" . "green")))
 
-  ;; TODO map tab to % in anything but org more
+  ;; Todo map tab to % in anything but org more
   ;; TODO C-tab (maybe?) to move between buffers in the current pane quickly
   ;; TODO Can we swap : and ;? in evil mode?
 
@@ -248,7 +253,21 @@ layers configuration. You are free to put any user code."
   (define-key evil-motion-state-map (kbd "C-h") 'windmove-left)
 
   ;; scale org mode inline latex up a bit
-  (plist-put org-format-latex-options :scale 1.5)
+  ;; (plist-put org-format-latex-options :scale 1.5)
+
+  (require 'ob-python)
+  ;;(require 'ob-ditaa)
+  ;;
+  ;;(setq org-ditaa-jar-path "/usr/local/bin/ditaa")
+
+  ;; Enabling this seems to ruin org-mode's keybindings...
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '( (python . t)
+  ))
+
+  ;; Nicer indents in org-babel src blocks
+  ;; (setq org-src-tab-acts-natively t)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will

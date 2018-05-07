@@ -1,3 +1,5 @@
+# Despite the extension, these aliases should be shell-agnostic
+
 # grc overides for ls
 #   Made possible through contributions from generous benefactors like
 #   `brew install coreutils`
@@ -37,3 +39,4 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias cp='cp -i'
 
+alias shiet='notify-send "SSSSSHHHIIIIIIIIIIIIIIIIIIIIEEEEEEEEEEEEEEEEEEEEEEEEETT" -i ~/Pictures/db.jpg'

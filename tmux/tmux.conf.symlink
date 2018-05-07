@@ -88,27 +88,30 @@ bind p paste-buffer
 #bind -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
 
 
+# TODO(andreib): Remove commands which are commented out and supported by the
+# `tmux-pain-control` plugin,
 # Easy-to-remember split pane commands which open in the same folder!
-bind | split-window -h -c "#{pane_current_path}"
-bind - split-window -v -c "#{pane_current_path}"
+# bind | split-window -h -c "#{pane_current_path}"
+# bind - split-window -v -c "#{pane_current_path}"
+
 unbind '"'
 unbind %
 
 # moving between panes with vim movement keys
-bind h select-pane -L
-bind j select-pane -D
-bind k select-pane -U
-bind l select-pane -R
+# bind h select-pane -L
+# bind j select-pane -D
+# bind k select-pane -U
+# bind l select-pane -R
 
 # moving between windows with vim movement keys
 bind -r C-h select-window -t :-
 bind -r C-l select-window -t :+
 
 # resize panes with vim movement keys
-bind -r H resize-pane -L 5
-bind -r J resize-pane -D 5
-bind -r K resize-pane -U 5
-bind -r L resize-pane -R 5
+# bind -r H resize-pane -L 5
+# bind -r J resize-pane -D 5
+# bind -r K resize-pane -U 5
+# bind -r L resize-pane -R 5
 
 # Make sure our active pane borders are fat and easy to see.
 set -g pane-border-fg white
@@ -125,6 +128,7 @@ set -g pane-active-border-fg colour190
 # List of plugins
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-pain-control'
 
 # Persists sessions across restarts: [prefix] C-s = save, C-r = restore
 set -g @plugin 'tmux-plugins/tmux-resurrect'

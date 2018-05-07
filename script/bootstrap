@@ -154,6 +154,7 @@ install_bits_and_bobs () {
       echo "No vim detected. Installing from source."
     fi
 
+    # sudo apt install checkinstall
     cd ~/work
     git clone https://github.com/vim/vim.git >/dev/null 2>&1
     mkdir -p ~/.local
