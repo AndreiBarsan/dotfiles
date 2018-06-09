@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
-
-# TODO nicer
-sudo apt install libevent-2.0.5 libevent-dev
+# Builds tmux and installs for the local user.
 
 set -eu
+
+# Set this to a valid tag name or 'master'.
+TMUX_VERSION="2.7"
+
+gib libevent-2.0.5 libevent-dev
 
 if [[ -z "$PROJECTS" ]]; then
   echo >&2 "Please run this script after the basic bootstrap setup, so that " \
@@ -20,22 +23,18 @@ fi
 
 if [[ -d "$PROJECTS/tmux" ]]; then
   # TODO alternatively, cd, make uninstall, make clean, git pull
+  (cd "$PROJECTS/tmux" && make uninstall && make clean)
   mv -v "$PROJECTS/tmux" "$PROJECTS/tmux-old" || exit 25
 fi
 
 cd "$PROJECTS"
 git clone https://github.com/tmux/tmux.git || exit 30
 cd tmux
-sed -i 's/AC_INIT(tmux, master)/AC_INIT(tmux, 2.60)/g' configure.ac
+git fetch && git checkout "$TMUX_VERSION"
 sh autogen.sh || exit 40
 ./configure --prefix "$HOME/.local" || exit 50
 make -j24 || exit 60
 make install || exit 70
 
-echo "tmux master installed successfully"
-
-
-
-
-  
+echo "tmux version [$TMUX_VERSION] installed successfully"
 
