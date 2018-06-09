@@ -6,7 +6,7 @@ set -eu
 # Set this to a valid tag name or 'master'.
 TMUX_VERSION="2.7"
 
-gib libevent-2.0.5 libevent-dev
+sudo apt install --yes --no-install-recommends libevent-2.0.5 libevent-dev
 
 if [[ -z "$PROJECTS" ]]; then
   echo >&2 "Please run this script after the basic bootstrap setup, so that " \
