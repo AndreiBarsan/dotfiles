@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # Poor man's top for GPU activity.
 
-watch -n 0.5 nvidia-smi
+watch -n 0.1 nvidia-smi
