@@ -218,13 +218,15 @@ user code."
  ;;         ("DONE" . "green")
  ;;         ("CANCELLED" . "green")))
 
+  ;; The pipe separates active/inactive states.
    (setq org-todo-keywords
-        '((sequence "TODO(t!)" "WAITING(w!)" "DONE(d!)" "CANCELLED(c!)")))
+        '((sequence "TODO(t!)" "FROG(f!)" "WAITING(w!)" "|" "CANCELED(c!)" "DONE(d!)")))
   (setq org-todo-keyword-faces
         '(("TODO" . "red")
+          ("FROG" . "magenta")
           ("WAITING" . "blue")
-          ("DONE" . "green")
-          ("CANCELLED" . "green")))
+          ("CANCELED" . "green")
+          ("DONE" . "green")))
 
   ;; Todo map tab to % in anything but org more
   ;; TODO C-tab (maybe?) to move between buffers in the current pane quickly
