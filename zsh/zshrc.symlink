@@ -163,11 +163,11 @@ if which fuck >/dev/null 2>&1; then
 fi
 
 # Set up linuxbrew if available
-if [[ -d "$HOME/.linuxbrew" ]]; then
-  export PATH="/home/andreib/.linuxbrew/bin:$PATH"
-  export MANPATH="/home/andreib/.linuxbrew/share/man:$MANPATH"
-  export INFOPATH="/home/andreib/.linuxbrew/share/info:$INFOPATH"
-fi
+# if [[ -d "$HOME/.linuxbrew" ]]; then
+  # export PATH="/home/andreib/.linuxbrew/bin:$PATH"
+  # export MANPATH="/home/andreib/.linuxbrew/share/man:$MANPATH"
+  # export INFOPATH="/home/andreib/.linuxbrew/share/info:$INFOPATH"
+# fi
 
 
 muxcmd="tmux"
