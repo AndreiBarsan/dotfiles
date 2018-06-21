@@ -40,3 +40,6 @@ alias rm='rm -i'
 alias cp='cp -i'
 
 alias shiet='notify-send "SSSSSHHHIIIIIIIIIIIIIIIIIIIIEEEEEEEEEEEEEEEEEEEEEEEEETT" -i ~/Pictures/db.jpg'
+
+# [Linux] Ensure tmux always uses 256 colors
+alias tmux='tmux -2'

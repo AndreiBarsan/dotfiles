@@ -159,10 +159,11 @@ install_bits_and_bobs () {
     git clone https://github.com/vim/vim.git >/dev/null 2>&1
     mkdir -p ~/.local
     cd ~/work/vim
+    git fetch
+    git checkout v8.1.0041
     VIMDIR=~/.local
     ./configure --with-features=huge \
             --enable-multibyte \
-            --enable-rubyinterp=yes \
             --enable-pythoninterp=yes \
             --enable-gui=gtk2 \
             --enable-cscope \
@@ -259,12 +260,12 @@ install_bits_and_bobs () {
     ) || fail "Could not set up ag."
   fi
 
-  info "Installing thefuck via pip..."
-  (
-    if which pip3 >/dev/null 2>&1; then
-      pip3 install --user thefuck --upgrade >/dev/null
-    fi
-  )
+  # info "Installing thefuck via pip..."
+  # (
+    # if which pip3 >/dev/null 2>&1; then
+      # pip3 install --user thefuck --upgrade >/dev/null
+    # fi
+  # ) || fail "Could not set up thefuck"
 
   info "Installing patched powerline fonts..."
   (
