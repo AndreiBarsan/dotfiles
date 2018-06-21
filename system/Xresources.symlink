@@ -1,0 +1,15 @@
+! Pretty 21st century fonts
+xterm*faceName:       DejaVu\ Sans\ Mono\ for\ Powerline
+xterm*faceSize:       10
+xterm*renderFont:     true
+
+! Sensible mouse/C-S-c/C-S-v/etc. support
+xterm*VT100.Translations: #override \
+    Shift <KeyPress> Insert: insert-selection(CLIPBOARD) \n\
+    Ctrl Shift <Key>V:    insert-selection(CLIPBOARD) \n\
+    Ctrl Shift <Key>C:    copy-selection(CLIPBOARD) \n\
+    Ctrl <Btn1Up>: exec-formatted("xdg-open '%t'", PRIMARY)
+XTerm*termName:       xterm-256color
+
+! This ensures copying from tmux works ok.
+XTerm*disallowedWindowOps: 20,21,SetXprop
