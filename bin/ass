@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# Assembles images in a folder into a nice video.
+# ASSembles images in a folder into a nice video.
 
 set -eu
 
-if [[ "$#" -ne 2 ]]; then
-  echo >&2 "Usage: $0 <pattern> <output_video>"
+if [[ "$#" -lt 2 ]]; then
+  echo >&2 "Usage: $0 <pattern> <output_video> [--other --flags:here]"
   echo >&2 ""
-  echo >&2 "Example: $0 imgs/foo%03d.png render.mp4"
+  echo >&2 "Examples: $0 imgs/foo%03d.png render.mp4"
+  echo >&2 "          $0 'imgs/bar_%*.png' render.mp4 -filter:v scale=1280:-1"
   echo >&2 ""
   exit 1
 fi
@@ -14,6 +15,9 @@ fi
 FRAMERATE=10
 IN_FMT="$1"
 OUT_FPATH="$2"
+shift; shift
 
-ffmpeg -framerate $FRAMERATE -i "$IN_FMT" "$OUT_FPATH"
+echo -e "\n\tFramerate: $FRAMERATE\n"
+
+ffmpeg -framerate $FRAMERATE -i "$IN_FMT" "$@" "$OUT_FPATH"
 

@@ -5,9 +5,12 @@
 # codesync. Pro-tip: you can use more than one devbox at a time. (But please
 # try not to hog resources unnecessarily!)
 #
+# This script only terminates when the devbox shuts down, or if there's an
+# error. Otherwise, it will just keep doing the code sync.
+#
 # Requirements:
 #   - 'AV' environment variable pointing to the root of the rAV repository.
-#   - Michelangelo tool (ma) set up for internal use.
+#   - Michelangelo tool (ma) set up for internal Uber ATG use.
 
 set -euo pipefail
 

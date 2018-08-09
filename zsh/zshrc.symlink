@@ -17,8 +17,12 @@
 # [UofT] Set a sensible $PATH for CSLab.
 if [ -z "$LEVEL" ] ; then
 	export LEVEL=1
-	export PATH=$HOME/bin:/local/bin:$HOME/local/bin:$PATH
-	umask 077
+  # At this point, this is just pollution.
+	# export PATH=$HOME/bin:/local/bin:$HOME/local/bin:$PATH
+
+  # This makes created files have very strict permissions, which can break
+  # docker.
+	# umask 077
 fi
 
 # Continuously refresh compinit, so we can instantly autocomplete the names of
@@ -169,6 +173,10 @@ fi
   # export INFOPATH="/home/andreib/.linuxbrew/share/info:$INFOPATH"
 # fi
 
+eval $(thefuck --alias)
+
+# Support rust
+export PATH="$PATH:$HOME/.cargo/bin"
 
 muxcmd="tmux"
 # Set 'NO_TMUX' to prevent zsh from spawning a tmux session. This can be useful
