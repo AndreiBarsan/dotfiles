@@ -50,8 +50,6 @@
         default = simple
 [url "https://"]
 	insteadOf = git://
-[init]
-	templatedir = ~/.git_template
 [pull]
 	rebase = true
 [merge]

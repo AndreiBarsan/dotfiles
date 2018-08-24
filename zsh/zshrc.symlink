@@ -60,8 +60,7 @@ for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}; do
 done
 
 # initialize autocomplete here, otherwise functions won't be loaded
-autoload -U compinit
-compinit
+autoload -U compinit && compinit
 
 # Support bash-style autocompletion, not just zsh-style
 autoload bashcompinit

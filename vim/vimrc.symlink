@@ -77,6 +77,7 @@ Plugin 'vim-scripts/a.vim'          " *.c(c|pp)?-*h switcher
 " Plugin 'johngrib/vim-game-code-break'
 Plugin 'tmux-plugins/vim-tmux'      " Play nice with tmux
 Plugin 'tmux-plugins/vim-tmux-focus-events'
+Plugin 'z0mbix/vim-shfmt'           " Auto-format shell scripts
 
 
 if (v:version > 703 && has('patch143')) || v:version >= 800
