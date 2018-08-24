@@ -15,7 +15,7 @@
 set -euo pipefail
 
 # Define the script's parameters
-DEVBOX_TTL_H=12
+DEVBOX_TTL_H=16
 NUM_GPUS=4
 
 # Start to do the work
@@ -26,7 +26,7 @@ time "$AV/bin/yyz_docker_build"
 echo "Docker image rebuilt OK."
 
 time "$AV/bin/ma" train tf docker                  \
-	--zone irn-prod-gpus --respool /Research    \
+	--zone pit1-prod02 --respool /Toronto    \
 	--num-gpus "$NUM_GPUS"                      \
 	--custom-docker $(cat ~/.YYZ_DOCKER_LATEST) \
 	--command-line "sleep $DEVBOX_TTL_S"

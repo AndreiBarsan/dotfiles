@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Quickly run a CPU command on a remote node.
+#
+# Example:
+#   copsme du -hd1 /some/big/dir/which/takes/forever/to/du/locally
+
+set -euo pipefail
+IFS=$'\n\t'
+
+~/work/av/bin/cops --cluster PROD01 --respool /Toronto \
+  --docker run $(cat ~/.YYZ_DOCKER_LATEST) "$@"
+
+
