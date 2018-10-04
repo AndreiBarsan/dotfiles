@@ -1,7 +1,7 @@
 [hub]
         protocol = https
 [user]
-	name = AndreiBarsan
+	name = Ioan Andrei Bârsan
 	email = andrei.ioan.barsan@gmail.com
 [credential]
 	helper = osxkeychain
