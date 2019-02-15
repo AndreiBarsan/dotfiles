@@ -82,11 +82,6 @@ plugins=(git osx zsh-syntax-highlighting conda)
 ZSH_THEME="gnzh"
 source "$ZSH/oh-my-zsh.sh"
 
-# Huge command history: the interaction between these two size limits is a
-# little funny, but these should go a pretty long way.
-SAVEHIST=5000000
-HISTSIZE=5000000
-
 # Only disconnect if we triple C-d.
 export IGNOREEOF=2
 
@@ -101,13 +96,6 @@ bindkey -e
 # Proper character encoding
 export LC_CTYPE=en_US.UTF-8
 
-# Fuck-powered autocorrect.
-if which thefuck >/dev/null 2>&1; then
-  # Does not work on the guppies (should work once I set Anaconda to be enabled
-  # by defaul).
-  eval "$(thefuck --alias >/dev/null 2>&1)"
-fi
-
 # Additional config parameters
 if [[ -e ~/.local.bash ]]; then
   source ~/.local.bash
@@ -117,9 +105,6 @@ fi
 # if [[ -e ~/.zshrc.job ]]; then
   # source ~/.zshrc.job
 # fi
-
-# export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-export PATH="$PATH:$HOME/.local/bin"
 
 # [OSX] iTerm2 integration (e.g. automatic theme switching depending on ssh
 # host and other magic stuff).
@@ -165,6 +150,14 @@ fi
 # Ensure user installations of powerline work.
 # TODO(andrei): This may be redundant!!
 export PATH=~"/.local/bin:$PATH"
+
+# Fuck-powered autocorrect.
+if which fuck >/dev/null 2>&1; then
+  # Does not work on the guppies (should work once I set Anaconda to be enabled
+  # by defaul).
+  eval "$(thefuck --alias >/dev/null 2>&1)"
+fi
+
 
 muxcmd="tmux"
 

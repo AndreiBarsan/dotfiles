@@ -36,9 +36,6 @@ else
   alias open='xdg-open'
 fi
 
-# Lazy cmake project build, backing up the old folder just in case
-alias cmk='([[ ! -d build/ ]] || mv -v build build-old) && mkdir build/ && cd build && cmake .. && make -j8'
-
 # Traditional safety measure
 alias mv='mv -i'
 alias rm='rm -i'
