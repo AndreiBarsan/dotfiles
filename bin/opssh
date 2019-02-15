@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-opus -da wbu2/da1 devbox ssh $1
