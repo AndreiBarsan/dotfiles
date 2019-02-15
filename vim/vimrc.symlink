@@ -51,14 +51,17 @@ Plugin 'gmarik/Vundle.vim'
 
 " Hint: keep this in alphabetical order!  To sort it, select the whole list,
 " then use `!sort -f' to sort it (`-f' means case-insensitive).
-Plugin 'benmills/vimux'             " Pretty interactions with tmux.
+" Plugin 'benmills/vimux'             " Pretty interactions with tmux.
 Plugin 'flazz/vim-colorschemes'     " Moar color schemes
 " Plugin 'godlygeek/tabular'          " Format stuff in columns
 " Plugin 'gregsexton/MatchTag'        " HTML tag matching
-Plugin 'jceb/vim-orgmode'           " org-mode in Vim. SpaceMacs is still better, yo!
+" Plugin 'google/vim-maktaba'         " Dependency for 'vim-codefmt'
+" Plugin 'google/vim-codefmt'         " Code autoformatting
+" Plugin 'google/vim-glaive'          " Dependency for 'vim-codefmt'
+" Plugin 'jceb/vim-orgmode'           " org-mode in Vim. SpaceMacs is still better, yo!
 Plugin 'honza/vim-snippets'         " Snippets for UltiSnips
 Plugin 'kien/ctrlp.vim'             " Global fuzzy search
-Plugin 'L9'                         " Lots of small helpers
+" Plugin 'L9'                         " Lots of small helpers
 Plugin 'lervag/vimtex'              " Edit LaTeX in Vim
 Plugin 'luochen1990/rainbow'        " Easily identify nested statements
 Plugin 'plasticboy/vim-markdown'    " Markdown support, yep
@@ -69,15 +72,16 @@ Plugin 'scrooloose/nerdtree'        " File browser
 " Plugin 'scrooloose/syntastic'       " Lint-o-Matic
 " Plugin 'sheerun/vim-polyglot'       " Smart support for tons of languages
 Plugin 'SirVer/ultisnips'           " Code snippet management
-Plugin 'sjl/gundo.vim'              " Navigate undo tree visually
+Plugin 'sjl/gundo.vim'              " Navigate undo tree visually (this plugin
+                                    " can and will save your ass at some point!)
 " Plugin 'skwp/greplace.vim'          " Global replace tools
 Plugin 'tpope/vim-surround'         " Nice surrounding semantics.
 Plugin 'vim-airline/vim-airline'    " Pretty status line
 Plugin 'vim-scripts/a.vim'          " *.c(c|pp)?-*h switcher
 " Plugin 'johngrib/vim-game-code-break'
-Plugin 'tmux-plugins/vim-tmux'      " Play nice with tmux
-Plugin 'tmux-plugins/vim-tmux-focus-events'
-Plugin 'z0mbix/vim-shfmt'           " Auto-format shell scripts
+" Plugin 'tmux-plugins/vim-tmux'      " Play nice with tmux
+" Plugin 'tmux-plugins/vim-tmux-focus-events'
+" Plugin 'z0mbix/vim-shfmt'           " Auto-format shell scripts
 
 
 if (v:version > 703 && has('patch143')) || v:version >= 800
@@ -100,6 +104,8 @@ endif
 
 call vundle#end()             " required
 filetype plugin indent on     " required
+
+" call glaive#Install()         " Set up glaive for easy (sub-)config mgmt
 
 set autoindent
 set smartindent
@@ -430,16 +436,27 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntastic
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
 " Disable automatic checks in Python, because they are very slow
 "let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [],'passive_filetypes': ['python'] }
 
 " disable pymode's folding, for now
-"let g:pymode_folding = 0
+let g:pymode_folding = 0
 " We have syntastic for linting (but pymode might be better).
 "let g:pymode_lint = 0
 "let g:pymode_lint_on_write = 0
+" If enabled, Syntastic provides nice auto syntax checks (but lags like hell
+" for me).
+"" Syntastic {
+    let g:syntastic_enable_signs=1
+    let g:syntastic_python_checkers=['flake8']
+    let g:syntastic_python_flake8_args = "--max-line-length=120"
+    let g:syntastic_cpp_include_dirs = ['source', 'build/source', '/usr/include']
+    let g:syntastic_cpp_compiler = 'clang++-3.5'
+    let g:syntastic_cpp_compiler_options = ' -std=c++11'
+    let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_check_on_open = 1
+    let g:syntastic_check_on_wq = 0
+" }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " rainbow
@@ -458,6 +475,15 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts=1
 " Ensure it's on from the start.
 set laststatus=2
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-codefmt
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Glaive codefmt plugin[mappings]
+" Glaive codefmt
+    " \ clang_format_executable='/opt/clang+llvm-3.8.0/bin/clang-format'
+    " \ clang_format_style='file'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -508,12 +534,12 @@ endif
 " vimux                                                                       "
 " Run arbitrary commands in a separate tmux pane, on the fly. Woo!            "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-noremap <leader>p :VimuxPromptCommand<CR>
+" noremap <leader>p :VimuxPromptCommand<CR>
 " Run last command executed by VimuxRunCommand
 " Disabled since it conflicted with the vimtex mappings.
-noremap <Leader>o :VimuxRunLastCommand<CR>
+" noremap <Leader>o :VimuxRunLastCommand<CR>
 " Inspect runner pane: jump to it directly in tmux copy mode.
-noremap <Leader>vi :VimuxInspectRunner<CR>
+" noremap <Leader>vi :VimuxInspectRunner<CR>
 
 " vim-conda
 "let g:conda_startup_msg_suppress = 1
