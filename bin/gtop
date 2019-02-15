@@ -1,4 +1,14 @@
 #!/usr/bin/env bash
-# Poor man's top for GPU activity.
+# Launch nvtop with a decent fallback.
+set -euo pipefail
+IFS=$'\n\t'
 
-watch -n 0.1 nvidia-smi
+
+if hash nvtop 2>/dev/null; then
+  # Use pretty one if available
+  nvtop
+else
+  # Use fallback
+  watch -n 0.1 nvidia-smi
+fi
+
