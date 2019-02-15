@@ -186,7 +186,6 @@ values."
    dotspacemacs-persistent-server nil
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
-   ;; (default '("ag" "pt" "ack" "grep"))
    dotspacemacs-search-tools '("ag" "pt" "ack" "grep")
    ;; The default package repository used if no explicit repository has been
    ;; specified with an installed package.
@@ -195,12 +194,11 @@ values."
    ;; Enable line numbers
    ;; TODO maybe disable or fix in org mode, since it's messed up by the
    ;; variable font size.
-   dotspacemacs-line-numbers t
+   ;; dotspacemacs-line-numbers t
    )
 
   ;; Possible fix for broken org mode
   (package-initialize '())
-
   )
 
 (defun dotspacemacs/user-init ()
@@ -228,9 +226,12 @@ user code."
           ("CANCELED" . "green")
           ("DONE" . "green")))
 
-  ;; Todo map tab to % in anything but org more
+  ;; TODO map tab to % in anything but org more
   ;; TODO C-tab (maybe?) to move between buffers in the current pane quickly
   ;; TODO Can we swap : and ;? in evil mode?
+
+  ;; Enable auto fill mode on all text files (auto line breaks)
+  (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
   ; The line below seems to cause an error loading the config
   ; (spacemacs/toggle-truncate-lines-on)
@@ -254,19 +255,58 @@ layers configuration. You are free to put any user code."
   (define-key evil-motion-state-map (kbd "C-k") 'windmove-up)
   (define-key evil-motion-state-map (kbd "C-h") 'windmove-left)
 
+  (setq dotspacemacs-line-numbers nil)
+
   ;; scale org mode inline latex up a bit
   ;; (plist-put org-format-latex-options :scale 1.5)
 
   (require 'ob-python)
-  ;;(require 'ob-ditaa)
-  ;;
-  ;;(setq org-ditaa-jar-path "/usr/local/bin/ditaa")
-
   ;; Enabling this seems to ruin org-mode's keybindings...
   (org-babel-do-load-languages
    'org-babel-load-languages
    '( (python . t)
-  ))
+      (latex . t)))
+
+  ;; Hooks
+  (defun add-hooks (hooks fun)
+    "Add FUN to all the HOOKS."
+    (dolist (hook hooks)
+      (add-hook hook fun)))
+
+  ;; Tweak the padding of certain modes, like org
+  (add-hooks '(cfw:calendar-mode-hook
+                text-mode-hook
+                org-agenda-mode-hook
+                slack-mode-hook
+                ibuffer-mode-hook
+                magit-status-mode-hook
+                magit-popup-mode-hook
+                magit-log-mode-hook
+                magit-diff-mode-hook
+                comint-mode-hook
+                eshell-mode-hook
+                slime-repl-mode-hook
+                process-menu-mode-hook
+                mu4e-view-mode-hook
+                mu4e-main-mode-hook)
+              (lambda () (progn
+                          (setq left-margin-width 4)
+                          (setq right-margin-width 4)
+                          (set-window-buffer nil (current-buffer)))))
+
+  ;; Allows us to resize images in org-mode
+  (setq org-image-actual-width nil)
+
+  (with-eval-after-load 'org
+    (setq org-startup-indented t
+          org-clock-idle-time 5
+          org-ellipsis "  "
+          org-pretty-entities t
+          org-hide-emphasis-markers t
+          org-agenda-block-separator ""
+          org-fontify-whole-heading-line t
+          org-fontify-done-headline t
+          org-fontify-quote-and-verse-blocks t))
 
   ;; Nicer indents in org-babel src blocks
   ;; (setq org-src-tab-acts-natively t)
@@ -284,7 +324,6 @@ layers configuration. You are free to put any user code."
  '(ansi-color-names-vector
    ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
  '(blink-cursor-mode t)
- '(column-number-mode t)
  '(compilation-message-face (quote default))
  '(cua-global-mark-cursor-color "#2aa198")
  '(cua-normal-cursor-color "#839496")
@@ -327,7 +366,7 @@ layers configuration. You are free to put any user code."
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (dactyl-mode auctex-latexmk yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic company-auctex auctex unfill smeargle orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu highlight elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed ace-link ace-jump-helm-line helm helm-core popup which-key undo-tree org-plus-contrib hydra evil-unimpaired f s dash async aggressive-indent adaptive-wrap ace-window avy)))
+    (rainbow-mode dactyl-mode auctex-latexmk yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic company-auctex auctex unfill smeargle orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu highlight elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed ace-link ace-jump-helm-line helm helm-core popup which-key undo-tree org-plus-contrib hydra evil-unimpaired f s dash async aggressive-indent adaptive-wrap ace-window avy)))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
