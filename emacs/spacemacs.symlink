@@ -308,6 +308,10 @@ layers configuration. You are free to put any user code."
           org-fontify-done-headline t
           org-fontify-quote-and-verse-blocks t))
 
+  ;; Make rendered LaTeX bigger.
+  ;; Remember, M-: allows on-the-fly ELISP evaluation.
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.75))
+
   ;; Nicer indents in org-babel src blocks
   ;; (setq org-src-tab-acts-natively t)
 )
