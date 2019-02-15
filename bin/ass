@@ -19,5 +19,14 @@ shift; shift
 
 echo -e "\n\tFramerate: $FRAMERATE\n"
 
-ffmpeg -framerate $FRAMERATE -i "$IN_FMT" "$@" "$OUT_FPATH"
+# Encode the frames into a video ensuring the pixel format is correct and that
+# we do a little bit of compression. '-crf' should be between 0 and 51, with
+# 0 being lossless. 23 is the default, and 51 is worst quality.
+#
+# If you don't add the 'yuv420p' specifiers many video players will be unable
+# to load your video and Adobe Premiere Pro will shit itself hard when
+# attempting to either load the videos, or output them.
+#
+# YUV is an alternative to RGB which is used in most videos.
+ffmpeg -framerate $FRAMERATE -i "$IN_FMT" "$@" -pix_fmt yuv420p -crf 18 "$OUT_FPATH"
 
