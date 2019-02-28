@@ -17,8 +17,12 @@
 # [UofT] Set a sensible $PATH for CSLab.
 if [ -z "$LEVEL" ] ; then
 	export LEVEL=1
-	export PATH=$HOME/bin:/local/bin:$HOME/local/bin:$PATH
-	umask 077
+  # At this point, this is just pollution.
+	# export PATH=$HOME/bin:/local/bin:$HOME/local/bin:$PATH
+
+  # This makes created files have very strict permissions, which can break
+  # docker.
+	# umask 077
 fi
 
 # Continuously refresh compinit, so we can instantly autocomplete the names of
@@ -41,12 +45,6 @@ else
   export ZSH="${PROJECTS}/dotfiles"
 fi
 
-# Stash local environment variables in ~/.localrc. This means they'll stay out
-# of the main dotfiles repository (which is public).
-if [[ -a ~/.localrc ]]; then
-  source ~/.localrc
-fi
-
 # all of our zsh files
 typeset -U config_files
 config_files=($ZSH/**/*.zsh)
@@ -62,8 +60,7 @@ for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}; do
 done
 
 # initialize autocomplete here, otherwise functions won't be loaded
-autoload -U compinit
-compinit
+autoload -U compinit && compinit
 
 # Support bash-style autocompletion, not just zsh-style
 autoload bashcompinit
@@ -73,6 +70,12 @@ bashcompinit
 for file in ${(M)config_files:#*/completion.zsh}; do
   source $file
 done
+
+# Stash local environment variables in ~/.localrc. This means they'll stay out
+# of the main dotfiles repository (which is public).
+if [[ -a ~/.localrc ]]; then
+  source ~/.localrc
+fi
 
 unset config_files
 
@@ -151,6 +154,10 @@ fi
 # TODO(andrei): This may be redundant!!
 export PATH=~"/.local/bin:$PATH"
 
+# The oh-my-zsh defaults are pretty tiny. Let's fix that!
+export HISTSIZE=1000000
+export SAVEHIST=1000000
+
 # Fuck-powered autocorrect.
 if which fuck >/dev/null 2>&1; then
   # Does not work on the guppies (should work once I set Anaconda to be enabled
@@ -159,12 +166,16 @@ if which fuck >/dev/null 2>&1; then
 fi
 
 # Set up linuxbrew if available
-if [[ -d "$HOME/.linuxbrew" ]]; then
-  export PATH="/home/andreib/.linuxbrew/bin:$PATH"
-  export MANPATH="/home/andreib/.linuxbrew/share/man:$MANPATH"
-  export INFOPATH="/home/andreib/.linuxbrew/share/info:$INFOPATH"
-fi
+# if [[ -d "$HOME/.linuxbrew" ]]; then
+  # export PATH="/home/andreib/.linuxbrew/bin:$PATH"
+  # export MANPATH="/home/andreib/.linuxbrew/share/man:$MANPATH"
+  # export INFOPATH="/home/andreib/.linuxbrew/share/info:$INFOPATH"
+# fi
 
+eval $(thefuck --alias)
+
+# Support rust
+export PATH="$PATH:$HOME/.cargo/bin"
 
 muxcmd="tmux"
 # Set 'NO_TMUX' to prevent zsh from spawning a tmux session. This can be useful

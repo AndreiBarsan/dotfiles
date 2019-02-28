@@ -32,6 +32,7 @@
   excludesfile = ~/.gitignore
   editor = vim
   pager = diff-so-fancy | less --tabs=4 -RFX
+	autocrlf = false
 
 [apply]
         whitespace = nowarn
@@ -49,8 +50,6 @@
         default = simple
 [url "https://"]
 	insteadOf = git://
-[init]
-	templatedir = ~/.git_template
 [pull]
 	rebase = true
 [merge]

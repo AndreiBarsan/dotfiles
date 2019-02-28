@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -eu
+
+IBUS_ENABLE_SYNC_MODE=1 ibus-daemon -d -r
+

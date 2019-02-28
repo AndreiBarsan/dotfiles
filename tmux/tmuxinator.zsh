@@ -21,7 +21,7 @@ if [[ $(uname -s) == 'Linux' ]]; then
     return
   }
 
-  compdef _tmuxinator tmuxinator mux
+  # compdef _tmuxinator tmuxinator mux
   alias mux="tmuxinator"
 fi
 
