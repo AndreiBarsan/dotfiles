@@ -24,6 +24,7 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     helm
      auto-completion
      better-defaults
      emacs-lisp
@@ -93,7 +94,7 @@ values."
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("DejaVu Sans Mono for Powerline"
-                               :size 10
+                               :size 16
                                :weight normal
                                :width normal
                                :powerline-scale 1.0)
@@ -192,38 +193,44 @@ values."
    ;; Enable line numbers
    ;; TODO maybe disable or fix in org mode, since it's messed up by the
    ;; variable font size.
-   dotspacemacs-line-numbers t
-   ))
+   ;; dotspacemacs-line-numbers t
+   )
+
+  ;; Possible fix for broken org mode
+  (package-initialize '())
+  )
 
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
 It is called immediately after `dotspacemacs/init'.  You are free to put any
 user code."
-  ;;(require 'ob-python)
-  ;;(require 'ob-ditaa)
-  ;;
-  ;;(setq org-ditaa-jar-path "/usr/local/bin/ditaa")
-  ;;
-  ;;(org-babel-do-load-languages
-  ;;'org-babel-load-languages
-  ;;'((python . t)
-  ;;(ditaa . t)
-  ;;))
+ ;;  (setq org-todo-keywords
+ ;;       '((sequence "TODO(t!)" "NEXT(n!)" "STARTED(s!)" "WAITING(w!)" "READY(r!)" "|" "DONE(d!)" "CANCELLED(c!)")))
+ ;; (setq org-todo-keyword-faces
+ ;;       '(("TODO" . "red")
+ ;;         ("NEXT" . "orange")
+ ;;         ("STARTED" . "orange")
+ ;;         ("WAITING" . "blue")
+ ;;         ("READY" . "brown")
+ ;;         ("DONE" . "green")
+ ;;         ("CANCELLED" . "green")))
 
-;  (setq org-todo-keywords
-;       '((sequence "TODO(t!)" "NEXT(n!)" "STARTED(s!)" "WAITING(w!)" "READY(r!)" "|" "DONE(d!)" "CANCELLED(c!)")))
-; (setq org-todo-keyword-faces
-;       '(("TODO" . "red")
-;         ("NEXT" . "orange")
-;         ("STARTED" . "orange")
-;         ("WAITING" . "blue")
-;         ("READY" . "brown")
-;         ("DONE" . "green")
-;         ("CANCELLED" . "green")))
+  ;; The pipe separates active/inactive states.
+   (setq org-todo-keywords
+        '((sequence "TODO(t!)" "FROG(f!)" "WAITING(w!)" "|" "CANCELED(c!)" "DONE(d!)")))
+  (setq org-todo-keyword-faces
+        '(("TODO" . "red")
+          ("FROG" . "magenta")
+          ("WAITING" . "blue")
+          ("CANCELED" . "green")
+          ("DONE" . "green")))
 
   ;; TODO map tab to % in anything but org more
   ;; TODO C-tab (maybe?) to move between buffers in the current pane quickly
   ;; TODO Can we swap : and ;? in evil mode?
+
+  ;; Enable auto fill mode on all text files (auto line breaks)
+  (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
   ; The line below seems to cause an error loading the config
   ; (spacemacs/toggle-truncate-lines-on)
@@ -247,8 +254,10 @@ layers configuration. You are free to put any user code."
   (define-key evil-motion-state-map (kbd "C-k") 'windmove-up)
   (define-key evil-motion-state-map (kbd "C-h") 'windmove-left)
 
+  (setq dotspacemacs-line-numbers nil)
+
   ;; scale org mode inline latex up a bit
-  (plist-put org-format-latex-options :scale 1.5)
+  ;; (plist-put org-format-latex-options :scale 1.5)
 
   (require 'ob-python)
   ;; Enabling this seems to ruin org-mode's keybindings...
@@ -332,7 +341,7 @@ layers configuration. You are free to put any user code."
   ;; Enable vim-like persistent undo history
   (setq undo-tree-auto-save-history t
         undo-tree-history-directory-alist
-        `(("." . ,(concat spacemacs-cache-directory "undo"))))
+      `(("." . ,(concat spacemacs-cache-directory "undo"))))
   (unless (file-exists-p (concat spacemacs-cache-directory "undo"))
     (make-directory (concat spacemacs-cache-directory "undo")))
 
