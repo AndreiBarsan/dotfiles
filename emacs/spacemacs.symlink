@@ -249,6 +249,95 @@ layers configuration. You are free to put any user code."
 
   ;; scale org mode inline latex up a bit
   (plist-put org-format-latex-options :scale 1.5)
+
+  (require 'ob-python)
+  ;; Enabling this seems to ruin org-mode's keybindings...
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '( (python . t)
+      (latex . t)))
+
+  ;; Hooks
+  (defun add-hooks (hooks fun)
+    "Add FUN to all the HOOKS."
+    (dolist (hook hooks)
+      (add-hook hook fun)))
+
+  ;; Tweak the padding of certain modes, like org
+  (add-hooks '(cfw:calendar-mode-hook
+                text-mode-hook
+                org-agenda-mode-hook
+                slack-mode-hook
+                ibuffer-mode-hook
+                magit-status-mode-hook
+                magit-popup-mode-hook
+                magit-log-mode-hook
+                magit-diff-mode-hook
+                comint-mode-hook
+                eshell-mode-hook
+                slime-repl-mode-hook
+                process-menu-mode-hook
+                mu4e-view-mode-hook
+                mu4e-main-mode-hook)
+              (lambda () (progn
+                          (setq left-margin-width 4)
+                          (setq right-margin-width 4)
+                          (set-window-buffer nil (current-buffer)))))
+
+  ;; Allows us to resize images in org-mode
+  (setq org-image-actual-width nil)
+
+  (with-eval-after-load 'org
+    (setq org-startup-indented t
+          org-clock-idle-time 5
+          org-ellipsis "  "
+          org-pretty-entities t
+          org-hide-emphasis-markers t
+          org-agenda-block-separator ""
+          org-fontify-whole-heading-line t
+          org-fontify-done-headline t
+          org-fontify-quote-and-verse-blocks t))
+
+  ;; Make rendered LaTeX bigger.
+  ;; Remember, M-: allows on-the-fly ELISP evaluation.
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.75))
+
+  ;; Make org mode files always autosave into the same file.
+  (add-hook 'org-mode-hook 'auto-save-visited-mode)
+
+  ;; From the Emacs manual:
+  ;; "When auto-save-visited-mode is enabled, Emacs will auto-save
+  ;; file-visiting buffers after five seconds of idle time. You can customize
+  ;; the variable auto-save-visited-interval to change the idle time interval."
+  (setq auto-save-visited-interval 15)
+
+  ;; Make Emacs auto-save every file every 50 characters (default is 200, minimum is 20). (For all files.)
+  (setq auto-save-interval 50)
+
+  ;; Configure file backups, since we are now always auto-saving to the same file!
+  (setq make-backup-files t
+        backup-by-copying t
+        version-control t        ;; add version numbers to backup files
+        delete-old-versions t
+        kept-new-versions 20
+        kept-old-versions 10
+        version-control t)
+
+  ;; Trigger an auto-save on loss of focus
+  (defun save-all ()
+    (interactive)
+    (save-some-buffers t))
+  (add-hook 'focus-out-hook 'save-all)
+
+  ;; Enable vim-like persistent undo history
+  (setq undo-tree-auto-save-history t
+        undo-tree-history-directory-alist
+        `(("." . ,(concat spacemacs-cache-directory "undo"))))
+  (unless (file-exists-p (concat spacemacs-cache-directory "undo"))
+    (make-directory (concat spacemacs-cache-directory "undo")))
+
+  ;; Nicer indents in org-babel src blocks
+  ;; (setq org-src-tab-acts-natively t)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
