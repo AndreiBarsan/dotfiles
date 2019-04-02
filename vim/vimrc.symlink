@@ -370,6 +370,10 @@ nnoremap <leader>l 5<C-w>>
 " Correctly highlight C and C++ code in Bison grammar files.
 autocmd BufRead,BufNewFile *.ypp set filetype=yacc
 
+" Automatically enable spell checking for markdown and LaTeX.
+autocmd BufRead,BufNewFile *.md set spell
+autocmd BufRead,BufNewFile *.tex set spell
+
 " Make the active vim window more obvious.
 augroup BgHighlight
     " TODO(andrei): Remember the old column limit.

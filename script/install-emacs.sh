@@ -2,7 +2,7 @@
 
 set -eu
 
-EMACS="emacs-25.3"
+EMACS="emacs-26.1"
 EMACS_XZ="${EMACS}.tar.xz"
 
 # SCRATCH_DIR="scratch-$EMACS"
@@ -22,11 +22,17 @@ fi
 tar xf "$EMACS_XZ"
 cd "$EMACS"
 
-./configure --prefix=$HOME/.local
+./configure CFLAGS='-O3' --prefix=$HOME/.local
 make -j24
 make install
 
+echo "================================================================================"
+echo
 echo "$EMACS installed successfully"
 echo "Your emacs: $(which emacs)"
 echo "Version info: $(emacs --version)"
+echo
+echo "To uninstall, go to $PWD and run 'make uninstall'."
 echo "Bye!"
+echo
+echo "================================================================================"

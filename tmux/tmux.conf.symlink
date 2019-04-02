@@ -137,6 +137,8 @@ set -g @plugin 'tmux-plugins/tmux-resurrect'
 # tmux-continuum goes one step further and does this continuously, seamlessly.
 set -g @plugin 'tmux-plugins/tmux-continuum'
 
+set -g @continuum-restore 'on'
+
 # Sane copying and pasting
 # Linux: recommended to have xsel installed.
 set -g @shell_mode 'vi'
