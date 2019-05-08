@@ -32,7 +32,7 @@
   excludesfile = ~/.gitignore
   editor = vim
   pager = diff-so-fancy | less --tabs=4 -RFX
-	autocrlf = false
+	autocrlf = input
 
 [apply]
         whitespace = nowarn
