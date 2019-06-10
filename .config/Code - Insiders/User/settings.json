@@ -1,0 +1,96 @@
+{
+  "autoDocstring.docstringFormat": "google",
+  "gitlens.currentLine.enabled": false,
+  "gitlens.hovers.currentLine.over": "line",
+  "editor.renderWhitespace": "all",
+  "breadcrumbs.enabled": true,
+  "editor.formatOnType": true,
+  "editor.mouseWheelZoom": true,
+  "files.trimTrailingWhitespace": true,
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "**/source/bazel-genfiles/**": true,
+  },
+  "telemetry.enableTelemetry": false,
+  "telemetry.enableCrashReporter": false,
+  "workbench.colorTheme": "Default Light+",
+  "remote.SSH.showLoginTerminal": true,
+  "python.dataScience.sendSelectionToInteractiveWindow": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.linting.flake8Args": [
+        "--max-line-length=120",
+        "--ignore=D101,D103,D105,D107",            // Ignore missing docstrings
+        "--verbose",
+  ],
+  "window.zoomLevel": 0,
+  // Vim crap goes last since it's a whole separate thing.
+  "vim.easymotion": true,
+  "vim.sneak": true,
+  "vim.incsearch": true,
+  "vim.useSystemClipboard": true,
+  "vim.useCtrlKeys": true,
+  "vim.hlsearch": true,
+  "vim.insertModeKeyBindings": [
+    {
+      "before": ["j", "j"],
+      "after": ["<Esc>"]
+    }
+  ],
+  "vim.textwidth": 120,
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<leader>", "d"],
+      "after": ["d", "d"]
+    },
+    {
+      "before": ["<C-n>"],
+      "commands": [":nohl"]
+    },
+    {
+      "before": [";"],
+      "after": [":"]
+    },
+    {
+      "before": [":"],
+      "after": [";"]
+    },
+    {
+      "before": ["<C-h>"],
+      "after": ["<C-w>", "h"],
+    },
+    {
+      "before": ["<C-l>"],
+      "after": ["<C-w>", "l"],
+    },
+    {
+      "before": ["<C-j>"],
+      "after": ["<C-w>", "j"],
+    },
+    {
+      "before": ["<C-k>"],
+      "after": ["<C-w>", "k"],
+    },
+    {
+      "before": ["<space>"],
+      "after": ["<C-p>"],
+    }
+  ],
+  "vim.leader": ",",
+  "vim.handleKeys": {
+    "<C-a>": false,
+    "<C-f>": false
+  },
+  "importMagic.maxColumns": 120,
+  "latex-workshop.intellisense.package.enabled": true,
+  "latex-workshop.intellisense.optionalArgsEntries.enabled": false,
+  "latex-workshop.intellisense.unimathsymbols.enabled": true,
+  "latex-workshop.latex.autoBuild.interval": 330,
+  "latex-workshop.message.information.show": true,
+  "python.linting.maxNumberOfProblems": 250,
+  "python.linting.pydocstyleEnabled": true,
+  "python.linting.pep8Enabled": true,
+  "python.linting.banditEnabled": true,
+}
