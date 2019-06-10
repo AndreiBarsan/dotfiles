@@ -127,10 +127,21 @@ install_dotfiles () {
 
   local overwrite_all=false backup_all=false skip_all=false
 
-  for src in $(find -H "$DOTFILES_ROOT" -maxdepth 3 -name '*.symlink' -not -path '*.git*')
-  do
+  find -H "$DOTFILES_ROOT" -maxdepth 4 -name "*.symlink" -not -path '*.git*' -print0 | while IFS= read -r -d '' src; do
+  if [[ "$src" == *'.config'* ]]; then
+    # We assume everything in our '.config' dir should actually be linked
+    # mirroring the exact directory structure into our home dir.
+    dir="$(dirname "${src:${#DOTFILES_ROOT}:-1}")"
+    mkdir -p "$HOME/$dir"
+
+    # Also, we no longer auto-add the dot in front of the filename.
+    dst="$HOME/$dir/$(basename "${src%.*}")"
+  else
+    # Everything not in '.config' will be linked directly into $HOME, with
+    # a '.' automatically added to the file name.
     dst="$HOME/.$(basename "${src%.*}")"
-    link_file "$src" "$dst"
+  fi
+  link_file "$src" "$dst"
   done
 }
 
@@ -324,9 +335,9 @@ else
   fi
 fi
 
-info "Installing bits and bobs BEFORE symlinking configs, since some of " \
-  "these bits and bobs may try to overwrite config files."
-install_bits_and_bobs
+# info "Installing bits and bobs BEFORE symlinking configs, since some of " \
+  # "these bits and bobs may try to overwrite config files."
+# install_bits_and_bobs
 
 install_dotfiles
 
