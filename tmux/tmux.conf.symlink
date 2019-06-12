@@ -7,9 +7,10 @@ unbind C-b
 
 set -sg escape-time 1
 
-# set-option -g default-terminal "screen-256color"
-set-option -g default-terminal "xterm-256color"
-
+# This top option is recommended by neovim.
+set-option -g default-terminal "screen-256color"
+# set-option -g default-terminal "xterm-256color"
+set-option -ga terminal-overrides ',xterm:RGB'
 
 # Watch for activity in background windows
 setw -g monitor-activity on

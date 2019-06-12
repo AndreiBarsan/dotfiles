@@ -1,8 +1,9 @@
 " Andrei Barsan's .vimrc of incredible awesomeness.
+" (As of 2019-06-12, seems to "just work" with neovim.)
 "
 " This file contains configuration parameters for a number of technologies
-" including Python, JavaScript (browser, Node, Meteor), C++ and Scala.  Feel
-" free to comment out whatever plugins you don't need.
+" including Python, C++ and LaTeX.  Feel free to comment out whatever plugins
+" you don't need.
 "
 " Inspired by many, many other `.vimrc's out there.  Notable ones include:
 "   - Coming Home to Vim
@@ -24,8 +25,6 @@
 " TODO(andrei): Configure C-k better.
 "
 " Current spare slots for mapping things:
-"  * <space>: doesn't do anything interesting in normal mode (Experimentally
-"    using it to trigger Ctrl-P fuzzy search at the moment)
 "  * <enter>: ditto
 "  * <K>:     tries to open the manual; not too useful
 "  * <leader>qwerty...
@@ -53,7 +52,7 @@ Plugin 'gmarik/Vundle.vim'
 " then use `!sort -f' to sort it (`-f' means case-insensitive).
 " Plugin 'benmills/vimux'             " Pretty interactions with tmux.
 Plugin 'flazz/vim-colorschemes'     " Moar color schemes
-" Plugin 'godlygeek/tabular'          " Format stuff in columns
+Plugin 'godlygeek/tabular'          " Format stuff in columns
 " Plugin 'gregsexton/MatchTag'        " HTML tag matching
 Plugin 'jceb/vim-orgmode'           " org-mode in Vim. SpaceMacs is still better, yo!
 Plugin 'honza/vim-snippets'         " Snippets for UltiSnips
@@ -66,7 +65,7 @@ Plugin 'Raimondi/delimitMate'       " Auto-complete quotes, parens, etc.
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}  " Super-speedy HTML typing
 Plugin 'scrooloose/nerdcommenter'   " Smart en-masse commenter
 Plugin 'scrooloose/nerdtree'        " File browser
-" Plugin 'scrooloose/syntastic'       " Lint-o-Matic
+Plugin 'scrooloose/syntastic'       " Lint-o-Matic
 " Plugin 'sheerun/vim-polyglot'       " Smart support for tons of languages
 Plugin 'SirVer/ultisnips'           " Code snippet management
 Plugin 'sjl/gundo.vim'              " Navigate undo tree visually (this plugin
@@ -75,9 +74,11 @@ Plugin 'sjl/gundo.vim'              " Navigate undo tree visually (this plugin
 Plugin 'tpope/vim-surround'         " Nice surrounding semantics.
 Plugin 'vim-airline/vim-airline'    " Pretty status line
 Plugin 'vim-scripts/a.vim'          " *.c(c|pp)?-*h switcher
+" Plugin 'klen/python-mode'           " Python navigation & other goodies
 " Plugin 'johngrib/vim-game-code-break'
-" Plugin 'tmux-plugins/vim-tmux'      " Play nice with tmux
-" Plugin 'tmux-plugins/vim-tmux-focus-events'
+Plugin 'tmux-plugins/vim-tmux'      " Play nice with tmux
+Plugin 'tmux-plugins/vim-tmux-focus-events'
+Plugin 'Yggdroot/indentLine'        " Visual indent guides
 " Plugin 'z0mbix/vim-shfmt'           " Auto-format shell scripts
 
 
@@ -92,7 +93,6 @@ endif
 " keeping it disabled for now
 "Plugin 'cjrh/vim-conda'             " Detect the correct Python when using Anaconda
 "Plugin 'burnettk/vim-angular'       " AngularJS magic
-"Plugin 'klen/python-mode'           " Python navigation & other goodies
 "Plugin 'tinymode.vim'               " Easy on-the-fly window resizing
 "Plugin 'tpope/vim-fugitive'         " git helper
 "Plugin 'marijnh/tern_for_vim'       " Smart JavaScript auto-complete
@@ -124,13 +124,14 @@ set smartcase                 " ...unless we type a capital
 set history=10000             " Huge vim command history
 set mouse=a
 
-colorscheme xemacs
+colorscheme iceberg
 set background=dark
 
 " Use soft tabs of length two
 autocmd Filetype * set tabstop=2|set shiftwidth=2|set expandtab
+" ...unless we're in python.
 autocmd Filetype python set tabstop=4|set shiftwidth=4|set expandtab
-" ...unless we're in a Makefile.
+" And use hard tabs in Makefiles.
 autocmd Filetype make set tabstop=4|set shiftwidth=4|set noexpandtab
 
 " Allow longer text lines for Scala
@@ -179,35 +180,6 @@ nnoremap ; :
 vnoremap ; :
 nnoremap : ;
 vnoremap : ;
-
-function! DoPrettyXML()
-  " save the filetype so we can restore it later
-  let l:origft = &ft
-  set ft=
-  " delete the xml header if it exists. This will
-  " permit us to surround the document with fake tags
-  " without creating invalid xml.
-  1s/<?xml .*?>//e
-  " insert fake tags around the entire document.
-  " This will permit us to pretty-format excerpts of
-  " XML that may contain multiple top-level elements.
-  0put ='<PrettyXML>'
-  $put ='</PrettyXML>'
-  silent %!xmllint --format -
-  " xmllint will insert an <?xml?> header. it's easy enough to delete
-  " if you don't want it.
-  " delete the fake tags
-  2d
-  $d
-  " restore the 'normal' indentation, which is one extra level
-  " too deep due to the extra tags we wrapped around the document.
-  silent %<
-  " back to home
-  1
-  " restore the filetype
-  exe "set ft=" . l:origft
-endfunction
-command! PrettyXML call DoPrettyXML()
 
 function ShowSpaces(...)
   let @/='\v(\s+$)|( +\ze\t)'
@@ -375,6 +347,7 @@ autocmd BufRead,BufNewFile *.md set spell
 autocmd BufRead,BufNewFile *.tex set spell
 
 " Make the active vim window more obvious.
+" TODO(andreib): Fix this. It doesn't seem to work...
 augroup BgHighlight
     " TODO(andrei): Remember the old column limit.
     autocmd!
@@ -382,6 +355,8 @@ augroup BgHighlight
     autocmd WinLeave * set nocul | set colorcolumn=0
 augroup END
 
+" Less aggressive highlighting of spelling errors
+hi SpellBad cterm=undercurl ctermbg=058
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin Configuration
@@ -433,15 +408,26 @@ if v:version > 703 && has('patch143')
   "let g:ycm_path_to_python_interpreter = '/usr/bin/python3'
 endif
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" PyMode
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:pymode = 1
+let g:pymode_doc = 1
+let g:pymode_lint = 1
+let g:pymode_rope = 1
+let g:pymode_options_max_line_length = 119
+" let g:pymode_rope_goto_definition_bind = ''
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntastic
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Disable automatic checks in Python, because they are very slow
 "let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [],'passive_filetypes': ['python'] }
+"
 
 " disable pymode's folding, for now
-let g:pymode_folding = 0
+" let g:pymode_folding = 0
 " We have syntastic for linting (but pymode might be better).
 "let g:pymode_lint = 0
 "let g:pymode_lint_on_write = 0
@@ -453,10 +439,15 @@ let g:pymode_folding = 0
     let g:syntastic_python_flake8_args = "--max-line-length=120"
     let g:syntastic_cpp_include_dirs = ['source', 'build/source', '/usr/include']
     let g:syntastic_cpp_compiler = 'clang++-3.5'
-    let g:syntastic_cpp_compiler_options = ' -std=c++11'
+    let g:syntastic_cpp_compiler_options = ' -std=c++14'
     let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_auto_loc_list = 1
     let g:syntastic_check_on_open = 1
     let g:syntastic_check_on_wq = 0
+
+    set statusline+=%#warningmsg#
+    set statusline+=%{SyntasticStatuslineFlag()}
+    set statusline+=%*
 " }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -494,7 +485,8 @@ let g:ctrlp_custom_ignore = 'node_modules\|git\|DS_Store'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
-" Experimental: tap space to search!
+let g:ctrlp_follow_symlinks = 1
+" Tap space to search!
 nnoremap <space> :CtrlP<CR>
 
 " javascript-libraries-syntax
