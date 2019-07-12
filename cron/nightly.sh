@@ -13,13 +13,15 @@ notify_error () {
 }
 trap notify_error ERR
 
+# Use rsync to back up my home directory to another drive.
+backup_home
 
 # Only try to rebuild work code on the work computer. ;)
-if hash rebuild_my_code >&2; then
-  echo "$(date)"
-  echo "Will rebuild your code..."
-  time rebuild_my_code no-2fa
-fi
+# if hash rebuild_my_code >&2; then
+  # echo "$(date)"
+  # echo "Will rebuild your code..."
+  # time rebuild_my_code no-2fa
+# fi
 
 echo "Nightly finished OK at $(date)."
 notify "Nightly cron job ran OK at $(date)." "More info in logs."

@@ -66,7 +66,7 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}  " Super-speedy HTML typing
 Plugin 'scrooloose/nerdcommenter'   " Smart en-masse commenter
 Plugin 'scrooloose/nerdtree'        " File browser
 Plugin 'scrooloose/syntastic'       " Lint-o-Matic
-" Plugin 'sheerun/vim-polyglot'       " Smart support for tons of languages
+Plugin 'sheerun/vim-polyglot'       " Smart support for tons of languages
 Plugin 'SirVer/ultisnips'           " Code snippet management
 Plugin 'sjl/gundo.vim'              " Navigate undo tree visually (this plugin
                                     " can and will save your ass at some point!)
@@ -152,6 +152,16 @@ set backspace=indent,eol,start
 
 " Make all replacement operations global by default
 set gdefault
+
+" Ensure LaTeX files are detected OK.
+let g:tex_flavor = "latex"
+if has('conceal')
+  " Auto-expand concealed math when our line is over it.
+  set conceallevel=1 concealcursor=i
+
+  " But disable in LaTeX because it's really annoying.
+  let g:tex_conceal=''
+endif
 
 " Use leader-space to clear the last search
 nnoremap <leader><space> :noh<cr>
@@ -334,6 +344,7 @@ if !exists(":DiffOrig")
 endif
 
 " Resize windows with arrow keys using <leader>hjkl.
+" No <C-S-...> is not a thing in vim because history.
 nnoremap <leader>k 5<C-w>-
 nnoremap <leader>j 5<C-w>+
 nnoremap <leader>h 5<C-w><
@@ -356,7 +367,7 @@ augroup BgHighlight
 augroup END
 
 " Less aggressive highlighting of spelling errors
-hi SpellBad cterm=undercurl ctermbg=058
+hi SpellBad cterm=undercurl ctermbg=052
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin Configuration
