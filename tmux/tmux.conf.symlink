@@ -128,9 +128,8 @@ bind -r C-l select-window -t :+
 # bind -r L resize-pane -R 5
 
 # Make sure our active pane borders are fat and easy to see.
-set -g pane-border-fg white
-set -g pane-active-border-bg colour190
-set -g pane-active-border-fg colour190
+set -g pane-border-style fg=white
+set -g pane-active-border-style fg=colour190,bg=colour190
 
 # TODO(andrei): Add the tpm setup to your bootstrap script.
 # Plugin setup using tpm: https://github.com/tmux-plugins/tpm
