@@ -1,6 +1,9 @@
 # Credit for original crontab layout: @paulirish
 #
-# env EDITOR=vim crontab -e
+# To install this file and overwrite the existing crontab:
+#   crontab 'crontab' 
+# You can then check that it's installed properly by using:
+#   crontab -e
 #
 # see cron/ folder
 #    chmod +x *.sh

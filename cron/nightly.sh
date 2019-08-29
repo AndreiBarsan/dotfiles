@@ -4,6 +4,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+export USER=andreib
 export PATH=$HOME/.local/bin:$HOME/.local/mini_tools:$PATH
 
 echo "Starting nightly cron: $(date)"
@@ -14,14 +15,14 @@ notify_error () {
 trap notify_error ERR
 
 # Use rsync to back up my home directory to another drive.
-backup_home
+backup_home || echo "Could not back up homedir!"
 
 # Only try to rebuild work code on the work computer. ;)
-# if hash rebuild_my_code >&2; then
-  # echo "$(date)"
-  # echo "Will rebuild your code..."
-  # time rebuild_my_code no-2fa
-# fi
+if hash rebuild_my_code >&2; then
+  echo "$(date)"
+  echo "Will rebuild your code..."
+  time rebuild_my_code no-2fa || echo "Could not rebuild code. Check log for details."
+fi
 
 echo "Nightly finished OK at $(date)."
 notify "Nightly cron job ran OK at $(date)." "More info in logs."
