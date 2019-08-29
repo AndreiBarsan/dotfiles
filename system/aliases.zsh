@@ -30,7 +30,8 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
   alias mvim='DISPLAY=:0 reattach-to-user-namespace mvim --servername vim-server'
   alias open='DISPLAY=:0 reattach-to-user-namespace open'
 else
-  alias vim='vim --servername vim-server'
+  # No more need for this in 2019
+  # alias vim='vim --servername vim-server'
   alias open='xdg-open'
 fi
 
@@ -39,7 +40,12 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias cp='cp -i'
 
-alias shiet='notify-send "SSSSSHHHIIIIIIIIIIIIIIIIIIIIEEEEEEEEEEEEEEEEEEEEEEEEETT" -i ~/Pictures/db.jpg'
+
+function shiet() {
+  BODY=${1-nope}
+  notify-send 'oh no' $BODY -i "$HOME/Pictures/ohno.png"
+}
+
 
 # [Linux] Ensure tmux always uses 256 colors
 alias tmux='tmux -2'
