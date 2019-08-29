@@ -61,6 +61,7 @@ Plugin 'L9'                         " Lots of small helpers
 Plugin 'lervag/vimtex'              " Edit LaTeX in Vim
 Plugin 'luochen1990/rainbow'        " Easily identify nested statements
 Plugin 'plasticboy/vim-markdown'    " Markdown support, yep
+" Plugin 'qpkorr/vim-bufkill'
 Plugin 'Raimondi/delimitMate'       " Auto-complete quotes, parens, etc.
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}  " Super-speedy HTML typing
 Plugin 'scrooloose/nerdcommenter'   " Smart en-masse commenter
@@ -72,10 +73,10 @@ Plugin 'sjl/gundo.vim'              " Navigate undo tree visually (this plugin
                                     " can and will save your ass at some point!)
 " Plugin 'skwp/greplace.vim'          " Global replace tools
 Plugin 'tpope/vim-surround'         " Nice surrounding semantics.
+Plugin 'tpope/vim-speeddating'      " Required for org mode.
 Plugin 'vim-airline/vim-airline'    " Pretty status line
 Plugin 'vim-scripts/a.vim'          " *.c(c|pp)?-*h switcher
-" Plugin 'klen/python-mode'           " Python navigation & other goodies
-" Plugin 'johngrib/vim-game-code-break'
+Plugin 'klen/python-mode'           " Python navigation & other goodies
 Plugin 'tmux-plugins/vim-tmux'      " Play nice with tmux
 Plugin 'tmux-plugins/vim-tmux-focus-events'
 Plugin 'Yggdroot/indentLine'        " Visual indent guides
@@ -112,10 +113,10 @@ syntax on                     " The correct way to enable syntax highlighting.
 set number
 set hidden                    " Allow buffers in the background
 set noswapfile                " Shoo, shoo, swap files!
-set textwidth=79              " Use gq in visual mode to enforce it!
+set textwidth=119              " Use gq in visual mode to enforce it!
 " set cursorline              " Highlight the current line (can slow down vim
                               "a lot!"
-set colorcolumn=80
+set colorcolumn=120
 set hlsearch
 set incsearch
 set showmatch
@@ -133,13 +134,6 @@ autocmd Filetype * set tabstop=2|set shiftwidth=2|set expandtab
 autocmd Filetype python set tabstop=4|set shiftwidth=4|set expandtab
 " And use hard tabs in Makefiles.
 autocmd Filetype make set tabstop=4|set shiftwidth=4|set noexpandtab
-
-" Allow longer text lines for Scala
-autocmd FileType scala set textwidth=119
-autocmd FileType scala set colorcolumn=120
-" ...and C++ since modern C++ is pretty verbose.
-autocmd FileType cpp set textwidth=99
-autocmd Filetype cpp set colorcolumn=100
 
 set visualbell
 
@@ -216,6 +210,9 @@ command -bar -nargs=0 -range=% TrimSpaces <line1>,<line2>call TrimSpaces()
 nnoremap <F10> :ShowSpaces 1<CR>
 nnoremap <S-F10> m`:TrimSpaces<CR>``
 vnoremap <S-F10> :TrimSpaces<CR>
+
+" Close a file without closing the window (doesn't work?)
+nnoremap <leader>r :bp<bar>sp<bar>bn<bar>bd<CR>
 
 " [OSX] [MacVim] Use CMD-1 to CMD-9 to access tabs.
 map <silent> <D-1> :tabn 1<cr>
@@ -359,12 +356,12 @@ autocmd BufRead,BufNewFile *.tex set spell
 
 " Make the active vim window more obvious.
 " TODO(andreib): Fix this. It doesn't seem to work...
-augroup BgHighlight
+" augroup BgHighlight
     " TODO(andrei): Remember the old column limit.
-    autocmd!
-    autocmd WinEnter * set cul   | set colorcolumn=80
-    autocmd WinLeave * set nocul | set colorcolumn=0
-augroup END
+    " autocmd!
+    " autocmd WinEnter * set cul   | set colorcolumn=80
+    " autocmd WinLeave * set nocul | set colorcolumn=0
+" augroup END
 
 " Less aggressive highlighting of spelling errors
 hi SpellBad cterm=undercurl ctermbg=052
@@ -423,31 +420,43 @@ endif
 " PyMode
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:pymode = 1
+let g:pymode_options = 1
 let g:pymode_doc = 1
 let g:pymode_lint = 1
-let g:pymode_rope = 1
+" This is OK since we now use neovim so it no longer hangs.
+let g:pymode_lint_on_write = 1
+let g:pymode_lint_on_fly = 1
+let g:pymode_lint_message = 1
+let g:pymode_trim_whitespaces = 1
 let g:pymode_options_max_line_length = 119
+let g:pymode_options_colorcolumn = 79
+" let g:pymode_python = '/home/andreib/work/av/bin/python2.7'
+let g:pymode_doc_bind = 'K'
 " let g:pymode_rope_goto_definition_bind = ''
+
+" Rope stuff: Refactoring, auto-imports, and more. Performance is terrible, though.
+" let g:pymode_rope = 1
+" This is very slow in non-trivial projects.
+let g:pymode_rope_regenerate_on_write = 0
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntastic
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Disable automatic checks in Python, because they are very slow
-"let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [],'passive_filetypes': ['python'] }
+" Disable automatic checks in LaTeX, since we already have vimtex.
+let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [],'passive_filetypes': ['latex', 'tex'] }
 "
 
 " disable pymode's folding, for now
 " let g:pymode_folding = 0
 " We have syntastic for linting (but pymode might be better).
 "let g:pymode_lint = 0
-"let g:pymode_lint_on_write = 0
 " If enabled, Syntastic provides nice auto syntax checks (but lags like hell
 " for me).
 "" Syntastic {
     let g:syntastic_enable_signs=1
-    let g:syntastic_python_checkers=['flake8']
-    let g:syntastic_python_flake8_args = "--max-line-length=120"
+    " let g:syntastic_python_checkers=['flake8']
+    " let g:syntastic_python_flake8_args = "--max-line-length=120"
     let g:syntastic_cpp_include_dirs = ['source', 'build/source', '/usr/include']
     let g:syntastic_cpp_compiler = 'clang++-3.5'
     let g:syntastic_cpp_compiler_options = ' -std=c++14'
@@ -502,6 +511,9 @@ nnoremap <space> :CtrlP<CR>
 
 " javascript-libraries-syntax
 let g:used_javascript_libs = 'jquery,angularjs,jasmine'
+
+
+let g:polyglot_disabled = ['latex']
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
