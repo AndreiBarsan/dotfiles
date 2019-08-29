@@ -2,10 +2,15 @@
 
 set -eu
 
-EMACS="emacs-26.1"
+EMACS="emacs-26.3"
 EMACS_XZ="${EMACS}.tar.xz"
 
 # SCRATCH_DIR="scratch-$EMACS"
+
+# Install the necessary Linux dependencies
+sudo apt-get install --yes texinfo libx11-dev libxpm-dev libjpeg-dev \
+  libpng-dev libgif-dev libtiff-dev libgtk2.0-dev \
+  libxpm-dev automake autoconf gnutls-dev
 
 mkdir -p ~/work
 cd ~/work

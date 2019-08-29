@@ -150,8 +150,11 @@ install_dotfiles () {
 install_bits_and_bobs () {
   # Set up a recent version of vim
   (
-    # TODO(andrei): Ensure this is cross-platform.
-    if which vim >/dev/null 2>&1 ; then
+    # TODO(andrei): Ensure this is cross-platform and supports nvim.
+    if hash nvim >/dev/null ; then
+        echo "Neovim detected. You're probably good!"
+	exit
+    elif which vim >/dev/null 2>&1 ; then
       echo "Detected vim."
       VIMVERSION=$(vim --version | head -1 | cut -d ' ' -f 5)
 
@@ -206,7 +209,12 @@ install_bits_and_bobs () {
 
   echo
   info "Installing vim plugins..."
-  vim +PluginInstall +qall
+  if hash nvim >/dev/null ; then
+    # This does NOT work, as of Jul 22, 2019, and I'm not sure why...
+    nvim --headless +PlugInstall +q
+  else
+    vim +PluginInstall +qall
+  fi
 
   echo
   info "Installing native components for vim plugins who need them..."
@@ -321,23 +329,20 @@ if [ "$(uname -s)" == "Darwin" ]; then
   fi
 else
   # Naively assume Ubuntu/Debian and install some misc. stuff.
-
-  # TODO(andrei): 'replicate' program in 'dotfiles/bin' which sets up my
-  # dotfiles on a given host. Tip: it could even be used to augment my
-  # .ssh/config file and create a proper ssh-to symlink.
+  gsettings set org.gnome.shell.app-switcher current-workspace-only true
 
   # TODO(andrei): Extract this into common helper.
   CAN_I_RUN_SUDO=$(sudo -n uptime 2>&1|grep "load"|wc -l)
   if [ ${CAN_I_RUN_SUDO} -gt 0 ]; then
-    sudo apt install -y build-essential cowsay sl scons npm \
+    sudo apt install -y build-essential cowsay sl scons \
       curl htop autoconf autotools-dev python-dev python3-dev libpcre3 \
-      libpcre3-dev lzma lzma-dev
+      libpcre3-dev lzma lzma-dev cmake redshift-gtk geoclue
   fi
 fi
 
-# info "Installing bits and bobs BEFORE symlinking configs, since some of " \
-  # "these bits and bobs may try to overwrite config files."
-# install_bits_and_bobs
+info "Installing bits and bobs BEFORE symlinking configs, since some of " \
+  "these bits and bobs may try to overwrite config files."
+install_bits_and_bobs
 
 install_dotfiles
 
