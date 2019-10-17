@@ -4,6 +4,7 @@
   "breadcrumbs.enabled": true,
   "editor.formatOnType": true,
   "editor.mouseWheelZoom": true,
+  "editor.rulers": [80,120],
   "files.trimTrailingWhitespace": true,
   "files.watcherExclude": {
     "**/.git/objects/**": true,
@@ -29,12 +30,10 @@
   ],
   "python.linting.maxNumberOfProblems": 250,
   "python.linting.pydocstyleEnabled": false,
-  "python.linting.pep8Enabled": true,
   "python.linting.banditEnabled": true,
   "remote.SSH.showLoginTerminal": true,
   "telemetry.enableTelemetry": false,
   "telemetry.enableCrashReporter": false,
-  "window.zoomLevel": 0,
   "workbench.colorTheme": "Default Light+",
   // Vim crap goes last since it's a whole separate thing.
   "vim.easymotion": true,
@@ -93,4 +92,15 @@
     "<C-a>": false,
     "<C-f>": false
   },
+  "workbench.iconTheme": "vscode-icons",
+  "terminal.integrated.rendererType": "dom",
+  "kite.pollingInterval": 1000,
+  "window.zoomLevel": 0,
+  "kite.showWelcomeNotificationOnStartup": false,
+  "editor.fontSize": 13,
+  "editor.glyphMargin": false,
+  "editor.smoothScrolling": true,
+  "editor.wordWrapColumn": 120,
+  "editor.cursorSurroundingLines": 5,
+  "editor.minimap.enabled": false,
 }
