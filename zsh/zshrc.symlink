@@ -152,8 +152,9 @@ fi
 export PATH=~"/.local/bin:$PATH"
 
 # The oh-my-zsh defaults are pretty tiny. Let's fix that!
-export HISTSIZE=1000000
-export SAVEHIST=1000000
+# FWIW, after 1.75yrs at Uber I have like 20k commands so 2M should last a while.
+export HISTSIZE=2000000
+export SAVEHIST=2000000
 
 # Fuck-powered autocorrect.
 if which fuck >/dev/null 2>&1; then
