@@ -12,7 +12,7 @@ if [[ "$#" -lt 2 ]]; then
   exit 1
 fi
 
-FRAMERATE=20
+FRAMERATE=30
 IN_FMT="$1"
 OUT_FPATH="$2"
 shift; shift
@@ -28,5 +28,5 @@ echo -e "\n\tFramerate: $FRAMERATE\n"
 # attempting to either load the videos, or output them.
 #
 # YUV is an alternative to RGB which is used in most videos.
-ffmpeg -framerate $FRAMERATE -i "$IN_FMT" "$@" -pix_fmt yuv420p -crf 18 "$OUT_FPATH"
+ffmpeg -framerate $FRAMERATE -i "$IN_FMT" -pix_fmt yuv420p -crf 18 "$@" "$OUT_FPATH"
 

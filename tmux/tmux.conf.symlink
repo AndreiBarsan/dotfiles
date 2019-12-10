@@ -36,8 +36,8 @@ set -g mode-keys vi
 
 # TODO(andrei): Should remove this if not needed.
 # Active/inactive pane coloring and sane mouse controls. Requires tmux 2.1.
-#if-shell "if [[ `tmux -V | cut -d' ' -f2` -gt 2.0 ]]; then true; else false; fi" \
-#'set -g window-style "fg=colour247,bg=colour232"; set -g window-active-style "fg=colour255,bg=black"; set -g mouse'
+if-shell "if [[ `tmux -V | cut -d' ' -f2` -gt 2.0 ]]; then true; else false; fi" \
+  'set -g window-style "fg=colour247,bg=colour232"; set -g window-active-style "fg=colour255,bg=black"; set -g mouse on'
 #if-shell "if [[ `tmux -V | cut -d' ' -f2` -ge 2.1 ]]; then true; else false; fi" \
     #'set -g mouse on; set -g mouse-utf8 on'
 
@@ -47,13 +47,13 @@ set -g mode-keys vi
 # Snippet source: http://stackoverflow.com/a/40902312/1055295
 run-shell "tmux setenv -g TMUX_VERSION $(tmux -V | cut -c 6-)"
 
-if-shell -b '[ "$(echo "$TMUX_VERSION < 2.1" | bc)" = 1 ]' \
-  "set -g mouse-select-pane on; set -g mode-mouse on; \
-      set -g mouse-resize-pane on; set -g mouse-select-window on"
+# if-shell -b '[ "$(echo "$TMUX_VERSION < 2.1" | bc)" = 1 ]' \
+  # "set -g mouse-select-pane on; set -g mode-mouse on; \
+      # set -g mouse-resize-pane on; set -g mouse-select-window on"
 
 # In version 2.1 "mouse" replaced the previous 4 mouse options
-if-shell -b '[ "$(echo "$TMUX_VERSION >= 2.1" | bc)" = 1 ]' \
- "set -g mouse on"
+# if-shell -b '[ "$(echo "$TMUX_VERSION >= 2.1" | bc)" = 1 ]' \
+ # "set -g mouse on"
 
 # UTF8 is autodetected in 2.2 onwards, but errors if explicitly set
 if-shell -b '[ "$(echo "$TMUX_VERSION < 2.2" | bc)" = 1 ]' \
@@ -84,11 +84,18 @@ bind p paste-buffer
 # bind -t vi-copy 'v' begin-selection
 # bind -t vi-copy 'y' copy-selection
 
+bind-key -T copy-mode-vi v send-keys -X begin-selection
+bind-key -T copy-mode-vi y send-keys -X copy-selection
+bind-key -T copy-mode-vi r send-keys -X rectangle-toggle
+
 # Linux-specific copying
-#bind -t vi-copy y copy-pipe "xclip -sel clip -i"
+# bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -sel clip -i"
+bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'xclip -in -selection clipboard'
+
 
 # Mac-specific copying
 #bind -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
+# bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "reattach-to-user-namespace pbcopy"
 
 
 # TODO(andreib): Remove commands which are commented out and supported by the
@@ -143,7 +150,9 @@ set -g @continuum-restore 'on'
 # Sane copying and pasting
 # Linux: recommended to have xsel installed.
 set -g @shell_mode 'vi'
-set -g @plugin 'tmux-plugins/tmux-yank'
+
+# No need for this, since newer versions of tmux have it built in.
+# set -g @plugin 'tmux-plugins/tmux-yank'
 
 # Initialize TMUX plugin manager (this line MUST ALWAYS be at the very bottom
 # of tmux.conf)
