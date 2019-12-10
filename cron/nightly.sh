@@ -4,6 +4,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+#
+# Ensure sensible environment vars are set, since cron doesn't load .zshrc / .bashrc (non-interactive shell).
+# 
 export USER=andreib
 export PATH=$HOME/.local/bin:$HOME/.local/mini_tools:$PATH
 
@@ -21,8 +24,23 @@ backup_home || echo "Could not back up homedir!"
 if hash rebuild_my_code >&2; then
   echo "$(date)"
   echo "Will rebuild your code..."
-  time rebuild_my_code no-2fa || echo "Could not rebuild code. Check log for details."
+  build=true
+  build_output="/tmp/av_build_log_$RANDOM.log"
+  (time rebuild_my_code no-2fa | tee $build_output) || echo "Could not rebuild code. Check log for details."
+else
+  build=false
+  echo "SKIPPING CODE REBUILD"
 fi
 
+#
+# Report the status of the jobs.
+#
 echo "Nightly finished OK at $(date)."
-notify "Nightly cron job ran OK at $(date)." "More info in logs."
+
+if $build; then
+  body="More info in logs. Built code OK!<br/>$(cat $build_output | tail -n 20)"
+else
+  body="More info in logs. Code was not built."
+fi
+
+notify "Nightly cron job ran OK at $(date)." "$body"
