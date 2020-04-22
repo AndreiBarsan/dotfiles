@@ -1,8 +1,8 @@
 [hub]
         protocol = https
 [user]
-	name = AndreiBarsan
-	email = andrei.ioan.barsan@gmail.com
+	name = Andrei Barsan
+	email = andreib@uber.com
 [credential]
 	helper = osxkeychain
 [alias]
@@ -55,3 +55,13 @@
 [merge]
 	conflictstyle = diff3
 	defaultToUpstream = true
+[branch]
+	autosetuprebase = always
+[rerere]
+	enabled = true
+[url "ssh://gitolite@code.uber.internal/"]
+	insteadOf = git://code.uber.internal/
+[url "ssh://git@github.com/uber/"]
+	insteadOf = https://github.com/uber/
+[credential "https://git.uberinternal.com"]
+	helper = usso

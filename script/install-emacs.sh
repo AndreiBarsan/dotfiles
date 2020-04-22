@@ -1,20 +1,19 @@
 #!/usr/bin/env bash
+# Installs a recent version of emacs in a user dir (~/.local by default).
 
 set -eu
 
 EMACS="emacs-26.3"
 EMACS_XZ="${EMACS}.tar.xz"
 
-# SCRATCH_DIR="scratch-$EMACS"
-
 # Install the necessary Linux dependencies
-sudo apt-get install --yes texinfo libx11-dev libxpm-dev libjpeg-dev \
-  libpng-dev libgif-dev libtiff-dev libgtk2.0-dev \
-  libxpm-dev automake autoconf gnutls-dev
+# sudo apt-get install --yes texinfo libx11-dev libxpm-dev libjpeg-dev \
+  # libpng-dev libgif-dev libtiff-dev libgtk2.0-dev \
+  # libxpm-dev automake autoconf gnutls-dev
 
 # Ensure we have access to homebrew stuff on macOS.
 # It's also super-important to have pkg-config installed on macOS.
-# brew install gnutls, libxml2 pkg-config
+# brew install gnutls libxml2 pkg-config
 export PKG_CONFIG_PATH="/usr/local/opt/gnutls/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
 export PKG_CONFIG_PATH="/usr/local/opt/libxml2/lib/pkgconfig:${PKG_CONFIG_PATH}"
 

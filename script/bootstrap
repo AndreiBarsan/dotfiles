@@ -256,27 +256,28 @@ install_bits_and_bobs () {
     info "ag already installed"
   else
     info "Installing ag, the silver searcher."
-    (
+    # (
+      # true
       # Install 'liblzma' for the local user.
 
       # TODO(andrei): Consider installing these in some local folder for future
       # inspection, reinstalling, etc.
 
-      cd "$(mktemp -d)" && \
-      git clone https://github.com/kobolabs/liblzma >/dev/null && \
-      cd liblzma && \
-      ./configure --prefix="${HOME}" >/dev/null && make -j >/dev/null && \
-      make install >/dev/null || {
-        fail "Could not set up liblzma."
-      }
+      # cd "$(mktemp -d)" && \
+      # git clone https://github.com/kobolabs/liblzma >/dev/null && \
+      # cd liblzma && \
+      # ./configure --prefix="${HOME}" >/dev/null && make -j >/dev/null && \
+      # make install >/dev/null || {
+        # fail "Could not set up liblzma."
+      # }
 
       # Install 'the_silver_searcher' itself.
-      cd "$(mktemp -d)" && \
-      git clone https://github.com/ggreer/the_silver_searcher >/dev/null && \
-      cd the_silver_searcher && \
-      PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${HOME}/lib/pkgconfig" ./build.sh --prefix="${HOME}" >/dev/null && \
-      make install >/dev/null
-    ) || fail "Could not set up ag."
+      # cd "$(mktemp -d)" && \
+      # git clone https://github.com/ggreer/the_silver_searcher >/dev/null && \
+      # cd the_silver_searcher && \
+      # PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${HOME}/lib/pkgconfig" ./build.sh --prefix="${HOME}" >/dev/null && \
+      # make install >/dev/null
+    # ) || fail "Could not set up ag."
   fi
 
   # info "Installing thefuck via pip..."

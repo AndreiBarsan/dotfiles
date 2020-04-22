@@ -113,9 +113,9 @@ syntax on                     " The correct way to enable syntax highlighting.
 set number
 set hidden                    " Allow buffers in the background
 set noswapfile                " Shoo, shoo, swap files!
-set textwidth=119              " Use gq in visual mode to enforce it!
-" set cursorline              " Highlight the current line (can slow down vim
-                              "a lot!"
+set textwidth=119             " Use gq in visual mode to enforce it!
+set cursorline                " Highlight the current line (can slow down vim
+                              "a lot!)"
 set colorcolumn=120
 set hlsearch
 set incsearch
