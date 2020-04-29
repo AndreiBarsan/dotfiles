@@ -21,15 +21,22 @@ trap notify_error ERR
 backup_home || echo "Could not back up homedir!"
 
 # Only try to rebuild work code on the work computer. ;)
-if hash rebuild_my_code >&2; then
-  echo "$(date)"
-  echo "Will rebuild your code..."
-  build=true
-  build_output="/tmp/av_build_log_$RANDOM.log"
-  (time rebuild_my_code no-2fa | tee $build_output) || echo "Could not rebuild code. Check log for details."
-else
-  build=false
-  echo "SKIPPING CODE REBUILD"
+# if hash rebuild_my_code >&2; then
+  # echo "$(date)"
+  # echo "Will rebuild your code..."
+  # build=true
+  # build_output="/tmp/build_log_$RANDOM.log"
+  # (time rebuild_my_code no-2fa | tee $build_output) || echo "Could not rebuild code. Check log for details."
+# else
+build=false
+echo "SKIPPING AV CODE REBUILD"
+# fi
+
+if hash refresh_my_code >&2; then
+  date
+  echo "Will refresh your code..."
+  build_output="/tmp/refresh_log_$RANDOM.log"
+  (time refresh_my_code no-2fa | tee $build_output) || echo "Could not rebuild code. Check log for details."
 fi
 
 #
@@ -38,7 +45,7 @@ fi
 echo "Nightly finished OK at $(date)."
 
 if $build; then
-  body="More info in logs. Built code OK!<br/>$(cat $build_output | tail -n 20)"
+  body="More info in logs. Built code OK!<br/>$(tail -n 20 <$build_output)"
 else
   body="More info in logs. Code was not built."
 fi
