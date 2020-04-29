@@ -111,7 +111,7 @@ fi
 
 # [OSX] iTerm2 integration (e.g. automatic theme switching depending on ssh
 # host and other magic stuff).
-test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
+# test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
 
 # Python Anaconda support. Removing this can fix MANY weird build errors for
 # seemingly unrelated projects!
@@ -157,11 +157,15 @@ export HISTSIZE=2000000
 export SAVEHIST=2000000
 
 # Fuck-powered autocorrect.
-if which fuck >/dev/null 2>&1; then
+if which thefuck >/dev/null 2>&1; then
   # Does not work on the guppies (should work once I set Anaconda to be enabled
   # by defaul).
   eval "$(thefuck --alias >/dev/null 2>&1)"
 fi
+
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Set up linuxbrew if available
 # if [[ -d "$HOME/.linuxbrew" ]]; then
@@ -172,6 +176,21 @@ fi
 
 # Support rust
 # export PATH="$PATH:$HOME/.cargo/bin"
+#
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/andreib/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/andreib/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/andreib/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/andreib/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
 
 muxcmd="tmux"
 # Set 'NO_TMUX' to prevent zsh from spawning a tmux session. This can be useful
@@ -187,3 +206,4 @@ fi
 # want that to be shown as an ugly red error code when we're, e.g., reloading
 # the config.
 true
+
