@@ -150,13 +150,16 @@ set gdefault
 
 " Ensure LaTeX files are detected OK.
 let g:tex_flavor = "latex"
-if has('conceal')
+set conceallevel=0 " concealcursor=i
+
+" Concealing is annoying so I disable it.
+" if has('conceal')
   " Auto-expand concealed math when our line is over it.
-  set conceallevel=1 concealcursor=i
 
   " But disable in LaTeX because it's really annoying.
-  let g:tex_conceal=''
-endif
+  " let g:tex_conceal=''
+" endi
+
 
 " Use leader-space to clear the last search
 nnoremap <leader><space> :noh<cr>
@@ -506,7 +509,7 @@ let g:ctrlp_custom_ignore = 'node_modules\|git\|DS_Store'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_follow_symlinks = 1
+let g:ctrlp_follow_symlinks = 0
 " Tap space to search!
 nnoremap <space> :CtrlP<CR>
 
