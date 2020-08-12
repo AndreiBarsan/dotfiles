@@ -4,3 +4,4 @@
 .ropeproject/
 build_log.txt
 last_auto_rebuild
+.bsync-snap-*
