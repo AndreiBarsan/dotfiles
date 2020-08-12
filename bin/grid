@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Script to take 4 videos (args) and tile them into a 2x2 mosaic.
+#
+# !!! Under construction
+# Source: https://trac.ffmpeg.org/wiki/Create%20a%20mosaic%20out%20of%20several%20input%20videos
+
+set -eu
+
+W=720
+H=480
+TOTAL_W=$(( 2 * $W ))
+TOTAL_H=$(( 2 * $H ))
+
+ffmpeg \
+	-i $1 -i $2 -i $3 -i $4 \
+	-filter_complex "
+		nullsrc=size=${TOTAL_W}x${TOTAL_H} [base];
+		[0:v] setpts=PTS-STARTPTS, scale=${W}x$H [upperleft];
+		[1:v] setpts=PTS-STARTPTS, scale=${W}x$H [upperright];
+		[2:v] setpts=PTS-STARTPTS, scale=${W}x$H [lowerleft];
+		[3:v] setpts=PTS-STARTPTS, scale=${W}x$H [lowerright];
+		[base][upperleft] overlay=shortest=1 [tmp1];
+		[tmp1][upperright] overlay=shortest=1:x=$W [tmp2];
+		[tmp2][lowerleft] overlay=shortest=1:y=$H [tmp3];
+		[tmp3][lowerright] overlay=shortest=1:x=$W:y=$H
+	" \
+	-c:v libx265 -crf 10 grid_output.mp4

@@ -12,7 +12,7 @@ if [[ "$#" -lt 2 ]]; then
   exit 1
 fi
 
-FRAMERATE=3
+FRAMERATE=30
 IN_FMT="$1"
 OUT_FPATH="$2"
 shift; shift

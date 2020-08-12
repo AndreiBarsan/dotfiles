@@ -336,8 +336,10 @@ else
   CAN_I_RUN_SUDO=$(sudo -n uptime 2>&1|grep "load"|wc -l)
   if [ ${CAN_I_RUN_SUDO} -gt 0 ]; then
     sudo apt install -y build-essential cowsay sl scons \
-      curl htop autoconf autotools-dev python-dev python3-dev libpcre3 \
-      libpcre3-dev lzma lzma-dev cmake redshift-gtk geoclue
+      curl htop autoconf autotools-dev aptitude python-dev python3-dev \
+      lzma lzma-dev cmake redshift-gtk geoclue qdirstat \
+      figlet screenfetch sshfs syncthing xclip xsel mosh tree mailutils \
+      xterm
   fi
 fi
 

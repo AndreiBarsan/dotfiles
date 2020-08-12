@@ -8,7 +8,7 @@ IFS=$'\n\t'
 # Ensure sensible environment vars are set, since cron doesn't load .zshrc / .bashrc (non-interactive shell).
 # 
 export USER=andreib
-export PATH=$HOME/.local/bin:$HOME/.local/mini_tools:$PATH
+export PATH=$HOME/.local/bin:$HOME/.local/mini_tools:$PATH:/usr/games/
 
 echo "Starting nightly cron: $(date)"
 
@@ -44,10 +44,12 @@ fi
 #
 echo "Nightly finished OK at $(date)."
 
+body="More info in logs.<br/>$(fortune)<br/>"
+
 if $build; then
-  body="More info in logs. Built code OK!<br/>$(tail -n 20 <$build_output)"
+  body="$body Built code OK!<br/>$(tail -n 20 <$build_output)"
 else
-  body="More info in logs. Code was not built."
+  body="$body Code was not built.<br/>"
 fi
 
 notify "Nightly cron job ran OK at $(date)." "$body"
