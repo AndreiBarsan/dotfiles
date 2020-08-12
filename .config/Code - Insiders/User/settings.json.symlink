@@ -95,7 +95,7 @@
   "workbench.iconTheme": "vscode-icons",
   "terminal.integrated.rendererType": "dom",
   "kite.pollingInterval": 1000,
-  "window.zoomLevel": 0,
+  "window.zoomLevel": 1,
   "kite.showWelcomeNotificationOnStartup": false,
   "editor.fontSize": 13,
   "editor.glyphMargin": false,
@@ -103,4 +103,5 @@
   "editor.wordWrapColumn": 120,
   "editor.cursorSurroundingLines": 5,
   "editor.minimap.enabled": false,
+  "vsicons.dontShowNewVersionMessage": true,
 }
