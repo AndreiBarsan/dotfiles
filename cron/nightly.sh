@@ -32,6 +32,7 @@ build=false
 echo "SKIPPING AV CODE REBUILD"
 # fi
 
+build_output=""
 if hash refresh_my_code >&2; then
   date
   echo "Will refresh your code..."
@@ -44,12 +45,14 @@ fi
 #
 echo "Nightly finished OK at $(date)."
 
-body="More info in logs.<br/>$(fortune)<br/>"
+body="More info in logs.<br/>"
 
 if $build; then
   body="$body Built code OK!<br/>$(tail -n 20 <$build_output)"
 else
   body="$body Code was not built.<br/>"
 fi
+
+body="$body<br/><hr/><blockquote>$(fortune)</blockquote>"
 
 notify "Nightly cron job ran OK at $(date)." "$body"

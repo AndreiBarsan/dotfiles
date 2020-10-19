@@ -42,6 +42,9 @@ let mapleader = ','
 set notimeout
 set ttimeout
 
+" Need to do this before loading plugins.
+let g:polyglot_disabled = ['latex']
+
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
@@ -52,10 +55,10 @@ Plugin 'gmarik/Vundle.vim'
 " then use `!sort -f' to sort it (`-f' means case-insensitive).
 " Plugin 'benmills/vimux'             " Pretty interactions with tmux.
 Plugin 'flazz/vim-colorschemes'     " Moar color schemes
-Plugin 'godlygeek/tabular'          " Format stuff in columns
-" Plugin 'gregsexton/MatchTag'        " HTML tag matching
+" Plugin 'godlygeek/tabular'          " Format stuff in columns
+Plugin 'gregsexton/MatchTag'        " HTML tag matching
 Plugin 'jceb/vim-orgmode'           " org-mode in Vim. SpaceMacs is still better, yo!
-Plugin 'honza/vim-snippets'         " Snippets for UltiSnips
+" Plugin 'honza/vim-snippets'         " Snippets for UltiSnips
 Plugin 'kien/ctrlp.vim'             " Global fuzzy search
 Plugin 'L9'                         " Lots of small helpers
 Plugin 'lervag/vimtex'              " Edit LaTeX in Vim
@@ -63,12 +66,12 @@ Plugin 'luochen1990/rainbow'        " Easily identify nested statements
 Plugin 'plasticboy/vim-markdown'    " Markdown support, yep
 " Plugin 'qpkorr/vim-bufkill'
 Plugin 'Raimondi/delimitMate'       " Auto-complete quotes, parens, etc.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}  " Super-speedy HTML typing
+" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}  " Super-speedy HTML typing
 Plugin 'scrooloose/nerdcommenter'   " Smart en-masse commenter
 Plugin 'scrooloose/nerdtree'        " File browser
 Plugin 'scrooloose/syntastic'       " Lint-o-Matic
 Plugin 'sheerun/vim-polyglot'       " Smart support for tons of languages
-Plugin 'SirVer/ultisnips'           " Code snippet management
+" Plugin 'SirVer/ultisnips'           " Code snippet management
 Plugin 'sjl/gundo.vim'              " Navigate undo tree visually (this plugin
                                     " can and will save your ass at some point!)
 " Plugin 'skwp/greplace.vim'          " Global replace tools
@@ -76,29 +79,25 @@ Plugin 'tpope/vim-surround'         " Nice surrounding semantics.
 Plugin 'tpope/vim-speeddating'      " Required for org mode.
 Plugin 'vim-airline/vim-airline'    " Pretty status line
 Plugin 'vim-scripts/a.vim'          " *.c(c|pp)?-*h switcher
-Plugin 'klen/python-mode'           " Python navigation & other goodies
+" Plugin 'klen/python-mode'           " Python navigation & other goodies
 Plugin 'tmux-plugins/vim-tmux'      " Play nice with tmux
 Plugin 'tmux-plugins/vim-tmux-focus-events'
 Plugin 'Yggdroot/indentLine'        " Visual indent guides
-" Plugin 'z0mbix/vim-shfmt'           " Auto-format shell scripts
+Plugin 'z0mbix/vim-shfmt'           " Auto-format shell scripts
 
 
 if (v:version > 703 && has('patch143')) || v:version >= 800
   " Awesome autocomplete, but requires a very specific minimum vim version.
   " Disabled at times when I'm not doing a lot of dev in vim.
-  Plugin 'Valloric/YouCompleteMe'
+  " Plugin 'Valloric/YouCompleteMe'
 endif
 
 " Plugin purgatory
 " This makes startup VERY slow, so I'm keeping it disabled for no, so I'm
 " keeping it disabled for now
 "Plugin 'cjrh/vim-conda'             " Detect the correct Python when using Anaconda
-"Plugin 'burnettk/vim-angular'       " AngularJS magic
 "Plugin 'tinymode.vim'               " Easy on-the-fly window resizing
 "Plugin 'tpope/vim-fugitive'         " git helper
-"Plugin 'marijnh/tern_for_vim'       " Smart JavaScript auto-complete
-"Plugin 'othree/javascript-libraries-syntax.vim' " Autocomplete library identifiers
-"Plugin 'pangloss/vim-javascript'    " JavaScript utilities
 
 call vundle#end()             " required
 filetype plugin indent on     " required
@@ -437,6 +436,8 @@ let g:pymode_options_colorcolumn = 119
 " let g:pymode_python = '/home/andreib/work/av/bin/python2.7'
 let g:pymode_doc_bind = 'K'
 " let g:pymode_rope_goto_definition_bind = ''
+" Disable conflicts with YCM
+let g:pymode_rope_completion = 0 
 
 " Rope stuff: Refactoring, auto-imports, and more. Performance is terrible, though.
 " let g:pymode_rope = 1
@@ -517,7 +518,6 @@ nnoremap <space> :CtrlP<CR>
 let g:used_javascript_libs = 'jquery,angularjs,jasmine'
 
 
-let g:polyglot_disabled = ['latex']
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
