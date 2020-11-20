@@ -19,8 +19,7 @@
   "latex-workshop.intellisense.optionalArgsEntries.enabled": false,
   "latex-workshop.intellisense.unimathsymbols.enabled": true,
   "latex-workshop.latex.autoBuild.interval": 330,
-  "latex-workshop.message.information.show": true,
-  "python.dataScience.sendSelectionToInteractiveWindow": true,
+"latex-workshop.message.information.show": true,
   "python.linting.pylintEnabled": false,
   "python.linting.flake8Enabled": true,
   "python.linting.flake8Args": [
@@ -103,5 +102,6 @@
   "editor.wordWrapColumn": 120,
   "editor.cursorSurroundingLines": 5,
   "editor.minimap.enabled": false,
-  "vsicons.dontShowNewVersionMessage": true,
+"vsicons.dontShowNewVersionMessage": true,
+"jupyter.sendSelectionToInteractiveWindow": true,
 }
