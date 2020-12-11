@@ -14,11 +14,8 @@ fi
 #   pip install --user powerline-status
 if [[ $(uname -s) == 'Linux' ]]; then
   export TMUX_POWERLINE_CONF="$HOME/.local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
+elif [[ $(hostname) == 'andreib-C02Y71MJJGH6' ]]; then
+  export TMUX_POWERLINE_CONF="/usr/local/lib/python3.7/site-packages/powerline/bindings/tmux/powerline.conf"
 else
-  export TMUX_POWERLINE_CONF="$HOME/.local/lib/python3.6/site-packages/powerline/bindings/tmux/powerline.conf"
+  export TMUX_POWERLINE_CONF="$HOME/.local/lib/python3.7/site-packages/powerline/bindings/tmux/powerline.conf"
 fi
-
-# [ETH] CUDA 8.0 support on Ubuntu 16
-# export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-8.0/lib64"
-# export PATH="$PATH:/usr/local/cuda-8.0/bin"
-

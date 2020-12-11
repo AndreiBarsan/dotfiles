@@ -1,6 +1,6 @@
 ! Pretty 21st century fonts
 xterm*faceName:       DejaVu\ Sans\ Mono\ for\ Powerline
-xterm*faceSize:       10
+xterm*faceSize:       11
 xterm*renderFont:     true
 
 ! Sensible mouse/C-S-c/C-S-v/etc. support
@@ -13,3 +13,11 @@ XTerm*termName:       xterm-256color
 
 ! This ensures copying from tmux works ok.
 XTerm*disallowedWindowOps: 20,21,SetXprop
+
+XTerm*dynamicColors:      true
+
+*VT100*foreground: white
+! gray90 or whatever also works
+*VT100*background: black
+
+

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# f <something> for quick searching
+
+set -eu
+
+TOKEN="$1"
+shift
+
+find "$@" -iname '*'"$TOKEN"'*'
