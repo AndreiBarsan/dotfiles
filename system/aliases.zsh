@@ -1,4 +1,4 @@
-# Despite the extension, these aliases should be shell-agnostic
+# Despite the file extension, these aliases should be shell-agnostic
 
 # grc overides for ls
 #   Made possible through contributions from generous benefactors like
@@ -43,12 +43,15 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias cp='cp -i'
 
+# Pretty Print Path
+function ppp () {
+  sed 's/:/\n/g' <<<$PATH
+}
 
 function shiet() {
   BODY=${1-nope}
   notify-send 'oh no' $BODY -i "$HOME/Pictures/ohno.png"
 }
-
 
 # [Linux] Ensure tmux always uses 256 colors
 alias tmux='tmux -2'

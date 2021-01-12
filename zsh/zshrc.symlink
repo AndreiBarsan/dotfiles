@@ -1,6 +1,6 @@
 # TODO(andrei): For maximum versatility, move non-zsh stuff to a .bashrc and
 # source that from here.
-# 
+#
 # Handy for macOS sessions: 
 
 # This file defines the 'module' command support on Euryale. This is a very
@@ -24,10 +24,6 @@ if [ -z "$LEVEL" ] ; then
   # docker.
 	# umask 077
 fi
-
-# Continuously refresh compinit, so we can instantly autocomplete the names of
-# freshly installed packages.
-zstyle ':completion:*' rehash true
 
 # The project folder so that we can `c [tab]` to it.
 export PROJECTS=~/work
@@ -65,6 +61,10 @@ autoload -U compinit && compinit
 # Support bash-style autocompletion, not just zsh-style
 autoload -U +X bashcompinit && bashcompinit
 bashcompinit
+
+# Continuously refresh compinit, so we can instantly autocomplete the names of
+# freshly installed packages.
+# zstyle ':completion:*' rehash true
 
 # load every completion after autocomplete loads
 for file in ${(M)config_files:#*/completion.zsh}; do
@@ -117,14 +117,11 @@ fi
 # seemingly unrelated projects!
 #export PATH=/usr/local/anaconda3/bin:"$PATH"
 
-# [Euler] Support modules (e.g. to do matlab command line interop)
-#source /usr/local/opt/modules/Modules/init/zsh
-
 # [OSX] Launch Matlab from the command line.
 # export PATH="$PATH:/Applications/MATLAB_R2015a.app/bin"
 
 # Add support for locally-installed stuff, such as Bazel.
-export PATH="$PATH:$HOME/bin"
+export PATH="$PATH:$HOME/bin:$HOME/.local/bin"
 export LD_LIBRARY_PATH="$HOME/lib:$LD_LIBRARY_PATH"
 
 # The next line updates PATH for the Google Cloud SDK.
@@ -147,10 +144,6 @@ if $(command -v wolf >/dev/null 2>&1); then
   source <(wolf --bash-completion-script $(which wolf))
 fi
 
-# Ensure user installations of powerline work.
-# TODO(andrei): This may be redundant!!
-export PATH=~"/.local/bin:$PATH"
-
 # The oh-my-zsh defaults are pretty tiny. Let's fix that!
 # FWIW, after 1.75yrs at Uber I have like 20k commands so 2M should last a while.
 export HISTSIZE=2000000
@@ -172,7 +165,7 @@ fi
 
 # Support rust
 # export PATH="$PATH:$HOME/.cargo/bin"
-#
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/andreib/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -188,7 +181,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-muxcmd="tmux"
+muxcmd="tmux -s work"
 # Set 'NO_TMUX' to prevent zsh from spawning a tmux session. This can be useful
 # if you want to quickly exec zsh without it kicking off tmux.
 if [[ -n "$NO_TMUX" ]]; then

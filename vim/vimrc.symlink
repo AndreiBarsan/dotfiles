@@ -69,11 +69,10 @@ Plugin 'Raimondi/delimitMate'       " Auto-complete quotes, parens, etc.
 " Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}  " Super-speedy HTML typing
 Plugin 'scrooloose/nerdcommenter'   " Smart en-masse commenter
 Plugin 'scrooloose/nerdtree'        " File browser
-Plugin 'scrooloose/syntastic'       " Lint-o-Matic
-Plugin 'sheerun/vim-polyglot'       " Smart support for tons of languages
+" Plugin 'scrooloose/syntastic'       " Lint-o-Matic
+" Plugin 'sheerun/vim-polyglot'       " Smart support for tons of languages
 " Plugin 'SirVer/ultisnips'           " Code snippet management
-Plugin 'sjl/gundo.vim'              " Navigate undo tree visually (this plugin
-                                    " can and will save your ass at some point!)
+Plugin 'sjl/gundo.vim'              " Navigate undo tree visually
 " Plugin 'skwp/greplace.vim'          " Global replace tools
 Plugin 'tpope/vim-surround'         " Nice surrounding semantics.
 Plugin 'tpope/vim-speeddating'      " Required for org mode.

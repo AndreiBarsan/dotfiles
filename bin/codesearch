@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
-# Code search utility based on the silver searcher, with graceful degradation.
+# Code search utility based on ripgrep, with graceful degradation.
 
 set -e
 set -o pipefail
 
-if ag --version >/dev/null 2>&1; then
-  ag --context=2 "$@"
+if hash rg 2>/dev/null; then
+  rg --context=2 --smart-case "$@"
+# elif hash ag 2>dev/null; then
+  # ag --context=2 "$@"
 else
   # Use 'grep -R' as a fallback, ignoring binary files, showing neat file names
   # and line numbers for matches, etc.
