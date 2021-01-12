@@ -1,4 +1,5 @@
 #!/bin/sh
+# Flagged as UNUSED since Andrei needs the 'dot' command to render graphs.
 #
 # dot
 #
