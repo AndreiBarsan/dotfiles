@@ -191,10 +191,10 @@ install_bits_and_bobs () {
 
   # Setup 'delta' for very pretty diffs
   (
-    cd ~/.local/bin
+    mkdir -p ~/.local/bin && cd ~/.local/bin
     wget https://github.com/dandavison/delta/releases/download/0.4.4/delta-0.4.4-x86_64-unknown-linux-musl.tar.gz
-    extract delta-0.4.4-x86_64-unknown-linux-musl.tar.gz
-    ln -s delta-0.4.4-x86_64-unknown-linux-musl/delta delta
+    tar xzvf delta-0.4.4-x86_64-unknown-linux-musl.tar.gz
+    ln -s -f delta-0.4.4-x86_64-unknown-linux-musl/delta delta
   )
 
   vimrc_src="${DOTFILES_ROOT}/vim/vimrc.symlink"
@@ -235,8 +235,9 @@ install_bits_and_bobs () {
       echo
       info "YCM seems to have already been setup.  Skipping recompile."
     else
-      cd ~/.vim/bundle/YouCompleteMe
-      ./install.py --clang-completer
+      echo
+      # cd ~/.vim/bundle/YouCompleteMe
+      # ./install.py --clang-completer
     fi
   ) || fail "Could not set up YouCompleteMe for vim."
 
@@ -338,7 +339,7 @@ if [ "$(uname -s)" == "Darwin" ]; then
   fi
 else
   # Naively assume Ubuntu/Debian and install some misc. stuff.
-  gsettings set org.gnome.shell.app-switcher current-workspace-only true
+  # gsettings set org.gnome.shell.app-switcher current-workspace-only true
 
   # TODO(andrei): Extract this into common helper.
   CAN_I_RUN_SUDO=$(sudo -n uptime 2>&1|grep "load"|wc -l)
