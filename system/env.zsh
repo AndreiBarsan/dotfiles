@@ -13,7 +13,9 @@ fi
 # Default way of installing (local user, recommended):
 #   pip install --user powerline-status
 if [[ $(uname -s) == 'Linux' ]]; then
-  export TMUX_POWERLINE_CONF="$HOME/.local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
+  export TMUX_POWERLINE_CONF="$HOME/.local/lib/python3.6/site-packages/powerline/bindings/tmux/powerline.conf"
+# elif [[ $(hostname) == 'ps4fch6b9' ]]; then
+  # export TMUX_POWERLINE_CONF="$HOME/.local/lib/python3.6/site-packages/ppowerline/bindings/tmux/powerline.conf"
 elif [[ $(hostname) == 'andreib-C02Y71MJJGH6' ]]; then
   export TMUX_POWERLINE_CONF="/usr/local/lib/python3.7/site-packages/powerline/bindings/tmux/powerline.conf"
 else

@@ -27,9 +27,10 @@ set -g status-bg blue
 set -g status-fg white
 set -g status-left-length 100
 
-# Powerline support! (variable defined in zshrc for portability)
+# Powerline support! (variable defined in 'env.sh' for portability)
 run-shell "powerline-daemon -q"
 source "$TMUX_POWERLINE_CONF"
+run-shell "powerline-config tmux setup"   # Necessary on paperspace
 
 set-option -g default-shell /bin/zsh
 set -g mode-keys vi

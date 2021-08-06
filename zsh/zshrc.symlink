@@ -111,11 +111,7 @@ fi
 
 # [OSX] iTerm2 integration (e.g. automatic theme switching depending on ssh
 # host and other magic stuff).
-# test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
-
-# Python Anaconda support. Removing this can fix MANY weird build errors for
-# seemingly unrelated projects!
-#export PATH=/usr/local/anaconda3/bin:"$PATH"
+test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
 
 # [OSX] Launch Matlab from the command line.
 # export PATH="$PATH:/Applications/MATLAB_R2015a.app/bin"
@@ -166,20 +162,6 @@ fi
 # Support rust
 # export PATH="$PATH:$HOME/.cargo/bin"
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/andreib/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/andreib/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/andreib/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/andreib/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 
 muxcmd="tmux -s work"
 # Set 'NO_TMUX' to prevent zsh from spawning a tmux session. This can be useful
