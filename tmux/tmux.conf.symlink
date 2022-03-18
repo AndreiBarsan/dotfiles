@@ -23,7 +23,7 @@ set-option -g allow-rename off
 set -g history-limit 100000
 
 # Some pre-powerline statusbar customization, for system where it isn't available.
-set -g status-bg blue
+# set -g status-bg blue
 set -g status-fg white
 set -g status-left-length 100
 

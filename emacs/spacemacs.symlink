@@ -370,12 +370,12 @@ layers configuration. You are free to put any user code."
   ;; (setq pixel-resolution-fine-flag t) ; Scroll by number of pixels instead of lines (t = frame-char-height pixels).
   ;; (setq mouse-wheel-scroll-amount '(10)) ; Distance in pixel-resolution to scroll each mouse wheel event.
 
-  (require 'ob-python)
+  ;; (require 'ob-python)
   ;; Enabling this seems to ruin org-mode's keybindings...
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '( (python . t)
-      (latex . t)))
+  ;; (org-babel-do-load-languages
+  ;; 'org-babel-load-languages
+  ;; '( (python . t)
+  ;;    (latex . t)))
 
   ;; Hooks
   (defun add-hooks (hooks fun)
