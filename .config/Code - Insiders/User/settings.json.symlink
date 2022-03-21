@@ -4,7 +4,11 @@
   "breadcrumbs.enabled": true,
   "editor.formatOnType": true,
   "editor.mouseWheelZoom": true,
-  "editor.rulers": [80,120],
+  "editor.guides.bracketPairs": true,
+  "editor.rulers": [
+    80,
+    120
+  ],
   "files.trimTrailingWhitespace": true,
   "files.watcherExclude": {
     "**/.git/objects/**": true,
@@ -19,17 +23,16 @@
   "latex-workshop.intellisense.optionalArgsEntries.enabled": false,
   "latex-workshop.intellisense.unimathsymbols.enabled": true,
   "latex-workshop.latex.autoBuild.interval": 330,
-"latex-workshop.message.information.show": true,
+  "latex-workshop.message.information.show": true,
   "python.linting.pylintEnabled": false,
   "python.linting.flake8Enabled": true,
   "python.linting.flake8Args": [
-        "--max-line-length=120",
-        "--ignore=D101,D103,D105,D107",            // Ignore missing docstrings
-        "--verbose",
+    "--max-line-length=120",
+    "--ignore=D101,D103,D105,D107", // Ignore missing docstrings
+    "--verbose",
   ],
   "python.linting.maxNumberOfProblems": 250,
   "python.linting.pydocstyleEnabled": false,
-  "python.linting.banditEnabled": true,
   "remote.SSH.showLoginTerminal": true,
   "telemetry.enableTelemetry": false,
   "telemetry.enableCrashReporter": false,
@@ -43,47 +46,94 @@
   "vim.hlsearch": true,
   "vim.insertModeKeyBindings": [
     {
-      "before": ["j", "j"],
-      "after": ["<Esc>"]
+      "before": [
+        "j",
+        "j"
+      ],
+      "after": [
+        "<Esc>"
+      ]
     }
   ],
   "vim.textwidth": 120,
   "vim.normalModeKeyBindingsNonRecursive": [
     {
-      "before": ["<leader>", "d"],
-      "after": ["d", "d"]
+      "before": [
+        "<leader>",
+        "d"
+      ],
+      "after": [
+        "d",
+        "d"
+      ]
     },
     {
-      "before": ["<C-n>"],
-      "commands": [":nohl"]
+      "before": [
+        "<C-n>"
+      ],
+      "commands": [
+        ":nohl"
+      ]
     },
     {
-      "before": [";"],
-      "after": [":"]
+      "before": [
+        ";"
+      ],
+      "after": [
+        ":"
+      ]
     },
     {
-      "before": [":"],
-      "after": [";"]
+      "before": [
+        ":"
+      ],
+      "after": [
+        ";"
+      ]
     },
     {
-      "before": ["<C-h>"],
-      "after": ["<C-w>", "h"],
+      "before": [
+        "<C-h>"
+      ],
+      "after": [
+        "<C-w>",
+        "h"
+      ],
     },
     {
-      "before": ["<C-l>"],
-      "after": ["<C-w>", "l"],
+      "before": [
+        "<C-l>"
+      ],
+      "after": [
+        "<C-w>",
+        "l"
+      ],
     },
     {
-      "before": ["<C-j>"],
-      "after": ["<C-w>", "j"],
+      "before": [
+        "<C-j>"
+      ],
+      "after": [
+        "<C-w>",
+        "j"
+      ],
     },
     {
-      "before": ["<C-k>"],
-      "after": ["<C-w>", "k"],
+      "before": [
+        "<C-k>"
+      ],
+      "after": [
+        "<C-w>",
+        "k"
+      ],
     },
     {
-      "before": ["<space>"],
-      "after": ["<C-p>"],
+      "before": [
+        "<space>"
+      ],
+      "after": [
+        "<C-p>"
+      ],
     }
   ],
   "vim.leader": ",",
@@ -95,21 +145,184 @@
   "terminal.integrated.rendererType": "dom",
   "kite.pollingInterval": 1000,
   "kite.showWelcomeNotificationOnStartup": false,
-  "editor.fontSize": 13,
   "editor.glyphMargin": false,
   "editor.smoothScrolling": true,
-  "editor.wordWrapColumn": 120,
   "editor.cursorSurroundingLines": 5,
   "editor.minimap.enabled": false,
-"vsicons.dontShowNewVersionMessage": true,
-"jupyter.sendSelectionToInteractiveWindow": true,
-"trunk.trunkGrayOutNonBlockingIssues": false,
-"redhat.telemetry.enabled": false,
-"editor.inlineSuggest.enabled": true,
-"github.copilot.enable": {
-  "*": false,
-  "yaml": false,
-  "plaintext": false,
-  "markdown": false
-},
+  "vsicons.dontShowNewVersionMessage": true,
+  "jupyter.sendSelectionToInteractiveWindow": true,
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter-notebook"
+  },
+  "cSpell.userWords": [
+    "arange",
+    "Arnaud",
+    "asarray",
+    "ascontiguousarray",
+    "asdict",
+    "astype",
+    "atol",
+    "bazel",
+    "bbazyk",
+    "boto",
+    "botocore",
+    "BRDF",
+    "CALIB",
+    "Camino",
+    "canonicalize",
+    "COEF",
+    "colourizer",
+    "conda",
+    "Conv",
+    "convolutional",
+    "cuda",
+    "cudnn",
+    "CVPR",
+    "dconv",
+    "deduplicates",
+    "discretize",
+    "docstrings",
+    "dtype",
+    "egl",
+    "einsum",
+    "Embree",
+    "env",
+    "extrinsics",
+    "fmt",
+    "FNAME",
+    "fnames",
+    "fpath",
+    "fpaths",
+    "fsspec",
+    "geospatial",
+    "getrlimit",
+    "hdfs",
+    "horovod",
+    "hstack",
+    "icp",
+    "idcs",
+    "idx",
+    "idxes",
+    "iinfo",
+    "imread",
+    "inplace",
+    "intensity",
+    "intrinsics",
+    "ints",
+    "Jingkang's",
+    "julieta",
+    "LDA",
+    "lidarsim",
+    "logit",
+    "LUMINAR",
+    "manivasagam",
+    "merc",
+    "miniconda",
+    "moto",
+    "ndarray",
+    "ndim",
+    "neighbour",
+    "nersdf",
+    "networkx",
+    "NOFILE",
+    "noqa",
+    "npy",
+    "npz",
+    "numpy",
+    "optim",
+    "Optix",
+    "pandar",
+    "pandargt",
+    "Pandaset",
+    "pdal",
+    "PNP",
+    "pnpsim",
+    "Polyrep",
+    "POSIX",
+    "pyarrow",
+    "PYBIND",
+    "pyembree",
+    "pylint",
+    "pyproj",
+    "pyrender",
+    "pytest",
+    "rasterization",
+    "rasterize",
+    "RAYDROP",
+    "relu",
+    "reproject",
+    "reprojection",
+    "RLIMIT",
+    "ronneberger",
+    "RSD",
+    "RSDF",
+    "rtol",
+    "sagectl",
+    "savez",
+    "semseg",
+    "setrlimit",
+    "Sivabalan",
+    "slerp",
+    "strided",
+    "struct",
+    "surfel",
+    "testlogs",
+    "tform",
+    "tiddles",
+    "tobytes",
+    "tqdm",
+    "traj",
+    "trimesh",
+    "uncurated",
+    "unet",
+    "unsqueeze",
+    "unversioned",
+    "urlunparse",
+    "usgs",
+    "Vec",
+    "Vectorize",
+    "voxel",
+    "voxelization",
+    "voxelizer",
+    "vstack",
+    "waabi",
+    "wxyz",
+    "xlabel",
+    "xlim",
+    "xviz",
+    "xyz",
+    "ylabel",
+    "ylim",
+    "zlabel",
+    "zlim",
+    "zshell"
+  ],
+  "emmet.showSuggestionsAsSnippets": true,
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "notebook.cellToolbarLocation": {
+    "default": "right",
+    "jupyter-notebook": "left"
+  },
+  "explorer.confirmDragAndDrop": false,
+  "github.copilot.enable": {
+    "*": false,
+    "yaml": false,
+    "plaintext": false,
+    "markdown": false,
+    "python": false
+  },
+  "git.autofetch": true,
+  "redhat.telemetry.enabled": false,
+  "yaml.format.enable": false,
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "yaml.format.printWidth": 120,
+  "cSpell.minWordLength": 3,
+  "editor.suggest.showInlineDetails": false,
+  "editor.inlineSuggest.enabled": true,
+  "trunk.trunkInlineDecoratorsDisabled": true,
+  "trunk.inlineDecorators": false,
+  "trunk.trunkGrayOutNonBlockingIssues": false,
+  "editor.fontSize": 11.5,
+  "editor.formatOnSave": true, // Disable YAML auto-formatting
 }
