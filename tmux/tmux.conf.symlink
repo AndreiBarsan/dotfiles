@@ -23,7 +23,7 @@ set-option -g allow-rename off
 set -g history-limit 100000
 
 # Some pre-powerline statusbar customization, for system where it isn't available.
-# set -g status-bg blue
+# set -g status-bg blue # Makes powerline look bad
 set -g status-fg white
 set -g status-left-length 100
 #set -g status-right '#(/opt/homebrew/bin/powerline tmux right)'
@@ -118,6 +118,7 @@ set -g @plugin 'tmux-plugins/tmux-pain-control'
 # tmux-continuum goes one step further and does this continuously, seamlessly.
 set -g @plugin 'tmux-plugins/tmux-continuum'
 
+# This crashes my personal Ubuntu as of 2021-08-18
 set -g @continuum-restore 'on'
 
 # Sane copying and pasting
@@ -125,7 +126,7 @@ set -g @continuum-restore 'on'
 set -g @shell_mode 'vi'
 
 # No need for this, since newer versions of tmux have it built in.
-set -g @plugin 'tmux-plugins/tmux-yank'
+# set -g @plugin 'tmux-plugins/tmux-yank'
 
 # Initialize TMUX plugin manager (this line MUST ALWAYS be at the very bottom
 # of tmux.conf)

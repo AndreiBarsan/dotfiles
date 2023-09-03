@@ -6,8 +6,7 @@ set -eu
 # Set this to a valid tag name or 'master'.
 # TMUX_VERSION="2.7"
 TMUX_VERSION="3.5a"
-
-sudo apt install --yes --no-install-recommends libevent-dev
+sudo apt install --yes --no-install-recommends libevent-dev libncurses-dev
 
 if [[ -z "$PROJECTS" ]]; then
   echo >&2 "Please run this script after the basic bootstrap setup, so that " \
@@ -35,6 +34,8 @@ fi
 
 cd $PROJECTS/tmux
 git fetch && git checkout "$TMUX_VERSION"
+
+
 sh autogen.sh || exit 40
 ./configure --prefix "$HOME/.local" || exit 50
 make -j$(nproc) || exit 60

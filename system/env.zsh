@@ -21,6 +21,12 @@ if [[ $(uname -s) == 'Linux' ]]; then
   _powerline_conf=("$HOME"/.local/share/pipx/venvs/powerline-status/lib/python*/site-packages/powerline/bindings/tmux/powerline.conf)
   export TMUX_POWERLINE_CONF="${_powerline_conf[1]}"
   unset _powerline_conf
+  # Old way of doing things, pre-2026
+  #
+  # export TMUX_POWERLINE_CONF="$HOME/.local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
+  # export TMUX_POWERLINE_CONF="$HOME/.local/lib/python3.8/site-packages/powerline/bindings/tmux/powerline.conf"
+  # export TMUX_POWERLINE_CONF="$HOME/.local/lib/python3.10/site-packages/powerline/bindings/tmux/powerline.conf"
+  
 elif [[ $(hostname) == 'andreib-C02Y71MJJGH6' ]]; then
   export TMUX_POWERLINE_CONF="/usr/local/lib/python3.7/site-packages/powerline/bindings/tmux/powerline.conf"
 else
