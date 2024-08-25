@@ -313,6 +313,8 @@ user code."
  ;;         ("DONE" . "green")
  ;;         ("CANCELLED" . "green")))
 
+  ;; This is needed for making 't' enable the switcheroo pane (CONFIRMED 2022-03-17)
+  (setq org-want-todo-bindings t)
   ;; The pipe separates active/inactive states.
   (setq org-todo-keywords
         '((sequence "TODO(t!)" "FROG(f!)" "WAITING(w!)" "|" "CANCELED(c!)" "DELEGATED(e!)" "DONE(d!)")))
@@ -328,6 +330,8 @@ user code."
   (with-eval-after-load 'evil-maps
     (define-key evil-motion-state-map (kbd ":") 'evil-repeat-find-char)
     (define-key evil-motion-state-map (kbd ";") 'evil-ex))
+
+  (setq org-agenda-files '("~/st/org"))
 
   ;; TODO map tab to % in anything but org mode
   ;; TODO C-tab (maybe?) to move between buffers in the current pane quickly
@@ -359,7 +363,8 @@ layers configuration. You are free to put any user code."
 
   (setq dotspacemacs-line-numbers nil)
 
-  (setq org-ascii-text-width 59)
+  (setq org-ascii-text-width 59)       ;; RAS Papercept (ICRA, IROS, RA-L, etc.) clips lines longer than this
+  ;; (setq org-ascii-text-width 79)
 
   ;; scale org mode inline latex up a bit
   ;; (plist-put org-format-latex-options :scale 1.5)
@@ -370,12 +375,12 @@ layers configuration. You are free to put any user code."
   ;; (setq pixel-resolution-fine-flag t) ; Scroll by number of pixels instead of lines (t = frame-char-height pixels).
   ;; (setq mouse-wheel-scroll-amount '(10)) ; Distance in pixel-resolution to scroll each mouse wheel event.
 
-  ;; (require 'ob-python)
+  (require 'ob-python)
   ;; Enabling this seems to ruin org-mode's keybindings...
-  ;; (org-babel-do-load-languages
-  ;; 'org-babel-load-languages
-  ;; '( (python . t)
-  ;;    (latex . t)))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '( (python . t)
+      (latex . t)))
 
   ;; Hooks
   (defun add-hooks (hooks fun)
@@ -485,3 +490,25 @@ layers configuration. You are free to put any user code."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-todo ((t (:foreground "red3" :weight bold)))))
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(evil-want-Y-yank-to-eol nil)
+ '(highlight-parentheses-colors '("#2aa198" "#b58900" "#268bd2" "#6c71c4" "#859900"))
+ '(package-selected-packages
+   '(csv-mode vimrc-mode org-mime ghub let-alist dactyl-mode auctex-latexmk yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic company-auctex auctex unfill smeargle orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu highlight elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed ace-link ace-jump-helm-line helm helm-core popup which-key undo-tree org-plus-contrib hydra evil-unimpaired f s dash async aggressive-indent adaptive-wrap ace-window avy))
+ '(warning-suppress-log-types '((comp))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-todo ((t (:foreground "red3" :weight bold)))))
+)

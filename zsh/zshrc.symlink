@@ -82,7 +82,6 @@ source "$ZSH/oh-my-zsh.sh"
 
 # Only disconnect if we triple C-d.
 export IGNOREEOF=2
-
 # Tweak: make sure to treat dots and slashes as word delimiters
 WORDCHARS='*?_-[]~=&;!#$%^(){}<>'
 bindkey -e
@@ -128,8 +127,26 @@ if which thefuck >/dev/null 2>&1; then
 fi
 
 # Support rust
-# export PATH="$PATH:$HOME/.cargo/bin"
+export PATH="$PATH:$HOME/.cargo/bin"
 
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/andrei/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/andrei/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/andrei/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/andrei/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
 
 muxcmd="tmux -s work"
 # Set 'NO_TMUX' to prevent zsh from spawning a tmux session. This can be useful
@@ -145,5 +162,4 @@ fi
 # want that to be shown as an ugly red error code when we're, e.g., reloading
 # the config.
 true
-
 
