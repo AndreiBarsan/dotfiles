@@ -148,6 +148,8 @@ set -g @plugin 'tmux-plugins/tmux-pain-control'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 # tmux-continuum goes one step further and does this continuously, seamlessly.
 set -g @plugin 'tmux-plugins/tmux-continuum'
+# Display disk space on the bottom, very useful when running gigantic builds
+# set -g @plugin 'tassaron/tmux-df' # Does not seem to be compatible with powerline.
 
 set -g @continuum-restore 'on'
 

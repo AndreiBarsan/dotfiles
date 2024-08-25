@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# 
+# Counts the user stats for statements like 'TODO(bob)'
+
+set -eu
+
+ag TODO | grep 'TODO(' | sed 's/.*TODO(\([^)]*\)).*/\1/g' | sort | uniq -c)'

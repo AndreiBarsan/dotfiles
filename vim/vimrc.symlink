@@ -81,7 +81,7 @@ Plugin 'vim-scripts/a.vim'          " *.c(c|pp)?-*h switcher
 " Plugin 'klen/python-mode'           " Python navigation & other goodies
 Plugin 'tmux-plugins/vim-tmux'      " Play nice with tmux
 Plugin 'tmux-plugins/vim-tmux-focus-events'
-Plugin 'Yggdroot/indentLine'        " Visual indent guides
+" Plugin 'Yggdroot/indentLine'        " Visual indent guides. Fiddles with conceal levels.
 Plugin 'z0mbix/vim-shfmt'           " Auto-format shell scripts
 
 
@@ -133,6 +133,8 @@ autocmd Filetype python set tabstop=4|set shiftwidth=4|set expandtab
 " And use hard tabs in Makefiles.
 autocmd Filetype make set tabstop=4|set shiftwidth=4|set noexpandtab
 autocmd Filetype tex set textwidth=79|set colorcolumn=80
+" Don't wrap lines when editing commit messages as they will look bad on GitHub
+au Filetype gitcommit setlocal formatoptions-=t
 
 set visualbell
 
@@ -569,3 +571,6 @@ endif
 let g:UltiSnipsExpandTrigger="<C-j>"
 let g:UltiSnipsJumpForwardTrigger="<C-j>"
 let g:UltiSnipsJumpBackwardTrigger="<C-k>"
+
+" Hack
+set conceallevel=0 " concealcursor=i

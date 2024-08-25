@@ -346,7 +346,7 @@ else
   if [ ${CAN_I_RUN_SUDO} -gt 0 ]; then
     sudo apt install -y build-essential cowsay sl scons \
       curl htop autoconf autotools-dev aptitude python-dev python3-dev \
-      lzma lzma-dev cmake redshift-gtk geoclue qdirstat \
+      lzma lzma-dev cmake redshift-gtk geoclue-2.0 qdirstat \
       figlet screenfetch sshfs syncthing xclip xsel mosh tree mailutils \
       xterm
   fi
