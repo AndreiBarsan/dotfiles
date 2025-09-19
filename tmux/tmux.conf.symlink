@@ -26,10 +26,12 @@ set -g history-limit 100000
 # set -g status-bg blue
 set -g status-fg white
 set -g status-left-length 100
+#set -g status-right '#(/opt/homebrew/bin/powerline tmux right)'
+#set -g status-right '#(powerline tmux right)'
 
 # Powerline support! (variable defined in 'env.sh' for portability)
 run-shell "powerline-daemon -q"
-source "$TMUX_POWERLINE_CONF"
+source "$TMUX_POWERLINE_CONF" # Kills tmux functionaltiy on macOS.. why?
 run-shell "powerline-config tmux setup"   # Necessary on paperspace
 
 set-option -g default-shell /bin/zsh
@@ -41,6 +43,14 @@ if-shell "if [[ `tmux -V | cut -d' ' -f2` -gt 2.0 ]]; then true; else false; fi"
   'set -g window-style "fg=colour247,bg=colour232"; set -g window-active-style "fg=colour255,bg=black"; set -g mouse on'
 if-shell "if [[ `tmux -V | cut -d' ' -f2` -ge 2.1 ]]; then true; else false; fi" \
     'set -g mouse on; set -g mouse-utf8 on'
+
+
+# Set the background for all inactive panes
+set-window-option -g window-style 'bg=black'
+#
+# Set the background for the currently active pane
+set-window-option -g window-active-style 'bg=colour234' # A lighter grey, hex: #303030
+#
 
 # Get mouse support right.
 # Version-specific commands [grumble, grumble]
@@ -56,9 +66,10 @@ run-shell "tmux setenv -g TMUX_VERSION $(tmux -V | cut -c 6-)"
 # if-shell -b '[ "$(echo "$TMUX_VERSION >= 2.1" | bc)" = 1 ]' \
  # "set -g mouse on"
 
+# As of 2025 v2.2 is ANCIENT anyway.
 # UTF8 is autodetected in 2.2 onwards, but errors if explicitly set
-if-shell -b '[ "$(echo "$TMUX_VERSION < 2.2" | bc)" = 1 ]' \
- "set -g utf8 on; set -g status-utf8 on; set -g mouse-utf8 on"
+#if-shell -b '[ "$(echo "$TMUX_VERSION < 2.2" | bc)" = 1 ]' \
+ #"set -g utf8 on; set -g status-utf8 on; set -g mouse-utf8 on"
 
 
 # TODO(andrei): Hostname-based coloring of panes in a cross-platform manner,
