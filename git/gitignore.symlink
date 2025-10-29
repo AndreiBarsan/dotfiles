@@ -7,4 +7,6 @@ last_auto_rebuild
 .bsync-snap-*
 s
 notebooks-andrei/
+notebooks-andrei
 __MACOSX/**/*
+/home/work/av3/notebooks-andrei

@@ -17,6 +17,9 @@ fi
 # The project folder so that we can `c [tab]` to it.
 export PROJECTS=~/work
 
+# Make C-s work, not just C-r
+stty -ixon
+
 # tmux already nicely handles window titles.
 DISABLE_AUTO_TITLE="true"
 

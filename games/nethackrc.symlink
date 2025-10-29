@@ -7,7 +7,6 @@ OPTIONS=msg_window:reversed
 OPTIONS=suppress_alert:3.4.3
 
 OPTIONS=DECgraphics
-OPTIONS=windowtype:curses
 
 OPTIONS=extmenu
 OPTIONS=menu_glyphs
