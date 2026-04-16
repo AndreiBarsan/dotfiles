@@ -1,0 +1,80 @@
+[alias]
+  co = checkout
+  br = branch
+  ci = commit
+  st = status
+  dfs = diff --stat
+  dfc = diff --cached
+  dfh = diff --histogram
+  dfn = diff --name-status
+  rs = restore
+  rsc = restore --staged
+  last = log -1 HEAD
+  lg = log --graph --decorate --oneline --abbrev-commit
+  cm = commit -m
+  ca = commit --amend
+  # Ways to understand a code base, originally from: https://news.ycombinator.com/item?id=47687273
+  who = shortlog -sn --no-merges HEAD
+  dmg = log --oneline -i -E --grep='(incident|outage|downtime|rollback|revert|mitigate|mitigation|hotfix|broke|prod)' --since='1 year ago'
+  bugs = log --oneline -i -E --grep='(bug|bugfix|fix|fixed|fixes|defect|regression|hotfix|broke)' --since='1 year ago'
+  bugfiles = !git log --name-only --format='' -i -E --grep='(bug|bugfix|fix|fixed|fixes|defect|regression|hotfix|broke)' --since='1 year ago' | sort | uniq -c | sort -nr
+  monthly = !git log --since='1 year ago' --format='%ad' --date=format:'%Y-%m' | sort | uniq -c
+  churn = !git log --format='' --name-only --diff-filter=AM --since='1 year ago' | sort | uniq -c | sort -nr | head -20
+
+[pager]
+  diff = delta
+  log = delta
+  reflog = delta
+  show = delta
+	pull = false
+  reset = false
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[user]
+	email = "andreibarsan@users.noreply.github.com"
+	name = Andrei Bârsan
+[core]
+	excludesFile = /home/andrei/.gitignore
+	pager = less -F -X
+
+# diff-so-fancy --patch
+
+# Use `delta` for pretty in-termial diffs. Written in Rust!
+# https://github.com/dandavison/delta
+# [interactive]
+  #diffFilter = diff-so-fancy --patch
+
+[delta]
+  features = decorations
+  side-by-side = true
+  dark = true
+  # theme = "ansi-dark"
+  syntax-theme = zenburn # bat --list-themes shows themes you can pick!
+  pager = less
+
+
+[delta "decorations"]
+  commit-decoration-style = white ol
+  commit-style = raw
+  # file-style = omit # Why the fuck was this set to 'omit' by default LMAO.
+  file-style = white box
+  hunk-header-decoration-style = blue box
+  hunk-header-file-style = red
+  hunk-header-line-number-style = "#307a30"
+
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
+[init]
+	defaultBranch = main
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[rerere]
+	enabled = true
