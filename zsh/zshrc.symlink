@@ -3,17 +3,6 @@
 #
 # Handy for macOS sessions: 
 
-# [UofT] Set a sensible $PATH for CSLab.
-if [ -z "$LEVEL" ] ; then
-	export LEVEL=1
-  # At this point, this is just pollution.
-	# export PATH=$HOME/bin:/local/bin:$HOME/local/bin:$PATH
-
-  # This makes created files have very strict permissions, which can break
-  # docker.
-	# umask 077
-fi
-
 # The project folder so that we can `c [tab]` to it.
 export PROJECTS=~/work
 
@@ -131,6 +120,12 @@ fi
 
 # Support rust
 export PATH="$PATH:$HOME/.cargo/bin"
+
+# Ensures delta never ends up using PAGER, especially when PAGER is set to 'cat'
+# since that would mean dumping, e.g., all of av's git history to stdout in one go.
+export DELTA_PAGER=less
+export PAGER=less
+export GIT_PAGER=delta
 
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.

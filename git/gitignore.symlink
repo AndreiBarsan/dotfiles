@@ -10,3 +10,8 @@ notebooks-andrei/
 notebooks-andrei
 __MACOSX/**/*
 /home/work/av3/notebooks-andrei
+/home/work/av/tmp
+/home/work/av2/tmp
+/home/work/av3/tmp
+
+.claude/settings.local.json

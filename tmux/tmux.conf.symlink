@@ -38,9 +38,8 @@ set-option -g default-shell /bin/zsh
 set -g mode-keys vi
 
 # Active/inactive pane coloring and sane mouse controls. Requires tmux 2.1.
-set -g window-style "fg=colour247,bg=colour232"; set -g window-active-style "fg=colour255,bg=black"; 
-set -g mouse on; set -g mouse-utf8 on
-
+set -g window-style "fg=colour247,bg=colour232"; set -g window-active-style "fg=colour255,bg=black"; set -g mouse on
+set -g mouse on; # set -g mouse-utf8 on # Latter seems deprecated as of 2026-02 and tmux 3.0
 
 # TODO(andrei): Hostname-based coloring of panes in a cross-platform manner,
 # better than the iterm stuff. Should be doable based on that one guy's example
@@ -115,11 +114,9 @@ set -g @plugin 'tmux-plugins/tmux-sensible'
 set -g @plugin 'tmux-plugins/tmux-pain-control'
 
 # Persists sessions across restarts: [prefix] C-s = save, C-r = restore
-set -g @plugin 'tmux-plugins/tmux-resurrect'
+ set -g @plugin 'tmux-plugins/tmux-resurrect'
 # tmux-continuum goes one step further and does this continuously, seamlessly.
 set -g @plugin 'tmux-plugins/tmux-continuum'
-# Display disk space on the bottom, very useful when running gigantic builds
-# set -g @plugin 'tassaron/tmux-df' # Does not seem to be compatible with powerline.
 
 set -g @continuum-restore 'on'
 
