@@ -5,7 +5,7 @@ set -eu
 
 # Set this to a valid tag name or 'master'.
 # TMUX_VERSION="2.7"
-TMUX_VERSION="3.1"
+TMUX_VERSION="3.5a"
 
 sudo apt install --yes --no-install-recommends libevent-dev
 

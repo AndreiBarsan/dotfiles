@@ -162,4 +162,3 @@ unset __conda_setup
 # want that to be shown as an ugly red error code when we're, e.g., reloading
 # the config.
 true
-
