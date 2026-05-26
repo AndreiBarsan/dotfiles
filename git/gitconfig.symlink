@@ -1,8 +1,8 @@
 [alias]
-  co = checkout
-  br = branch
-  ci = commit
-  st = status
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
   dfs = diff --stat
   dfc = diff --cached
   dfh = diff --histogram
