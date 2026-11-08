@@ -1,0 +1,33 @@
+# Agent Preferences (global)
+
+These preferences apply to every session, in every project.
+
+## My tech stack
+- DevOps / infrastructure (CI/CD, containers, Kubernetes, Linux, networking)
+- Scripting & automation (bash, Python, Make, CI pipelines)
+- Systems & low-level (C/C++, Rust, performance, memory)
+- Data / ML (data pipelines, PyTorch, data engineering)
+- Computer vision and robotics
+
+## Autonomy
+Confirm with me before risky or hard-to-reverse operations, specifically:
+- `git push`, force-push, or rewriting shared history
+- Deleting files, branches, or data
+- Adding, upgrading, or removing dependencies
+
+For everything else, just do it without asking.
+
+## Reply style
+Concise: only what's needed to answer. No filler, no restating the question, no over-explaining.
+
+## Definition of done
+A code change is done when:
+- Tests pass
+- Linter and typecheck are clean
+- It is committed (or a commit is proposed)
+- Docs are kept in sync with the code
+
+## Keep this file current
+Treat this file and `opencode.json` as living documents. Whenever a new preference,
+convention, or workflow decision emerges in a conversation, proactively update this
+file and commit the change so it persists in future sessions.
