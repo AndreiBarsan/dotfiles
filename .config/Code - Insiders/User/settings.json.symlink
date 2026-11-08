@@ -3,7 +3,10 @@
   "editor.renderWhitespace": "all",
   "breadcrumbs.enabled": true,
   "editor.mouseWheelZoom": true,
+<<<<<<< HEAD
   "editor.guides.bracketPairs": true,
+=======
+>>>>>>> 422e3f5 (Minor linux-specific tweaks)
   "editor.rulers": [
     80,
     120
@@ -29,8 +32,21 @@
   "latex-workshop.intellisense.optionalArgsEntries.enabled": false,
   "latex-workshop.intellisense.unimathsymbols.enabled": true,
   "latex-workshop.latex.autoBuild.interval": 330,
+<<<<<<< HEAD
   "latex-workshop.latex.autoBuild.run": "onSave",
   "python.linting.pylintEnabled": false,
+=======
+  "latex-workshop.message.information.show": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.linting.flake8Args": [
+    "--max-line-length=120",
+    "--ignore=D101,D103,D105,D107", // Ignore missing docstrings
+    "--verbose",
+  ],
+  "python.linting.maxNumberOfProblems": 1000,
+  "python.linting.pydocstyleEnabled": false,
+>>>>>>> 422e3f5 (Minor linux-specific tweaks)
   "remote.SSH.showLoginTerminal": true,
   "telemetry.telemetryLevel": "off",
   "custom.commands": [
@@ -100,7 +116,11 @@
       "after": [
         "<C-w>",
         "h"
+<<<<<<< HEAD
       ]
+=======
+      ],
+>>>>>>> 422e3f5 (Minor linux-specific tweaks)
     },
     {
       "before": [
@@ -109,7 +129,11 @@
       "after": [
         "<C-w>",
         "l"
+<<<<<<< HEAD
       ]
+=======
+      ],
+>>>>>>> 422e3f5 (Minor linux-specific tweaks)
     },
     {
       "before": [
@@ -118,7 +142,11 @@
       "after": [
         "<C-w>",
         "j"
+<<<<<<< HEAD
       ]
+=======
+      ],
+>>>>>>> 422e3f5 (Minor linux-specific tweaks)
     },
     {
       "before": [
@@ -127,7 +155,11 @@
       "after": [
         "<C-w>",
         "k"
+<<<<<<< HEAD
       ]
+=======
+      ],
+>>>>>>> 422e3f5 (Minor linux-specific tweaks)
     },
     {
       "before": [
@@ -135,7 +167,11 @@
       ],
       "after": [
         "<C-p>"
+<<<<<<< HEAD
       ]
+=======
+      ],
+>>>>>>> 422e3f5 (Minor linux-specific tweaks)
     }
   ],
   "vim.leader": ",",
@@ -145,10 +181,17 @@
   },
   "workbench.iconTheme": "vscode-icons",
   "terminal.integrated.rendererType": "dom",
+<<<<<<< HEAD
+=======
+  "kite.pollingInterval": 1000,
+  "kite.showWelcomeNotificationOnStartup": false,
+  "editor.fontSize": 13,
+>>>>>>> 422e3f5 (Minor linux-specific tweaks)
   "editor.glyphMargin": false,
   "editor.smoothScrolling": true,
   "editor.cursorSurroundingLines": 5,
   "editor.minimap.enabled": false,
+<<<<<<< HEAD
   "workbench.editorAssociations": {
     "*.ipynb": "jupyter-notebook"
   },
@@ -690,3 +733,65 @@
   "github.copilot.chat.agent.thinkingTool": true,
   "chat.mcp.access": "all",
 }
+=======
+  "vsicons.dontShowNewVersionMessage": true,
+  "editor.inlineSuggest.enabled": true,
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+    "yaml": false,
+    "python": true
+  },
+  "cmake.configureOnOpen": true,
+  "editor.guides.bracketPairs": true,
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  "cSpell.userWords": [
+    "Corrigan",
+    "datapipe",
+    "datapipes",
+    "dtype",
+    "fsspec",
+    "joblib",
+    "Julieta",
+    "lidars",
+    "logwise",
+    "ndarray",
+    "NONIMAGE",
+    "sanitaire",
+    "submap",
+    "svogor",
+    "swapfile",
+    "swapon",
+    "tetrys",
+    "torchdata",
+    "tqdm",
+    "VELODYNE",
+    "YOLO"
+  ],
+  "workbench.startupEditor": "none",
+  "python.formatting.blackArgs": [
+    "--line-length 120"
+  ],
+  "python.formatting.provider": "black",
+  "isort.check": true,
+  "isort.showNotifications": "onError",
+  "isort.args": [
+    "--profile",
+    "black"
+  ],
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "editor.defaultFormatter": "ms-python.python",
+  "explorer.confirmDragAndDrop": false,
+  "jupyter.interactiveWindow.textEditor.executeSelection": true,
+  "cmake.showOptionsMovedNotification": false,
+  "github.copilot.editor.enableAutoCompletions": true
+}
+>>>>>>> 422e3f5 (Minor linux-specific tweaks)
