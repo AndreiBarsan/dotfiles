@@ -20,6 +20,10 @@ These preferences apply to every session, in every project.
 ## Environments
 - Run things locally by default; use remote hosts (`wb`, `abarsan-dev-environment`)
   only when I explicitly ask
+- The shell tool's zsh wrapper mangles `[[ ... ]]` constructs in one-liner
+  commands (they silently vanish / cause bogus bash syntax errors). If a
+  bash one-liner with `[[ ]]` fails weirdly, write it to a multi-line script
+  file instead — that always works.
 
 ## System changes
 - For major system tweaks (e.g. enabling zswap, sysctls), ensure they persist
