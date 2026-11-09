@@ -308,6 +308,11 @@ install_bits_and_bobs () {
     ./install.sh
   )
 
+  if [ "$(uname -s)" == "Linux" ]; then
+    info "Ensuring the single managed powerline install (pipx)..."
+    bash "$DOTFILES_ROOT/script/install-powerline.sh"
+  fi
+
   if ! [[ -d "$HOME/.tmux" && -d "$HOME/.tmux/plugins" && -d "$HOME/.tmux/plugins/tpm" ]]; then
     info "No Tmux Plugin Manager. Installing..."
     (
@@ -349,7 +354,7 @@ else
       curl htop autoconf autotools-dev aptitude python-dev python3-dev python3-pip \
       lzma lzma-dev cmake redshift-gtk geoclue-2.0 qdirstat \
       figlet screenfetch sshfs syncthing xclip xsel mosh tree mailutils \
-      xterm indicator-multiload \
+      xterm indicator-multiload
   fi
 fi
 
