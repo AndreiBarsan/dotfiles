@@ -2,21 +2,24 @@
 # Build and install Ghostty for the local user.
 #
 #   macOS -> Homebrew cask (the official signed universal build).
-#   Linux -> build from source with the Zig version pinned by the chosen
-#            Ghostty tag; installed to ~/.local.
+#   Linux -> build from source with the Zig version the tag requires;
+#            installed to ~/.local.
 #
-# Ghostty's minimum GTK/libadwaita requirements change across releases, so on
-# Linux the newest compatible tag is auto-selected from the versions the
-# system provides:
+# How the Ghostty release is chosen on Linux (future-proof by design):
 #
-#   GTK >= 4.18, Adwaita >= 1.7  ->  v1.4.0  (Zig 0.17.0)
-#   GTK >= 4.14, Adwaita >= 1.5  ->  v1.3.1  (Zig 0.15.2)
-#   GTK >= 4.8,  Adwaita >= 1.2  ->  v1.1.3  (Zig 0.13.0)
-#   GTK >= 4.6,  Adwaita >= 1.1  ->  v1.0.1  (Zig 0.13.0)
+#   1. Tags are discovered live via `git ls-remote` — no hardcoded tag list,
+#      so a new Ghostty release never breaks the script.
+#   2. Each tag's minimum GTK/libadwaita comes from the COMPATIBILITY table
+#      in min_versions_for_tag (the only thing to maintain: add one line per
+#      new Ghostty release). Unlisted tags are skipped until verified.
+#   3. The required Zig version is read from the tag's own build.zig.zon
+#      (.minimum_zig_version); tags that predate that field fall back to 0.13.0.
+#   4. gtk4-layer-shell: tags whose build.zig.zon declares it link the distro
+#      copy if packaged (e.g. Ubuntu 24.04+), otherwise Ghostty compiles it
+#      from source into ~/.local/lib (see fix_rpath).
 #
-# Tags < v1.2.0 don't use gtk4-layer-shell at all. Tags >= v1.2.0 link the
-# distro copy if it's packaged (e.g. Ubuntu 24.04+), otherwise Ghostty
-# compiles it from source into ~/.local/lib.
+# Pin a specific release with GHOSTTY_TAG=vX.Y.Z (skips the compatibility
+# check — the build may fail if your GTK is too old).
 #
 # On a headless Linux box (neither DISPLAY nor WAYLAND_DISPLAY set) the
 # script exits early. Override with GHOSTTY_FORCE_LINUX=1.
@@ -96,39 +99,75 @@ install_build_deps() {
     libgtk-4-dev libadwaita-1-dev
 }
 
-# Ghostty >= v1.2.0 uses gtk4-layer-shell (quick terminal on Wayland). If the
-# distro packages it, link the system copy; otherwise the build compiles it
-# from source into $INSTALL_PREFIX/lib (see fix_rpath).
-install_tag_deps() {
-  case "$GHOSTTY_TAG" in
-    v1.2.*|v1.3.*|v1.4.*)
-      if apt-cache show libgtk4-layer-shell-dev >/dev/null 2>&1; then
-        apt_install_missing libgtk4-layer-shell-dev
-        LAYER_SHELL_SYSTEM=1
-      fi
-      ;;
+# The only datum this script must maintain: minimum GTK/libadwaita per
+# Ghostty release (Ghostty doesn't declare these machine-readably).
+# Append one line per new release; unlisted tags are treated as unverified
+# and skipped by the auto-selection (still usable via GHOSTTY_TAG).
+min_versions_for_tag() {
+  case "$1" in
+    v1.0.*) echo "4.6 1.1" ;;
+    v1.1.*) echo "4.8 1.2" ;;
+    v1.2.*) echo "4.14 1.5" ;;
+    v1.3.*) echo "4.14 1.5" ;;
+    v1.4.*) echo "4.18 1.7" ;;
+    *)      echo "" ;;
   esac
+}
+
+# Ghostty release tags, newest first (skips vt-* and prerelease tags).
+list_remote_tags() {
+  git ls-remote --tags "$GHOSTTY_REPO" \
+    | awk '{sub(/^refs\/tags\//, "", $2); if ($2 ~ /^v[0-9]+\.[0-9]+\.[0-9]+$/) print $2}' \
+    | sort -Vru
 }
 
 # Pick the newest Ghostty tag whose GTK/libadwaita minimums the system meets.
 select_ghostty_tag() {
-  local gtk ada
+  if [[ -n "${GHOSTTY_TAG:-}" ]]; then
+    echo "Using explicitly requested Ghostty tag [$GHOSTTY_TAG]"
+    return 0
+  fi
+
+  local gtk ada tag mins min_gtk min_ada
   gtk="$(pkg-config --modversion gtk4)" || die "gtk4 not found in pkg-config; is libgtk-4-dev installed?" 40
   ada="$(pkg-config --modversion libadwaita-1)" || die "libadwaita-1 not found in pkg-config; is libadwaita-1-dev installed?" 40
 
-  if   version_ge "$gtk" 4.18 && version_ge "$ada" 1.7; then
-    GHOSTTY_TAG="v1.4.0"; ZIG_VERSION="0.17.0"
-  elif version_ge "$gtk" 4.14 && version_ge "$ada" 1.5; then
-    GHOSTTY_TAG="v1.3.1"; ZIG_VERSION="0.15.2"
-  elif version_ge "$gtk" 4.8  && version_ge "$ada" 1.2; then
-    GHOSTTY_TAG="v1.1.3"; ZIG_VERSION="0.13.0"
-  elif version_ge "$gtk" 4.6  && version_ge "$ada" 1.1; then
-    GHOSTTY_TAG="v1.0.1"; ZIG_VERSION="0.13.0"
-  else
-    die "System GTK [$gtk] / libadwaita [$ada] is too old for any supported Ghostty release (needs >= 4.6 / >= 1.1)." 41
-  fi
+  while IFS= read -r tag; do
+    mins="$(min_versions_for_tag "$tag")"
+    [[ -n "$mins" ]] || continue   # unverified tag; keep looking
+    read -r min_gtk min_ada <<<"$mins"
+    if version_ge "$gtk" "$min_gtk" && version_ge "$ada" "$min_ada"; then
+      GHOSTTY_TAG="$tag"
+      echo "System GTK [$gtk] / libadwaita [$ada] -> Ghostty [$GHOSTTY_TAG]"
+      return 0
+    fi
+  done < <(list_remote_tags)
 
-  echo "System GTK [$gtk] / libadwaita [$ada] -> Ghostty [$GHOSTTY_TAG] (Zig [$ZIG_VERSION])"
+  die "System GTK [$gtk] / libadwaita [$ada] is too old for any known Ghostty release." 41
+}
+
+# Clone/fetch the chosen tag and check it out. Fetches only that tag, and
+# only if it isn't already present locally (re-runs stay offline).
+ensure_source() {
+  if [[ ! -d "$GHOSTTY_DIR/.git" ]]; then
+    git clone "$GHOSTTY_REPO" "$GHOSTTY_DIR"
+  fi
+  if ! git -C "$GHOSTTY_DIR" rev-parse -q --verify "refs/tags/$GHOSTTY_TAG" >/dev/null; then
+    git -C "$GHOSTTY_DIR" fetch --depth 1 origin \
+      "refs/tags/$GHOSTTY_TAG:refs/tags/$GHOSTTY_TAG" \
+      || die "Ghostty tag [$GHOSTTY_TAG] not found on the remote." 42
+  fi
+  git -C "$GHOSTTY_DIR" checkout -q "$GHOSTTY_TAG"
+}
+
+# Ghostty >= v1.3.1 declares its minimum Zig in build.zig.zon; older tags
+# build with Zig 0.13.x, which is the fallback.
+resolve_zig_version() {
+  local zig
+  zig="$(git -C "$GHOSTTY_DIR" show "$GHOSTTY_TAG:build.zig.zon" \
+    | sed -n 's/.*\.minimum_zig_version = "\([0-9.]*\)".*/\1/p' | head -n1)" || zig=""
+  ZIG_VERSION="${zig:-0.13.0}"
+  echo "Ghostty [$GHOSTTY_TAG] -> Zig [$ZIG_VERSION]"
 }
 
 # Download the exact Zig release the chosen Ghostty tag pins.
@@ -163,17 +202,21 @@ ensure_zig() {
   rm "$ZIG_ROOT/$tarball"
 }
 
-build_ghostty() {
-  if [[ ! -d "$GHOSTTY_DIR" ]]; then
-    git clone "$GHOSTTY_REPO" "$GHOSTTY_DIR"
+# If the chosen tag's build.zig.zon declares gtk4-layer-shell (Wayland quick
+# terminal), link the distro copy when it's packaged; otherwise the build
+# compiles it from source into $INSTALL_PREFIX/lib (see fix_rpath).
+install_tag_deps() {
+  git -C "$GHOSTTY_DIR" show "$GHOSTTY_TAG:build.zig.zon" \
+    | grep -q 'gtk4-layer-shell' || return 0
+  if apt-cache show libgtk4-layer-shell-dev >/dev/null 2>&1; then
+    apt_install_missing libgtk4-layer-shell-dev
+    LAYER_SHELL_SYSTEM=1
   fi
-  git -C "$GHOSTTY_DIR" fetch --tags
-  git -C "$GHOSTTY_DIR" checkout -q "$GHOSTTY_TAG"
+}
 
+build_ghostty() {
   # -p sets up the FHS layout (desktop file, shell integration, etc.) under
-  # the install prefix. Ghostty tags < v1.2.0 don't use gtk4-layer-shell at
-  # all; newer tags build it from source unless LAYER_SHELL_SYSTEM links the
-  # distro copy.
+  # the install prefix.
   local extra=()
   if [[ "${LAYER_SHELL_SYSTEM:-}" == 1 ]]; then
     extra+=(-fsys=gtk4-layer-shell)
@@ -198,8 +241,10 @@ install_linux() {
   check_headless
   install_build_deps
   select_ghostty_tag
-  install_tag_deps
+  ensure_source
+  resolve_zig_version
   ensure_zig
+  install_tag_deps
   build_ghostty
   fix_rpath
 }
