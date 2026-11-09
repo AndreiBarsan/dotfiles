@@ -21,6 +21,10 @@ These preferences apply to every session, in every project.
 - Run things locally by default; use remote hosts (`wb`, `abarsan-dev-environment`)
   only when I explicitly ask
 
+## System changes
+- For major system tweaks (e.g. enabling zswap, sysctls), ensure they persist
+  across reboots (sysctl.d, /etc configs) — not just runtime changes
+
 ## My tech stack
 - DevOps / infrastructure (CI/CD, containers, Kubernetes, Linux, networking)
 - Scripting & automation (bash, Python, Make, CI pipelines)
