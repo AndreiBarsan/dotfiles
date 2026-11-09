@@ -75,4 +75,6 @@ A code change is done when:
 ## Keep this file current
 Treat this file and `opencode.json` as living documents. Whenever a new preference,
 convention, or workflow decision emerges in a conversation, proactively update this
-file and commit the change so it persists in future sessions.
+file and commit the change so it persists in future sessions. Durable investigation
+findings (verified system state, counter quirks, proven techniques, tooling gotchas)
+go to `memory.md` beside this file — add them there and commit.

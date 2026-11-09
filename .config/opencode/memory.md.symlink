@@ -1,0 +1,53 @@
+# Memory (global)
+
+Durable findings from investigations — reference when the topic comes up.
+Preferences live in AGENTS.md; this file is facts and proven techniques.
+
+## This machine (Ubuntu 22.04, kernel 6.8.0-87-generic, 125 GiB RAM, RTX 3090)
+
+### zswap — enabled, persisted, proven (2026-11-08)
+- State: on, lzo/zbud, accept_compressed_ratio 90, max_pool_percent 20
+- Params live ONLY in `/sys/module/zswap/parameters/` on this kernel — not
+  under `/proc/sys`, so `sysctl.d` is a dead end here
+- Persistence: `/usr/local/sbin/zswap-enable.sh` +
+  `/etc/systemd/system/zswap-enable.service` (oneshot, enabled)
+- Proof (root, via `/sys/kernel/debug/zswap` — mode 700): 512 MiB pageout →
+  `stored_pages` 192 → 131264 (Δ exactly 131072 pages), readback → 192, data intact
+- Counters that WORK on this kernel: `stored_pages` (sudo), per-VMA smaps
+  `Swap:`, `swapon --show` USED (includes zswap-resident pages)
+- Counters that LIE/absent here: `pswpin`/`pswpout` stay 0 for zswap pages;
+  no `zswap*` in /proc/vmstat (no ZSWAP_STATS); `pool_*`/`entries` are n/a
+  (ZSMALLOC_STAT off)
+- `MADV_PAGEOUT=21` is correct on x86_64; an earlier `EINVAL` was a ctypes
+  artifact — use raw C (mmap + madvise)
+- Hold-mode test recipe: `sigprocmask(SIG_BLOCK, SIGTERM)` BEFORE `sigwait`,
+  else the default action kills the process (rc=143)
+- Helpers (ephemeral, /tmp/opencode/): `zswap-roundtrip.c` (hold mode),
+  `zswap-hold-proof.sh` (sudo driver), `zswap-setup.sh`
+
+### OpenCode (V2)
+- Repo layout: `opencode.json` is a symlinked user file (keep uncommitted);
+  `cli.json` is a plain file in `~/.config/opencode` (not in the repo)
+- Keybinds have NO double-tap/repeat mechanism (only key, press/release,
+  `preventDefault`, `fallthrough`). `app.exit` override in cli.json =
+  `["ctrl+d", "<leader>q"]` on purpose — Ctrl-C must not kill a session
+- MCP V2 schema: `mcp.servers.<name>` with `type:"local"` + `command`;
+  top-level `mcp.<name>` is deprecated
+- npm `mcp-server-git` is dead (npm security-holder since 2026-08) → use
+  `mcp-git@0.0.4` (bin `mcp-git`)
+- MCP runtime: pin Node v26.13.0 bin dir in the config PATH — inherited PATH
+  resolves node v18 first
+- Config changes hot-reload (TUI included) — never tell the user to restart
+
+### Powerline
+- Canonical install = pipx venv; daemon liveness probe
+  `pgrep -f 'bin/powerline-daemon'`; stale-kill needs argv0=python +
+  `bin/powerline-daemon` + non-pipx path. Script: `script/install-powerline.sh`
+
+## Tooling gotchas (this box)
+- zsh shell wrapper mangles `[[ ]]` in one-liners → write multi-line scripts
+  (see AGENTS.md)
+- `swapon --show=NAME,USED` unsupported — use bare `swapon --show`
+- `... | head` masks the real exit code — capture to a file, check rc
+- `dmesg` denied as non-root (Operation not permitted)
+- pgrep/pkill self-match: bracket trick `powerline[-]daemon` in manual commands
