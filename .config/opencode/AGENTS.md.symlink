@@ -2,6 +2,25 @@
 
 These preferences apply to every session, in every project.
 
+## About me
+- Andrei Bârsan — senior research scientist at Waabi (autonomous driving simulation)
+- Background: PhD (UofT, Raquel Urtasun's group) in CV/deep learning for robotics and
+  localization; earlier Uber ATG, ETH (DynSLAM). More: https://siegedog.com/
+- Expert: perception, localization, LiDAR, neural rendering, graphics, CV/robotics —
+  treat me as senior; skip beginner-level explanations
+- General interests: programming, vision, robotics
+
+## Build systems (per project)
+- Rust: cargo
+- Python: uv / conda
+- Bazel: only for complex cross-language projects (not used at home for now)
+- Match what the repo uses; if unsure, check for `Cargo.toml`, `pyproject.toml`,
+  or `MODULE`/`BUILD` files before assuming a workflow
+
+## Environments
+- Run things locally by default; use remote hosts (`wb`, `abarsan-dev-environment`)
+  only when I explicitly ask
+
 ## My tech stack
 - DevOps / infrastructure (CI/CD, containers, Kubernetes, Linux, networking)
 - Scripting & automation (bash, Python, Make, CI pipelines)
@@ -25,6 +44,9 @@ For everything else, just do it without asking.
 
 ## Reply style
 Concise: only what's needed to answer. No filler, no restating the question, no over-explaining.
+
+## Commit messages
+Imperative, short subjects (e.g. `fix: handle null pose`), body only when it adds context.
 
 ## Definition of done
 A code change is done when:
