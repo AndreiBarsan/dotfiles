@@ -50,6 +50,15 @@ For everything else, just do it without asking.
   and generation drops below 10 tok/s (measured)
 - Keep OpenCode's compaction `keep` a few k below `num_ctx`
 
+## OpenCode TUI
+- A single accidental `Ctrl-C` must never kill a live session. `cli.json`
+  (`~/.config/opencode/cli.json`) overrides `keybinds.app.exit` to
+  `["ctrl+d", "<leader>q"]` — `Ctrl-C` is removed from the exit binding.
+- OpenCode keybinds have no double-tap/repeat mechanism (only key, press/release,
+  `preventDefault`, `fallthrough`), so "double `Ctrl-C` to quit" (Claude Code
+  style) isn't expressible in config. Esc (`session.interrupt`) stops a running
+  turn; `Ctrl-D` or `Ctrl-X` then `Q` quits. Don't re-add `Ctrl-C` to `app.exit`.
+
 ## Reply style
 Concise: only what's needed to answer. No filler, no restating the question, no over-explaining.
 
