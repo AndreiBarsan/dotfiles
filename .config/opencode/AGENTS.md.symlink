@@ -17,6 +17,12 @@ Confirm with me before risky or hard-to-reverse operations, specifically:
 
 For everything else, just do it without asking.
 
+## Local LLM (Ollama)
+- Model: `qwen3.8:27b` (27B, Q4_K_M) on RTX 3090 24 GB, 125 GiB RAM
+- Keep `num_ctx` at ~64k or below: 96k spills the KV cache into system RAM
+  and generation drops below 10 tok/s (measured)
+- Keep OpenCode's compaction `keep` a few k below `num_ctx`
+
 ## Reply style
 Concise: only what's needed to answer. No filler, no restating the question, no over-explaining.
 
