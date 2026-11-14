@@ -44,10 +44,18 @@ Confirm with me before risky or hard-to-reverse operations, specifically:
 
 For everything else, just do it without asking.
 
-## Local LLM (Ollama)
-- Model: `qwen3.8:27b` (27B, Q4_K_M) on RTX 3090 24 GB, 125 GiB RAM
-- Keep `num_ctx` at ~64k or below: 96k spills the KV cache into system RAM
-  and generation drops below 10 tok/s (measured)
+## Local LLM
+- Model: Qwen3.8-27B on RTX 3090 24 GB, 125 GiB RAM. Served via `llama serve`
+  (not Ollama) with `unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL`,
+  `-c 81920 -ngl 99 -fa on -ctk q8_0 -ctv q8_0 --jinja`, and MTP speculative
+  decoding: `--spec-type draft-mtp --spec-draft-n-max 2`
+- MTP costs ~2 GB extra VRAM (23.6/24.6 GB total with `-c 81920`). If long
+  sessions slow down (KV spillover), drop `-c` to ~40960 or KV-quant to q4_0
+- Measured: ~84 tok/s gen (short ctx, 98% draft acceptance), 51+ tok/s in a
+  real long conversation, ~1.2k tok/s prefill. Previous Ollama Q4_K_M setup
+  did ~35 tok/s — MTP is the difference
+- `reasoning_effort` via `--chat-template-kwargs` (default xhigh is slow;
+  `medium` is a good agentic trade-off)
 - Keep OpenCode's compaction `keep` a few k below `num_ctx`
 
 ## OpenCode TUI
