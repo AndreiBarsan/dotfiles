@@ -44,7 +44,7 @@ Preferences live in AGENTS.md; this file is facts and proven techniques.
   `pgrep -f 'bin/powerline-daemon'`; stale-kill needs argv0=python +
   `bin/powerline-daemon` + non-pipx path. Script: `script/install-powerline.sh`
 
-### NVIDIA driver — 580.178.04 (2026-11-14, pending post-reboot verification)
+### NVIDIA driver — 580.178.04 (installed + verified live, 2026-11-14)
 - Ubuntu sunsets old driver branches: `nvidia-driver-570`
   (570.211.01-0ubuntu1.22.04.1) hard-`Depends:` on `nvidia-driver-580`, so any
   update of the 570 metapackage drags in the new branch. No way to "stay on
@@ -59,12 +59,11 @@ Preferences live in AGENTS.md; this file is facts and proven techniques.
   wiped the entire 580 stack (driver, dkms, X driver, even `dkms` itself).
   Before any autoremove post-nvidia-surgery: `apt-mark showmanual | grep nvidia`
   + `apt-get -s autoremove` and read the Remv lines.
-- Pre-reboot state verified 2026-11-14: full 580.178.04 set installed,
-  `nvidia-driver-580` apt-mark manual, DKMS built for 6.8.0-138 + 6.8.0-149
-  (all 5 .ko), 0 failed units, simulated autoremove/dist-upgrade clean, dpkg
-  audit clean, first GRUB entry = 6.8.0-149 (default boot). `nvidia-smi` fails
-  with NVML/library mismatch (userspace 580 vs in-memory 570 module) until
-  reboot. **580 live state unverified.**
+- Verified live 2026-11-14 post-reboot: kernel 6.8.0-149-generic,
+  `nvidia-smi` 580.178.04 (CUDA 13.0), RTX 3090, llama serve (Qwen3.8-27B,
+  full canonical flags incl. MTP) loaded at 23.2 GB VRAM, 0 failed units.
+  `nvidia-driver-580` apt-mark manual (autoremove anchor); DKMS also built
+  for 6.8.0-138.
 - Gotcha: 5.15.0-203 image+headers still installed but **no DKMS modules for
   it** — booting it kills the GPU. Fix later: `dkms install nvidia/580.178.04
   --kernelver 5.15.0-203-generic` + initramfs regen, or remove the 5.15
