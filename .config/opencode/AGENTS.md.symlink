@@ -25,6 +25,11 @@ These preferences apply to every session, in every project.
   bash one-liner with `[[ ]]` fails weirdly, write it to a multi-line script
   file instead — that always works.
 
+## Scratch space
+- Persistent session artifacts (runbooks, scripts, investigation outputs) go to
+  `~/work/ai-tools/scratch/` — survives reboots
+- `/tmp/opencode` is for truly ephemeral stuff only (dies on reboot)
+
 ## System changes
 - For major system tweaks (e.g. enabling zswap, sysctls), ensure they persist
   across reboots (sysctl.d, /etc configs) — not just runtime changes
