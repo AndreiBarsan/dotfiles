@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Not really working. Easier to download from nvidia site.
+
+set -eEu
+
+DISTRO=$(awk -F '=' '/^ID=/{ print $2 }' /etc/*release)
+KERNEL=$(uname -r)
+ARCHITECTURE="x86_64"
+VERSION=$(awk -F '=' '/DISTRIB_RELEASE/{ print $2 }' /etc/*release)
+# Remove the dots from the version number
+VERSION=${VERSION//./}
+# CUDA_VERSION=${CUDA_VERSION=11.2}
+
+echo "Distro:       ${DISTRO}"
+echo "Version:      ${VERSION}"
+echo "Kernel:       ${KERNEL}"
+echo "Arch:         ${ARCHITECTURE}"
+
+# Ubuntu 20.04 notes 2021-05-09
+sudo apt-get install "linux-headers-${KERNEL}"
+
+sudo dpkg --install cuda-repo-${DISTRO}${VERSION}.${ARCHITECTURE}.deb
+sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/$DISTRO/$ARCHITECTURE/7fa2af80.pub
