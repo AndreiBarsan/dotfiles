@@ -49,6 +49,9 @@ For everything else, just do it without asking.
   (not Ollama) with `unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL`,
   `-c 81920 -ngl 99 -fa on -ctk q8_0 -ctv q8_0 --jinja`, and MTP speculative
   decoding: `--spec-type draft-mtp --spec-draft-n-max 2`
+- Driver: 580.178.04 via `nvidia-driver-580` (installed 2026-11-14; **pending
+  post-reboot verification** — Ubuntu sunset the 570 branch and an update dragged
+  580 in; see memory.md for the incident)
 - MTP costs ~2 GB extra VRAM (23.6/24.6 GB total with `-c 81920`). If long
   sessions slow down (KV spillover), drop `-c` to ~40960 or KV-quant to q4_0
 - Measured: ~84 tok/s gen (short ctx, 98% draft acceptance), 51+ tok/s in a

@@ -3,7 +3,7 @@
 Durable findings from investigations — reference when the topic comes up.
 Preferences live in AGENTS.md; this file is facts and proven techniques.
 
-## This machine (Ubuntu 22.04, kernel 6.8.0-87-generic, 125 GiB RAM, RTX 3090)
+## This machine (Ubuntu 22.04, 125 GiB RAM, RTX 3090)
 
 ### zswap — enabled, persisted, proven (2026-11-08)
 - State: on, lzo/zbud, accept_compressed_ratio 90, max_pool_percent 20
@@ -44,10 +44,42 @@ Preferences live in AGENTS.md; this file is facts and proven techniques.
   `pgrep -f 'bin/powerline-daemon'`; stale-kill needs argv0=python +
   `bin/powerline-daemon` + non-pipx path. Script: `script/install-powerline.sh`
 
+### NVIDIA driver — 580.178.04 (2026-11-14, pending post-reboot verification)
+- Ubuntu sunsets old driver branches: `nvidia-driver-570`
+  (570.211.01-0ubuntu1.22.04.1) hard-`Depends:` on `nvidia-driver-580`, so any
+  update of the 570 metapackage drags in the new branch. No way to "stay on
+  570" via Ubuntu packages.
+- `APT::Get::Exclude` in a scripted dist-upgrade was **silently a no-op**:
+  copy-paste dropped the inner quotes, so apt's logged Commandline showed the
+  option split into two argv tokens and it excluded nothing → 580 got pulled
+  anyway.
+- **Never `apt-get autoremove` right after nvidia-driver metapackage surgery**:
+  the only anchor protecting the stack is the manually installed
+  `nvidia-driver-XXX`. Once that went away in a purge round, `autoremove --purge`
+  wiped the entire 580 stack (driver, dkms, X driver, even `dkms` itself).
+  Before any autoremove post-nvidia-surgery: `apt-mark showmanual | grep nvidia`
+  + `apt-get -s autoremove` and read the Remv lines.
+- Pre-reboot state verified 2026-11-14: full 580.178.04 set installed,
+  `nvidia-driver-580` apt-mark manual, DKMS built for 6.8.0-138 + 6.8.0-149
+  (all 5 .ko), 0 failed units, simulated autoremove/dist-upgrade clean, dpkg
+  audit clean, first GRUB entry = 6.8.0-149 (default boot). `nvidia-smi` fails
+  with NVML/library mismatch (userspace 580 vs in-memory 570 module) until
+  reboot. **580 live state unverified.**
+- Gotcha: 5.15.0-203 image+headers still installed but **no DKMS modules for
+  it** — booting it kills the GPU. Fix later: `dkms install nvidia/580.178.04
+  --kernelver 5.15.0-203-generic` + initramfs regen, or remove the 5.15
+  meta/image.
+- Old orphan header packages (5.8.0-50, 5.11.0-27, 5.15.0-43, 5.15.0-52,
+  5.19.0-35, 6.2.0-26) are apt-mark manual → autoremove won't clean them;
+  optional manual purge later.
+
 ## Tooling gotchas (this box)
 - zsh shell wrapper mangles `[[ ]]` in one-liners → write multi-line scripts
   (see AGENTS.md)
 - `swapon --show=NAME,USED` unsupported — use bare `swapon --show`
 - `... | head` masks the real exit code — capture to a file, check rc
 - `dmesg` denied as non-root (Operation not permitted)
+- After any large *scripted* apt transaction, check the `Commandline:` line in
+  `/var/log/apt/history.log` — quoting bugs make excludes/flags silently no-op
+  (happened with `APT::Get::Exclude`, 2026-11-14)
 - pgrep/pkill self-match: bracket trick `powerline[-]daemon` in manual commands
