@@ -17,6 +17,15 @@
 #   4. gtk4-layer-shell: tags whose build.zig.zon declares it link the distro
 #      copy if packaged (e.g. Ubuntu 24.04+), otherwise Ghostty compiles it
 #      from source into ~/.local/lib (see fix_rpath).
+#   5. OpenGL 3.3 shim (NVIDIA/X11): GTK 4.6 on X11 prefers the EGL backend
+#      for GL contexts, and on the NVIDIA proprietary driver that path
+#      yields a 3.2 context — Ghostty (needs 3.3) aborts with
+#      error.OpenGLOutdated. The GLX backend gives a proper core 3.3
+#      context, so the installer ships a tiny LD_PRELOAD shim that makes
+#      dlopen("libEGL*") fail; epoxy can't find EGL, GTK falls back to
+#      GLX, and Ghostty runs. The launcher (~/.local/bin/ghostty) applies
+#      it on X11 only — on Wayland it's a no-op passthrough (see
+#      install_gl_shim).
 #
 # Pin a specific release with GHOSTTY_TAG=vX.Y.Z (skips the compatibility
 # check — the build may fail if your GTK is too old).
