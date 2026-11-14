@@ -58,6 +58,13 @@ For everything else, just do it without asking.
   `medium` is a good agentic trade-off)
 - Keep OpenCode's compaction `keep` a few k below `num_ctx`
 
+## CUDA / GPU drivers
+- Never make major changes to CUDA/NVIDIA drivers (version bumps, branch
+  switches, downgrades, repo changes) unless we're directly working on a
+  CUDA change in that session — risk of breaking the system or GPU
+  acceleration. During routine apt upgrades, exclude `nvidia*` / `cuda*` /
+  `libcu*` / `libnv*` packages and report what was skipped.
+
 ## OpenCode TUI
 - A single accidental `Ctrl-C` must never kill a live session. `cli.json`
   (`~/.config/opencode/cli.json`) overrides `keybinds.app.exit` to
