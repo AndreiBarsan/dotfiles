@@ -64,10 +64,39 @@ Preferences live in AGENTS.md; this file is facts and proven techniques.
   full canonical flags incl. MTP) loaded at 23.2 GB VRAM, 0 failed units.
   `nvidia-driver-580` apt-mark manual (autoremove anchor); DKMS also built
   for 6.8.0-138.
-- Gotcha: 5.15.0-203 image+headers still installed but **no DKMS modules for
-  it** — booting it kills the GPU. Fix later: `dkms install nvidia/580.178.04
-  --kernelver 5.15.0-203-generic` + initramfs regen, or remove the 5.15
-  meta/image.
+- 5.15.0-203 kernel: had **no DKMS modules** (booting it kills the GPU).
+  Decision 2026-11-14: remove, not repair. Simulation clean — exactly 6 pkgs
+  (`linux-generic`/`-image-generic`/`-headers-generic` @ 5.15.0.203.175 +
+  `linux-image-`/`-modules-`/`-modules-extra-5.15.0-203-generic`). Command
+  presented to user, run pending:
+  `sudo apt-get remove --purge --autoremove linux-generic linux-image-generic linux-headers-generic`
+  (running kernel 6.8.0-149 untouched; 6.8.0-138 stays as fallback)
+
+### NVIDIA driver branch landscape (verified 2026-11-14, endoflife.date API + Ubuntu repos)
+- Branch cadence (endoflife.date/nvidia): **LTSB every ~3 yrs** (470→535→580→620)
+  + 1-yr-lifecycle new-feature branches in between. Today:
+  R580 = current **LTSB**, EOL **2028-08-04** (upstream at 580.196.07);
+  R590 EOL 2026-12-22; R595 EOL 2027-03-24; R610 EOL 2027-08-03; R615 EOL
+  2027-09-09; **R620 = next LTSB**, EOL 2029-11-04 (620.70.06)
+- Ubuntu repo matrix (ca.archive.ubuntu.com, `restricted` component, base +
+  -updates + -security merged): `nvidia-driver-580` = **580.178.04** on
+  jammy (0ubuntu0.22.04.1), noble (0ubuntu0.24.04.1) AND resolute
+  (0ubuntu0.26.04.1) — same upstream in all three. LTS repos only ship
+  LTSB + current NF branch (no 610/615/620 on resolute); resolute's
+  `nvidia-driver-590` metapkg actually carries 595.99.02 (naming quirk);
+  jammy's 590 metapkg = 590.48.01.
+- **Decision: stay on R580 across 22.04→24.04→26.04.** Same upstream in all
+  three repos ⇒ plain `apt upgrade` per release, no metapackage surgery.
+  LTSB coverage to Aug 2028 spans the whole upgrade window. Next planned jump:
+  R620 in a dedicated CUDA session once Ubuntu ships it (2028+; will have
+  ~1.5–2 yrs of bake time by then).
+- Caveat: jammy repo pins 580.178.04 — Ubuntu does NOT track upstream point
+  releases within the branch (580.196.07 exists). Fine for an LLM-serving box;
+  only a real regression justifies jumping to a .run installer.
+- 26.04 ships kernel 7.0: Ubuntu packaging 580.178.04 DKMS for resolute is
+  strong evidence it builds there — check `dkms status` right after upgrade.
+  Drop-in fallback if the closed module ever fails: `nvidia-driver-580-open`
+  (present in all three repos).
 - Old orphan header packages (5.8.0-50, 5.11.0-27, 5.15.0-43, 5.15.0-52,
   5.19.0-35, 6.2.0-26) are apt-mark manual → autoremove won't clean them;
   optional manual purge later.
