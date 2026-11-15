@@ -162,6 +162,9 @@ Preferences live in AGENTS.md; this file is facts and proven techniques.
   doesn't exist). Full history: `~/work/ai-tools/notes/ghostty-ubuntu2204-nvidia.md`.
 
 ## Tooling gotchas (this box)
+- `sudo printf ... >> /etc/file` fails (Permission denied): the `>>` is
+  performed by the USER's shell, not by sudo. Use `printf ... | sudo tee -a
+  /etc/file` instead (hit live 2026-11-15, Phase 4 of the noble upgrade).
 - zsh shell wrapper mangles `[[ ]]` in one-liners → write multi-line scripts
   (see AGENTS.md)
 - `swapon --show=NAME,USED` unsupported — use bare `swapon --show`

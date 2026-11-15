@@ -5,7 +5,7 @@
   ],
   "compaction": {
       "auto": true,
-      "keep": { "tokens": 24000 }
+      "keep": { "tokens": 20000 }
   },
   "provider": {
       "llamacpp": {
@@ -19,7 +19,7 @@
                     "local-coder": {
                               "name": "Local Coding Model",
                               "limit": {
-                                          "context": 81920,
+                                          "context": 76800,
                                           "output": 8192
                                         }
                             }
