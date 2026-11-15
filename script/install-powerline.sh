@@ -36,7 +36,14 @@ fi
 
 command -v powerline >/dev/null 2>&1 || die "powerline shim missing from PATH (check ~/.local/bin)"
 
-# Exactly one daemon: kill any stale one (e.g. left over from a pip --user install).
+# Exactly one daemon: kill ANY existing one and start fresh — including a stale
+# pipx-venv daemon. The daemon is stateless (abstract-socket IPC; the client
+# renders fine without it), so a restart is always safe. Killing unconditionally
+# avoids the "stale daemon answers empty" bug: a stale daemon on the socket
+# poisons statusline output, and only an absent daemon triggers the local
+# render fallback. (2026-11-15 noble upgrade: an old-venv daemon was serving
+# @powerline-ipc-1000 and blanking the tmux statusline.)
+#
 # Coarse pgrep filter, then require the daemon's real argv shape; this avoids
 # matching shells/agents whose command line merely mentions "powerline-daemon".
 for pid in $(pgrep -f 'powerline-daemon' || true); do
@@ -44,10 +51,15 @@ for pid in $(pgrep -f 'powerline-daemon' || true); do
   argv0="${cmdline%% *}"
   case "$argv0" in *python*) ;; *) continue ;; esac      # a daemon is a python entry point
   [[ "$cmdline" == *bin/powerline-daemon* ]] || continue  # ...running the daemon, not a client
-  if [[ "$cmdline" != *"$HOME/.local/share/pipx"* ]]; then
-    info "killing stale powerline-daemon (pid $pid)"
-    kill "$pid" 2>/dev/null || true
-  fi
+  info "killing stale powerline-daemon (pid $pid)"
+  kill "$pid" 2>/dev/null || true
+done
+
+# Give SIGTERM up to 5s to land before the liveness check below, so a dying
+# stale daemon isn't mistaken for a healthy one and skipped.
+for _ in 1 2 3 4 5; do
+  pgrep -f 'bin/powerline-daemon' >/dev/null 2>&1 || break
+  sleep 1
 done
 
 # Start the daemon only if it is not running: `powerline-daemon` exits
