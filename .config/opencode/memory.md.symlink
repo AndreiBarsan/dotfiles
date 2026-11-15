@@ -3,7 +3,7 @@
 Durable findings from investigations — reference when the topic comes up.
 Preferences live in AGENTS.md; this file is facts and proven techniques.
 
-## This machine (Ubuntu 22.04, 125 GiB RAM, RTX 3090)
+## This machine (marcel-linux — Ubuntu 24.04 noble since 2026-11-15, 125 GiB RAM, RTX 3090)
 
 ### zswap — enabled, persisted, proven (2026-11-08)
 - State: on, lzo/zbud, accept_compressed_ratio 90, max_pool_percent 20
@@ -40,9 +40,29 @@ Preferences live in AGENTS.md; this file is facts and proven techniques.
 - Config changes hot-reload (TUI included) — never tell the user to restart
 
 ### Powerline
-- Canonical install = pipx venv; daemon liveness probe
-  `pgrep -f 'bin/powerline-daemon'`; stale-kill needs argv0=python +
-  `bin/powerline-daemon` + non-pipx path. Script: `script/install-powerline.sh`
+- Canonical install = pipx venv (python 3.10 inside venv); script:
+  `script/install-powerline.sh`
+- **Empty-statusline root cause (2026-11-15, post-noble-upgrade):** a STALE
+  `powerline-daemon` from the old venv kept serving the abstract socket
+  `@powerline-ipc-1000` and answering empty. The `powerline` client is a
+  compiled **C-ELF binary with a local render fallback**: an *absent* daemon
+  is fine (client renders locally), but a *present* daemon is authoritative —
+  a broken daemon poisons the statusline. Kill the stale one; fresh daemon
+  renders.
+- **install-powerline.sh bug (fixed + proven 2026-11-15):** the stale-kill
+  loop guarded kills with `!= *"$HOME/.local/share/pipx"*` — so it could
+  *never* replace a stale pipx daemon (exactly this incident). Now kills
+  unconditionally any python-entry-point daemon matching `*bin/powerline-daemon*`
+  (daemon is stateless → restart always safe) and waits ≤5 s for SIGTERM
+  before the liveness check. Re-run killed 983312 → healthy 1010139.
+- Daemon lifecycle: `~/.tmux.conf` `run-shell "powerline-daemon -q"` at tmux
+  server start (+ tmux-continuum auto-resurrect) — self-heals after reboots;
+  no systemd unit.
+- Verify with the EXACT statusline invocation:
+  `env powerline tmux right -R pane_id=%N --width=200 -R width_adjust=100`
+  → ~750 B. `left` → **0 bytes by design** (default config's `tmux` section
+  is `{}`; left status is `#S` + colors, outside the hook).
+  `tmux display-message -p` does NOT execute `#()` commands — don't use it.
 
 ### NVIDIA driver — 580.178.04 (installed + verified live, 2026-11-14)
 - Ubuntu sunsets old driver branches: `nvidia-driver-570`
@@ -65,12 +85,10 @@ Preferences live in AGENTS.md; this file is facts and proven techniques.
   `nvidia-driver-580` apt-mark manual (autoremove anchor); DKMS also built
   for 6.8.0-138.
 - 5.15.0-203 kernel: had **no DKMS modules** (booting it kills the GPU).
-  Decision 2026-11-14: remove, not repair. Simulation clean — exactly 6 pkgs
-  (`linux-generic`/`-image-generic`/`-headers-generic` @ 5.15.0.203.175 +
-  `linux-image-`/`-modules-`/`-modules-extra-5.15.0-203-generic`). Command
-  presented to user, run pending:
-  `sudo apt-get remove --purge --autoremove linux-generic linux-image-generic linux-headers-generic`
-  (running kernel 6.8.0-149 untouched; 6.8.0-138 stays as fallback)
+  Decision 2026-11-14: remove, not repair. **Resolved 2026-11-15: the
+  do-release-upgrade purged 5.15.0-203-generic itself (no rc entry left)** —
+  the pending remove command became moot. Installed kernels: 6.8.0-138 (GRUB
+  fallback) + 6.8.0-149 (running).
 
 ### NVIDIA driver branch landscape (verified 2026-11-14, endoflife.date API + Ubuntu repos)
 - Branch cadence (endoflife.date/nvidia): **LTSB every ~3 yrs** (470→535→580→620)
@@ -97,9 +115,51 @@ Preferences live in AGENTS.md; this file is facts and proven techniques.
   strong evidence it builds there — check `dkms status` right after upgrade.
   Drop-in fallback if the closed module ever fails: `nvidia-driver-580-open`
   (present in all three repos).
-- Old orphan header packages (5.8.0-50, 5.11.0-27, 5.15.0-43, 5.15.0-52,
-  5.19.0-35, 6.2.0-26) are apt-mark manual → autoremove won't clean them;
-  optional manual purge later.
+- Old orphan header packages (verified 2026-11-15 via `apt-mark showmanual`:
+  5.8.0-50, 5.11.0-27, 5.15.0-43, 5.15.0-52, 5.19.0-35) are apt-mark manual →
+  autoremove won't clean them; optional manual purge (runbook Phase 4.5).
+
+### noble 24.04 upgrade (2026-11-14/15)
+- Plan-of-record: `~/work/ai-tools/scratch/noble-upgrade-runbook.md`
+  (Phases 0–3 done; Phase 4 = user sudo block: etc restores + apt sources +
+  upgrade with nvidia/cuda excludes).
+- Backups: `/mnt/data/backup/pre-noble-2026-11-14/` — home tar.zst (115G),
+  etc tar.gz, package manifests.
+- doh behaviors observed: main sources → `ubuntu.sources` (deb822, noble);
+  every third-party `.list` renamed to `.list.distUpgrade` (disabled); a
+  noble `.sources` twin generated for PPAs. Conffile prompt kept noble's
+  version for a few files → functional losses (audited, restore in Phase 4):
+  - `/etc/systemd/user.conf` lost active `DefaultLimitNOFILE=10000:524288`
+    (noble ships it commented). NOTE: this is the **systemd** user.conf, not
+    a limits.d file.
+  - `/etc/sysctl.conf` lost `fs.file-max=5000000000` + `vm.swappiness=25`.
+  - `/etc/security/limits.conf` lost 4× `nofile 10000000` lines (`*`+`andrei`,
+    soft+hard) — **recoverable from the etc tarball** (an earlier "unrecoverable"
+    note was wrong). `/etc/security/limits.d/` was empty on jammy.
+  - `/etc/ssh/sshd_config` verified IDENTICAL to backup (earlier "missing"
+    alarm was /tmp cleanup between extracts).
+- llama serve restarted post-upgrade with `-c 76800 --spec-draft-n-max 3
+  --chat-template-kwargs {"reasoning_effort":"high"}` (PID 14788 at the time;
+  it serves OpenCode — never pkill mid-session). Canonical flag set is
+  Andrei's call (old: `-c 81920 --spec-draft-n-max 2`).
+- Ollama disabled (service), binary + 17G models still on disk.
+
+### Ghostty 1.3.1 (source-built, 2026-11-15)
+- 1.0.1 (jammy GTK 4.6.9 build) segfaults on noble's GTK runtime 4.14.2 →
+  1.3.1 built from source; 1.4 needs GTK 4.18 (absent on noble).
+- Build: Zig 0.15.2, `zig build -Doptimize=ReleaseFast -fno-sys=gtk4-layer-shell`.
+  **Gotcha:** system integrations toggle via `-fsys=<name>` / `-fno-sys=<name>`
+  (`zig build -h`), NOT `-D<name>`. zig-out gives `lib/` + `bin/`; no sudo
+  needed (layer-shell built from source). Tree+log: `~/work/ghostty-131/`.
+- Install: `~/.local/bin/ghostty` wrapper → `ghostty.real`;
+  `~/.local/lib/ghostty/libgtk4-layer-shell.so` (+ retired `noegl.{c,so}`).
+  **RUNPATH gotcha:** binary RUNPATH is the CWD-relative zig build cache →
+  the wrapper's `LD_LIBRARY_PATH` is mandatory.
+- **noegl shim RETIRED:** on noble GTK 4.14.2 the EGL path gives OpenGL 4.6
+  (jammy's 4.6.9 EGL gave only 3.2 — that's why the shim existed).
+- `~/.dotfiles/script/install-ghostty.sh` is the generic installer; do NOT run
+  it on this box (would clobber the wrapper scheme; its `install_gl_shim`
+  doesn't exist). Full history: `~/work/ai-tools/notes/ghostty-ubuntu2204-nvidia.md`.
 
 ## Tooling gotchas (this box)
 - zsh shell wrapper mangles `[[ ]]` in one-liners → write multi-line scripts

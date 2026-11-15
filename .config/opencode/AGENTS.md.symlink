@@ -50,20 +50,42 @@ Confirm with me before risky or hard-to-reverse operations, specifically:
 For everything else, just do it without asking.
 
 ## Local LLM
+- Host: marcel-linux — Ubuntu **24.04 noble** as of 2026-11-15 (was 22.04;
+  upgrade runbook: `~/work/ai-tools/scratch/noble-upgrade-runbook.md`)
 - Model: Qwen3.8-27B on RTX 3090 24 GB, 125 GiB RAM. Served via `llama serve`
   (not Ollama) with `unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL`,
-  `-c 81920 -ngl 99 -fa on -ctk q8_0 -ctv q8_0 --jinja`, and MTP speculative
-  decoding: `--spec-type draft-mtp --spec-draft-n-max 2`
+  `-ngl 99 -fa on -ctk q8_0 -ctv q8_0 --jinja`, and MTP speculative
+  decoding: `--spec-type draft-mtp`.
+  Live serve (2026-11-15): `-c 76800 --spec-draft-n-max 3
+  --chat-template-kwargs {"reasoning_effort":"high"}`. Previous canonical set
+  was `-c 81920 --spec-draft-n-max 2` — which set is canonical is pending
+  Andrei's call; don't change the running serve unilaterally.
 - Driver: 580.178.04 via `nvidia-driver-580` (2026-11-14, verified live on
-  kernel 6.8.0-149; Ubuntu sunset the 570 branch — see memory.md)
-- MTP costs ~2 GB extra VRAM (23.6/24.6 GB total with `-c 81920`). If long
-  sessions slow down (KV spillover), drop `-c` to ~40960 or KV-quant to q4_0
+  kernel 6.8.0-149; Ubuntu sunset the 570 branch — see memory.md). DKMS
+  builds exist for both installed kernels (6.8.0-138, 6.8.0-149)
+- MTP costs ~2 GB extra VRAM (23.6/24.6 GB total, measured at `-c 81920`). If
+  long sessions slow down (KV spillover), drop `-c` to ~40960 or KV-quant to q4_0
 - Measured: ~84 tok/s gen (short ctx, 98% draft acceptance), 51+ tok/s in a
   real long conversation, ~1.2k tok/s prefill. Previous Ollama Q4_K_M setup
   did ~35 tok/s — MTP is the difference
 - `reasoning_effort` via `--chat-template-kwargs` (default xhigh is slow;
   `medium` is a good agentic trade-off)
 - Keep OpenCode's compaction `keep` a few k below `num_ctx`
+
+## Ghostty (marcel-linux)
+- 1.3.1 built from source against noble GTK 4.14.2 (2026-11-15; 1.0.1
+  segfaulted on noble's GTK runtime). Layout: `~/.local/bin/ghostty` (sh
+  wrapper) → `ghostty.real` (binary; 1.0.1 kept as `ghostty.real.101.bak`);
+  `~/.local/lib/ghostty/` holds `libgtk4-layer-shell.so` (source-built) and
+  the retired GLX-forcing `noegl.{c,so}`.
+- The wrapper's `LD_LIBRARY_PATH` is **mandatory** — the binary's RUNPATH is
+  the CWD-relative zig build cache. Don't replace the wrapper with a bare
+  binary or symlink.
+- No GL shim needed: noble's GTK 4.14.2 EGL path gives OpenGL 4.6.
+- Do not run `~/.dotfiles/script/install-ghostty.sh` on this box — it's the
+  generic installer and would clobber the wrapper scheme (divergence
+  documented in the notes file).
+- Full history + build recipe: `~/work/ai-tools/notes/ghostty-ubuntu2204-nvidia.md`
 
 ## CUDA / GPU drivers
 - Never make major changes to CUDA/NVIDIA drivers (version bumps, branch
